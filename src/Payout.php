@@ -10,7 +10,7 @@ class Payout implements PayoutInterface, \JsonSerializable
     private ?string $merchantPayoutReference;
     private ?Amount $amount = null;
     private ?string $description;
-    private ?PayoutDestination $destination;
+    private ?DestinationInterface $destination;
     private ?PayoutSource $source;
 
     public function __construct(string $merchantPayoutReference = null)
@@ -58,13 +58,13 @@ class Payout implements PayoutInterface, \JsonSerializable
     }
 
     /** @inheritdoc */
-    public function getDestination(): ?PayoutDestination
+    public function getDestination(): ?DestinationInterface
     {
         return $this->destination;
     }
 
     /** @inheritdoc */
-    public function setDestination(?PayoutDestination $destination): self
+    public function setDestination(?DestinationInterface $destination): self
     {
         $this->destination = $destination;
         return $this;

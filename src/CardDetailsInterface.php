@@ -2,21 +2,8 @@
 
 namespace Ypmn;
 
-interface CardDetailsInterface
+interface CardDetailsInterface extends DetailsInterface
 {
-    /**
-     * Установить Номер карты
-     * @param string $number Номер карты
-     * @return $this
-     */
-    public function setNumber(string $number) : self;
-
-    /**
-     * Получить Номер карты
-     * @return string Номер карты
-     */
-    public function getNumber() : string;
-
     /**
      * Установить Месяц прекращения действия Карты
      * @param int $expiryMonth Месяц прекращения действия Карты

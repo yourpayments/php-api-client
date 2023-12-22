@@ -1,26 +1,26 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
 
 /**
- * Это класс для описания направления платежа
+ * Это класс для описания направления платежа по сбп
  **/
-class PayoutDestination implements PayoutDestinationInterface
+class PayoutMobileDestination implements DestinationInterface
 {
     private const AVAILABLE_TYPES = [
-        'card',
-        'token',
+        'sbp',
     ];
 
     private string $type;
-    private ?CardDetails $card = null;
+    private ?DetailsInterface $details = null;
     private ?Billing $recipient = null;
 
     /**
-     * @param string|null $type
      * @throws PaymentException
      */
-    public function __construct(string $type = 'card')
+    public function __construct(string $type = 'sbp')
     {
         $this->setType($type);
     }
@@ -44,29 +44,15 @@ class PayoutDestination implements PayoutDestinationInterface
     }
 
     /** @inheritdoc */
-    public function getCard(): ?CardDetails
-    {
-        return $this->card;
-    }
-
-    /** @inheritdoc */
-    public function setCard(?CardDetails $card): self
-    {
-        $this->card = $card;
-
-        return $this;
-    }
-
-    /** @inheritdoc */
     public function getDetails(): ?DetailsInterface
     {
-        return $this->card;
+        return $this->details;
     }
 
     /** @inheritdoc */
     public function setDetails(?DetailsInterface $details): self
     {
-        $this->card = $details;
+        $this->details = $details;
 
         return $this;
     }
@@ -85,13 +71,26 @@ class PayoutDestination implements PayoutDestinationInterface
     }
 
     /** @inheritdoc */
-    public function setCardNumber(string $cardNumber): self
+    public function setPhoneNumber(string $phoneNumber): self
     {
-        if ($this->getCard() === null) {
-            $this->setCard(new CardDetails());
+        if ($this->getDetails() === null) {
+            $this->setDetails(new PhoneDetails());
         }
 
-        $this->getCard()->setNumber($cardNumber);
+        $this->getDetails()->setNumber($phoneNumber);
+
+        return $this;
+    }
+
+    /** @inheritdoc */
+    public function setBankInformation(int $bankId, string $bankName): self
+    {
+        if ($this->getDetails() === null) {
+            $this->setDetails(new PhoneDetails());
+        }
+
+        $this->getDetails()->setBankId($bankId);
+        $this->getDetails()->setBankName($bankName);
 
         return $this;
     }
@@ -106,8 +105,10 @@ class PayoutDestination implements PayoutDestinationInterface
 
         return [
             'type' => $this->getType(),
-            'card' => [
-                'cardNumber' => $this->getCard()->getNumber(),
+            'sbp' => [
+                'phoneNumber' => $this->getDetails()->getNumber(),
+                "bankId" => $this->getDetails()->getBankId(),
+                "bankName" => $this->getDetails()->getBankName()
             ],
             'recipient' => [
                 'type' => $this->getRecipient()->getType(),

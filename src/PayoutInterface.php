@@ -38,15 +38,15 @@ interface PayoutInterface
     public function setDescription(?string $description): self;
 
     /**
-     * @return PayoutDestination|null
+     * @return DestinationInterface|null
      */
-    public function getDestination(): ?PayoutDestination;
+    public function getDestination(): ?DestinationInterface;
 
     /**
-     * @param PayoutDestination|null $destination
+     * @param DestinationInterface|null $destination
      * @return Payout
      */
-    public function setDestination(?PayoutDestination $destination): self;
+    public function setDestination(?DestinationInterface $destination): self;
 
     /**
      * @return PayoutSource|null
@@ -58,5 +58,4 @@ interface PayoutInterface
      * @return Payout
      */
     public function setSource(?PayoutSource $source): self;
-
 }
