@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Ypmn\Amount;
 use Ypmn\ApiRequest;
 use Ypmn\Billing;
+use Ypmn\Merchant;
 use Ypmn\Payout;
 use Ypmn\PayoutMobileDestination;
 use Ypmn\PayoutSource;
@@ -67,7 +68,7 @@ $source->setSender($sender);
 $payout->setSource($source);
 
 // Создадим HTTP-запрос к API
-$apiRequest = (new ApiRequest($merchant))
+$apiRequest = (new ApiRequest(new Merchant($_POST['merchantCode'], $_POST['merchantSecret'])))
     ->setDebugMode() // (Опционально) Включить режим отладки (закомментируйте или удалите в рабочей программе!)
     ->setSandboxMode(); // (Опционально) Переключиться на тестовый сервер (закомментируйте или удалите в рабочей программе!)
 
