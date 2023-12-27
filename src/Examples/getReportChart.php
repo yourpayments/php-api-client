@@ -13,8 +13,6 @@ include_once 'start.php';
 $apiRequest = new ApiRequest($merchant);
 // Включить режим отладки (закомментируйте или удалите в рабочей программе!)
 $apiRequest->setDebugMode();
-// Принимать ответ строкой в режиме отладки (закомментируйте или удалите в рабочей программе!)
-$apiRequest->setJsonDebugResponse(false);
 // Переключиться на тестовый сервер (закомментируйте или удалите в рабочей программе!)
 $apiRequest->setSandboxMode();
 

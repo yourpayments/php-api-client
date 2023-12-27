@@ -408,6 +408,7 @@ class ApiRequest implements ApiRequestInterface
     /** @inheritdoc  */
     public function sendReportChartRequest(array $params): array
     {
+        $this->setJsonDebugResponse(false);
         return $this->sendGetRequest(self::REPORT_CHART_API . '/?' . http_build_query($params));
     }
 
