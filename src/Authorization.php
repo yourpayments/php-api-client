@@ -40,7 +40,6 @@ class Authorization implements AuthorizationInterface
     public function __constructor(string $paymentMethodType, bool $isPaymentPageUsed) {
         $this->setPaymentMethod($paymentMethodType);
         $this->setUsePaymentPage($isPaymentPageUsed);
-        echo 'конструирую';
     }
 
     /**
