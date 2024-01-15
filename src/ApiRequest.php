@@ -23,7 +23,7 @@ class ApiRequest implements ApiRequestInterface
     const REPORT_GENERAL_API = '/api/v4/reports/general';
     const HOST = 'https://secure.ypmn.ru';
     const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
-    const LOCAL_HOST = 'http://localhost';
+    const LOCAL_HOST = 'http://127.0.0.1';
 
 
     /** @var MerchantInterface Мерчант, от имени которого отправляется запрос */
