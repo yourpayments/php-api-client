@@ -25,7 +25,6 @@ class ApiRequest implements ApiRequestInterface
     const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
     const LOCAL_HOST = 'http://127.0.0.1';
 
-
     /** @var MerchantInterface Мерчант, от имени которого отправляется запрос */
     private MerchantInterface $merchant;
 
@@ -94,10 +93,7 @@ class ApiRequest implements ApiRequestInterface
 
         $merchant = $this->merchant->getCode();
         $timeStamp = time();
-
-//        $parameters = compact('merchant', 'startDate', 'endDate', 'orderStatus', 'timeStamp');
         $parameters = compact('merchant', 'startDate', 'endDate', 'timeStamp');
-
 
         //сформировать URL
         $url = $this->getHost()
