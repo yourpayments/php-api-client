@@ -41,18 +41,30 @@ class ApiRequest implements ApiRequestInterface
     /** @var bool Формат результата в режиме отладки */
     private bool $jsonDebugResponse = true;
 
+    /** @var string Хост для отправки запросов */
+    private string $host = self::HOST;
+
     /** @inheritdoc  */
     public function __construct(MerchantInterface $merchant)
     {
         $this->merchant = $merchant;
     }
 
+    /** @inheritdoc  */
     public function getHost() : string
     {
-        if ($this->localModeIsOn) {
-            return self::LOCAL_HOST;
+        return $this->host;
+    }
+
+    /** @inheritdoc  */
+    public function setHost(string $host) : self
+    {
+        if (filter_var($host, FILTER_VALIDATE_URL)) {
+            $this->host = $host;
+
+            return $this;
         } else {
-            return ($this->getSandboxMode() ? self::SANDBOX_HOST : self::HOST);
+            throw new PaymentException('Некорректный URL для отправки запросов');
         }
     }
 
@@ -162,6 +174,11 @@ class ApiRequest implements ApiRequestInterface
         return $hashString;
     }
 
+    /**
+     * Расчет подписи для API v3
+     * @param $parameters
+     * @return string
+     */
     private function reportsSign($parameters)
     {
         $sourceString = $this->buildReportsSourceString($parameters);
@@ -471,6 +488,7 @@ class ApiRequest implements ApiRequestInterface
             $this->setLocalMode(false);
         }
         $this->sandboxModeIsOn = $sandboxModeIsOn;
+        $this->host = self::SANDBOX_HOST;
 
         return $this;
     }
@@ -488,6 +506,7 @@ class ApiRequest implements ApiRequestInterface
             $this->setSandboxMode(false);
         }
         $this->localModeIsOn = $localModeIsOn;
+        $this->host = self::LOCAL_HOST;
 
         return $this;
     }

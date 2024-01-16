@@ -117,4 +117,14 @@ interface ApiRequestInterface
      * @param array $params
      */
     public function sendReportGeneralRequest(array $params);
+
+    /** @return string Хост для отправки запросов */
+    public function getHost() : string;
+
+    /**
+     * @param string $host Хост для отправки запросов
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setHost(string $host) : self;
 }
