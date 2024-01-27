@@ -37,7 +37,7 @@ class Authorization implements AuthorizationInterface
      * @return void
      * @throws PaymentException Ошибка оплаты
      */
-    public function __constructor(string $paymentMethodType, bool $isPaymentPageUsed) {
+    public function __construct(string $paymentMethodType, bool $isPaymentPageUsed) {
         $this->setPaymentMethod($paymentMethodType);
         $this->setUsePaymentPage($isPaymentPageUsed);
     }
