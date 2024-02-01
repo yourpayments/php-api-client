@@ -226,7 +226,7 @@ class Std
      * @param string $str
      * @return string
      */
-    public static function str2url(string $str) : string {
+    public static function str2uri(string $str) : string {
         // Спецсимволы
         $str = str_replace( '(', '', $str);
         $str = str_replace( '(', '', $str);
