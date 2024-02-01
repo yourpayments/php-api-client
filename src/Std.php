@@ -191,7 +191,7 @@ class Std
      * @param $string
      * @return string
      */
-    public static function rus2translit($string) {
+    public static function rus2translit(string $string): string {
         $converter = [
             'а' => 'a',   'б' => 'b',   'в' => 'v',
             'г' => 'g',   'д' => 'd',   'е' => 'e',
@@ -218,6 +218,43 @@ class Std
         ];
 
         return strtr($string, $converter);
+    }
+
+    /**
+     * Преобразование кириллических имён в URI slugs
+     * Удобно для продуктов, категорий и т.д.
+     * @param string $str
+     * @return string
+     */
+    public static function str2url(string $str) : string {
+        // Спецсимволы
+        $str = str_replace( '(', '', $str);
+        $str = str_replace( '(', '', $str);
+        $str = str_replace( "'", '', $str);
+        $str = str_replace( ':', '', $str);
+        $str = str_replace( 'Ø', '', $str);
+        $str = str_replace( '@', '', $str);
+        $str = str_replace( '«', '', $str);
+        $str = str_replace( '»', '', $str);
+
+        // переводим в транслит
+        $str = self::rus2translit($str);
+
+        // в нижний регистр
+        $str = strtolower($str);
+
+        // заменям все ненужное нам на "-"
+        $str = preg_replace('~[^-a-z0-9_]+~u', '-', $str);
+
+        // удаляем начальные и конечные '-'
+        $str = trim($str, "-");
+
+        // тут немного частных случаев для клипов
+        $str = str_replace( '----', '-', $str);
+        $str = str_replace( '---', '-', $str);
+        $str = str_replace( '--', '-', $str);
+
+        return $str;
     }
 
     /**
