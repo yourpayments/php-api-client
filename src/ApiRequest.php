@@ -267,14 +267,25 @@ class ApiRequest implements ApiRequestInterface
 
     /**
      * Отправка POST-запроса
-     * @param JsonSerializable $data запрос
+     * @param string|JsonSerializable $data запрос
      * @param string $api адрес API (URI)
      * @return array ответ сервера Ypmn
      * @throws PaymentException
      */
-    private function sendPostRequest(JsonSerializable $data, string $api): array
+    public function sendPostRequest($data, string $api): array
     {
-        $encodedJsonData = $data->jsonSerialize();
+        if ($data instanceof JsonSerializable) {
+            $encodedJsonData = $data->jsonSerialize();
+        } elseif (is_string($data)) {
+            if (json_decode($data) !== false) {
+                $encodedJsonData = $data;
+            } else {
+                throw new PaymentException('Incorrect request body type');
+            }
+        } else {
+            throw new PaymentException('Incorrect request body JSON');
+        }
+
 
         $encodedJsonDataHash = md5($encodedJsonData);
 
