@@ -32,6 +32,11 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface
     /** @var MarketplaceSubmerchant[] */
     private array $marketplaceSubmerchants = [];
 
+    /** @var Product[] Массив продуктов */
+    private array $products;
+
+    private bool $skipCheckSkuAmount = false;
+
     /**
      * @inheritDoc
      */
@@ -130,6 +135,53 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isSkipCheckSkuAmount(): bool
+    {
+        return $this->skipCheckSkuAmount;
+    }
+
+    /**
+     * @param bool $skipCheckSkuAmount
+     */
+    public function setSkipCheckSkuAmount(bool $skipCheckSkuAmount): self
+    {
+        $this->skipCheckSkuAmount = $skipCheckSkuAmount;
+
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function addProduct(ProductInterface $product) : self
+    {
+        $this->products[] = $product;
+
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function getProducts(): array
+    {
+        return $this->products;
+    }
+
+    /** @inheritDoc */
+    public function getProductsArray(): array
+    {
+        $productsArray = [];
+        foreach ($this->getProducts() as $product) {
+            $productsArray[] = [
+                'sku' => $product->getSku(),
+                'quantity' => $product->getQuantity(),
+                'amount' => $product->getAmount(),
+            ];
+        }
+
+        return $productsArray;
+    }
+
+    /**
      * @inheritDoc
      * @throws PaymentException
      */
@@ -153,6 +205,14 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface
             'amount'	=> $this->getAmount(),
             'currency' => $this->getCurrency()
         ];
+
+        if ($this->skipCheckSkuAmount) {
+            $requestData ['skipCheckSkuAmount'] = true;
+        }
+
+        if (count($this->products) > 0) {
+            $requestData['products'] = $this->getProductsArray();
+        }
 
         if (count($this->marketplaceSubmerchants) > 0) {
             foreach ($this->marketplaceSubmerchants as $marketplaceSubmerchant) {
