@@ -21,6 +21,7 @@ class ApiRequest implements ApiRequestInterface
     const SESSION_API = '/api/v4/payments/sessions';
     const REPORT_CHART_API = '/api/v4/reports/chart';
     const REPORT_GENERAL_API = '/api/v4/reports/general';
+    const PODELI_MERCHANT_REGISTRATION_API = '/api/v4/registration/merchant/podeli';
     const HOST = 'https://secure.ypmn.ru';
     const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
     const LOCAL_HOST = 'http://127.0.0.1';
@@ -566,4 +567,9 @@ class ApiRequest implements ApiRequestInterface
         }
     }
 
+    /** @inheritdoc  */
+    public function sendPodeliRegistrationMerchantRequest(PodeliMerchant $merchant): array
+    {
+        return $this->sendPostRequest($merchant, self::PODELI_MERCHANT_REGISTRATION_API);
+    }
 }

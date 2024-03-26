@@ -127,4 +127,11 @@ interface ApiRequestInterface
      * @throws PaymentException
      */
     public function setHost(string $host) : self;
+
+    /**
+     * Отправить запрос на регистрацию мерчанта
+     * @param PodeliMerchant $merchant
+     * @return array
+     */
+    public function sendPodeliRegistrationMerchantRequest(PodeliMerchant $merchant): array;
 }
