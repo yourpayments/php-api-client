@@ -22,6 +22,9 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     /** @var AuthorizationInterface Авторизация */
     private AuthorizationInterface $authorization;
 
+    /** @var StoredCredentialsInterface Учетные данные для подписок */
+    private StoredCredentialsInterface $storedCredentials;
+
     /** @var ClientInterface Клиент */
     private ClientInterface $client;
 
@@ -86,6 +89,24 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
+    public function getStoredCredentials(): StoredCredentialsInterface
+    {
+        if (empty($this->storedCredentials)) {
+            $this->storedCredentials = new StoredCredentials();
+        }
+
+        return $this->storedCredentials;
+    }
+
+    /** @inheritDoc */
+    public function setStoredCredentials(StoredCredentialsInterface $storedCredentials): self
+    {
+        $this->storedCredentials = $storedCredentials;
+
+        return $this;
+    }
+
+    /** @inheritDoc */
     public function setClient(ClientInterface $client) : self
     {
         $this->client = $client;
@@ -142,15 +163,28 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
+        $storedCredentials = $this->getStoredCredentials()->arraySerialize();
+
         //TODO: проверка необходимых параметров
-        $requestData = [
-            'merchantPaymentReference'	=> $this->getMerchantPaymentReference(),
-            'currency'	=> $this->getCurrency(),
-            'returnUrl'	=> $this->getReturnUrl(),
-            'authorization' => $this->getAuthorization()->arraySerialize(),
-            'client' => $this->getClient()->arraySerialize(),
-            'products' => $this->getProductsArray(),
-        ];
+        $requestData['merchantPaymentReference'] = $this->getMerchantPaymentReference();
+        $requestData['currency']      = $this->getCurrency();
+        $requestData['returnUrl']     = $this->getReturnUrl();
+        $requestData['authorization'] = $this->getAuthorization()->arraySerialize();
+
+        /* Поле storedCredentials обязательно только при привязке карты */
+        if ((bool)$storedCredentials !== false) {
+            $requestData['storedCredentials'] = $storedCredentials;
+            /* При создании привязки через СБП необходимо 2 поля consentType и subscriptionPurpose */
+            if (
+                empty($requestData['storedCredentials']['consentType']) === false &&
+                $requestData['authorization']['paymentMethod'] === Authorization::TYPE_FASTER_PAYMENTS
+            ) {
+                $requestData['storedCredentials']['subscriptionPurpose'] = $this->getStoredCredentials()->getSubscriptionPurpose();
+            }
+        }
+
+        $requestData['client']   = $this->getClient()->arraySerialize();
+        $requestData['products'] = $this->getProductsArray();
 
         $requestData = Std::removeNullValues($requestData);
 

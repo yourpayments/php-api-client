@@ -69,6 +69,22 @@ interface PaymentInterface
     public function getAuthorization() : AuthorizationInterface;
 
     /**
+     * Получить объект с учетными данными
+     *
+     * @return StoredCredentialsInterface Учетные данные для подписок
+     */
+    public function getStoredCredentials(): StoredCredentialsInterface;
+
+    /**
+     * Установить объект с учетными данными
+     *
+     * @param StoredCredentialsInterface $storedCredentials Учетные данные для подписок
+     *
+     * @return self
+     */
+    public function setStoredCredentials(StoredCredentialsInterface $storedCredentials): self;
+
+    /**
      * Установить Клиента
      * @param ClientInterface $client Клиент
      * @return $this

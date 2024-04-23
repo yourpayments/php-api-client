@@ -278,7 +278,7 @@ class ApiRequest implements ApiRequestInterface
         if ($data instanceof JsonSerializable) {
             $encodedJsonData = $data->jsonSerialize();
         } elseif (is_string($data)) {
-            if (json_decode($data) !== false) {
+            if (json_decode($data) !== null) {
                 $encodedJsonData = $data;
             } else {
                 throw new PaymentException('Incorrect request body type');
