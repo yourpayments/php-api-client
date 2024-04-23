@@ -210,7 +210,7 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface
             $requestData ['skipCheckSkuAmount'] = true;
         }
 
-        if (count($this->products) > 0) {
+        if (isset($this->products) && count($this->products) > 0) {
             $requestData['products'] = $this->getProductsArray();
         }
 
