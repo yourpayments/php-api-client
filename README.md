@@ -1,5 +1,7 @@
 # «Твои платежи»: Интеграция для PHP
-Готовый клиент для нашего API + подробные примеры использования. Требования: [PHP 7.4 и выше](https://github.com/yourpayments/php-api-client/blob/main/composer.json).
+Готовая библиотека + подробные примеры с комментариями.
+
+Требования: [PHP 7.4 и выше](https://github.com/yourpayments/php-api-client/blob/main/composer.json).
 
 ![](https://repository-images.githubusercontent.com/638835276/ff494b04-d65b-4843-8759-e85c689a7e80)
 
@@ -12,7 +14,7 @@ $ composer require yourpayments/php-api-client
 ```
 (если на вашем проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория)
 
-## Документация: Примеры + комментарии на русском языке
+## Примеры
 1. [Начало работы (настройка интеграции)](src/Examples/start.php)
 2. [Cамый простой платёж](src/Examples/simpleGetPaymentLink.php)
 3. [Подробный платёж](src/Examples/getPaymentLink.php)
