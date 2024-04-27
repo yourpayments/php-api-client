@@ -10,7 +10,7 @@
 ```shell
 $ composer require yourpayments/php-api-client
 ```
-* если по какой-то причине на проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория.
+(если на вашем проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория)
 
 ## Документация: Примеры + комментарии на русском языке
 1. [Начало работы (настройка интеграции)](src/Examples/start.php)
@@ -38,4 +38,4 @@ $ composer require yourpayments/php-api-client
 - [Задать вопрос или сообщить о проблеме](https://github.com/yourpayments/php-api-client/issues/new)
 
 -------------
-[«Твои платежи»](https://YPMN.ru/ "Платёжная система для сайтов, платформ и приложений") -- финтех-составляющая для сайтов, платформ, игр и приложений
+[«Твои платежи»](https://YPMN.ru/ "Платёжная система для сайтов, платформ и приложений") -- финтех-составляющая для сайтов, платформ и приложений
