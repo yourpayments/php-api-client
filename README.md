@@ -1,7 +1,5 @@
 # «Твои платежи»: Интеграция для PHP
-Готовая библиотека + подробные примеры с комментариями.
-
-Требования: [PHP 7.4 и выше](https://github.com/yourpayments/php-api-client/blob/main/composer.json).
+Готовая библиотека + подробные примеры с комментариями. Требования: [PHP 7.4 и выше](https://github.com/yourpayments/php-api-client/blob/main/composer.json)
 
 ![](https://repository-images.githubusercontent.com/638835276/ff494b04-d65b-4843-8759-e85c689a7e80)
 
