@@ -130,4 +130,10 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1chart/get',
         'link'  => '',
     ],
+    'SOMGetPaymentLink' => [
+        'name'  => 'Самая простая кнопка оплаты',
+        'about'  => 'В этом примере показана простая реализация оплаты заказа зарубежной картой.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api',
+        'link'  => '',
+    ],
 ];
