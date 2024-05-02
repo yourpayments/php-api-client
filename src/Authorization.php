@@ -10,6 +10,8 @@ class Authorization implements AuthorizationInterface
     const TYPE_CCVISAMC = 'CCVISAMC';
     const TYPE_FASTER_PAYMENTS = 'FASTER_PAYMENTS';
 
+    const TYPE_SOM = 'SOM';
+
     /**
      * включить страницу оплаты Ypmn
      * @var bool страница оплаты Ypmn включена?
@@ -54,6 +56,9 @@ class Authorization implements AuthorizationInterface
                 break;
             case 'FASTER_PAYMENTS':
                 $this->paymentMethod = self::TYPE_FASTER_PAYMENTS;
+                break;
+            case 'SOM':
+                $this->paymentMethod = self::TYPE_SOM;
                 break;
             default:
                 throw new PaymentException('Неверный тип оплаты в авторизации');
