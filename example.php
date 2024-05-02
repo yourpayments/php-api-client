@@ -48,6 +48,9 @@ if(isset($_GET['function'])){
             case 'secureFields':
             case 'getReportGeneral':
             case 'getReportChart':
+            case 'getFasterPayment':
+            case 'getBindingFasterPayment':
+            case 'paymentByFasterBinding':
                 require './src/Examples/start.php';
                 @include './src/Examples/'.$_GET['function'] . '__prepend.php';
                 require './src/Examples/'.$_GET['function'] . '.php';

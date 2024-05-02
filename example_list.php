@@ -28,6 +28,24 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
         'link'  => '',
     ],
+    'getFasterPayment' => [
+        'name'  => 'Оплата через СБП',
+        'about'  => 'Пример платежа через систему быстрых платежей',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+        'link'  => '',
+    ],
+    'getBindingFasterPayment' => [
+        'name'  => 'Создание подписки СБП',
+        'about'  => 'В этом примере отправляется запрос на создание подписки СБП с одновременной оплатой',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+        'link'  => '',
+    ],
+    'paymentByFasterBinding' => [
+        'name'  => 'Оплата по подписке СБП',
+        'about'  => 'Это пример демонстрирует оплату через СБП по средством ранее созщданной подписки',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+        'link'  => '',
+    ],
     'getPaymentLinkMarketplace' => [
         'name'  => 'Платёж со сплитом',
         'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков).',

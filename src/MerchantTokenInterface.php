@@ -42,4 +42,17 @@ interface MerchantTokenInterface
      * @return string Имя Владельца Карты
      */
     public function getOwner() : string;
+
+    /**
+     * Получить токен подписки СБП
+     * @return string токен подписки
+     */
+    public function getBindingId(): string;
+
+    /**
+     * Установить токен подписки СБП
+     * @param string $bindingId токен подписки СБП
+     * @return $this
+     */
+    public function setBindingId(string $bindingId): self;
 }
