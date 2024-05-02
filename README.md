@@ -8,7 +8,7 @@
  
 ## Установка за 1 минуту
 ```shell
-$ composer require yourpayments/php-api-client
+composer require yourpayments/php-api-client
 ```
 (если на вашем проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория)
 
