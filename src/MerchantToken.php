@@ -4,6 +4,9 @@ namespace Ypmn;
 
 class MerchantToken implements MerchantTokenInterface, \JsonSerializable
 {
+    /** @var string Токен подписки СБП */
+    private string $bindingId;
+
     /** @var string Хэш Токен карты */
     private string $tokenHash;
 
@@ -53,6 +56,20 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
     }
 
     /** @inheritDoc */
+    public function getBindingId(): string
+    {
+        return $this->bindingId;
+    }
+
+    /** @inheritDoc */
+    public function setBindingId(string $bindingId): self
+    {
+        $this->bindingId = $bindingId;
+        return $this;
+    }
+
+
+    /** @inheritDoc */
     public function toArray() : array
     {
         $resultArray = get_object_vars($this);
@@ -79,16 +96,23 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
 
     /**
      * @return mixed
+     * @throws PaymentException
      */
     public function jsonSerialize()
     {
-        if(is_null($this->tokenHash)){
+        if(empty($this->tokenHash) && empty($this->bindingId)){
             throw new PaymentException("Не хватает токена");
         }
 
-        $resultArray = [
-            'tokenHash'  => $this->tokenHash,
-        ];
+        if (!empty($this->bindingId)) {
+            $resultArray = [
+                'bindingId' => $this->bindingId,
+            ];
+        } else {
+            $resultArray = [
+                'tokenHash' => $this->tokenHash,
+            ];
+        }
 
         return json_encode($resultArray, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_LINE_TERMINATORS);
     }
