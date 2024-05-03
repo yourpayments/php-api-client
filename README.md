@@ -4,8 +4,8 @@
 ![](https://repository-images.githubusercontent.com/638835276/ff494b04-d65b-4843-8759-e85c689a7e80)
 
 [Пакет Composer](https://packagist.org/packages/yourpayments/php-api-client) может 
-использоваться с любыми фреймворками, платформами и CMS.
- 
+использоваться с любыми фреймворками, платформами и CMS, включая, но не ограничиваясь: Laravel, Bitrix, Wordpress, Symfony, и др.
+
 ## Установка за 1 минуту
 ```shell
 composer require yourpayments/php-api-client
