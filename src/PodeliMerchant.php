@@ -2,7 +2,7 @@
 
 namespace Ypmn;
 
-use JsonSerializable;
+use \JsonSerializable;
 
 class PodeliMerchant implements JsonSerializable
 {

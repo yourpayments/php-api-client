@@ -471,6 +471,14 @@ class ApiRequest implements ApiRequestInterface
      */
     private function getSignature(MerchantInterface $merchant, string $date, string $url, string $httpMethod, string $bodyHash): string
     {
+        if (strlen($merchant->getCode()) < 2) {
+            throw new PaymentException('YPMN-001: No Merchant Code');
+        }
+
+        if (strlen($merchant->getCode()) < 2) {
+            throw new PaymentException('YPMN-001: No Merchant Code');
+        }
+
         $urlParts = parse_url($url);
         $urlHashableParts = $httpMethod . $urlParts['path'];
         $this->echoDebugMessage($urlParts);
