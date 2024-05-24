@@ -21,6 +21,7 @@ class ApiRequest implements ApiRequestInterface
     const SESSION_API = '/api/v4/payments/sessions';
     const REPORT_CHART_API = '/api/v4/reports/chart';
     const REPORT_GENERAL_API = '/api/v4/reports/general';
+    const REPORT_ORDERS_API_V4 = '/api/v4/reports/orders';
     const PODELI_MERCHANT_REGISTRATION_API = '/api/v4/registration/merchant/podeli';
     const HOST = 'https://secure.ypmn.ru';
     const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
@@ -458,6 +459,11 @@ class ApiRequest implements ApiRequestInterface
     public function sendReportGeneralRequest(array $params): array
     {
         return $this->sendGetRequest(self::REPORT_GENERAL_API . '/?' . http_build_query($params));
+    }
+
+    public function sendReportOrderRequest(array $params): array
+    {
+        return $this->sendGetRequest(self::REPORT_ORDERS_API_V4 . '/?' . http_build_query($params));
     }
 
     /**
