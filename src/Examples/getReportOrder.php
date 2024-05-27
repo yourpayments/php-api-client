@@ -17,11 +17,11 @@ $apiRequest->setDebugMode();
 $apiRequest->setSandboxMode();
 
 // Подготовим диапазон дат для отчета
-$endDate = (new DateTime('now'))->format('Y-m-d');
+$endDate = (new DateTime('now'))->format('c');
 
 $startDate = (new DateTime($endDate))
     ->modify('-14 day')
-    ->format('Y-m-d');
+    ->format('c');
 
 $data = [
     'startDate' => $startDate,
