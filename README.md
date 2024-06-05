@@ -33,7 +33,7 @@ composer require yourpayments/php-api-client
 18. [Безопасные поля (Secure fields)](src/Examples/secureFields.php)
 19. [Запрос отчёта в формате Json](src/Examples/getReportGeneral.php)
 20. [Запрос отчёта в виде графика](src/Examples/getReportChart.php)
-21. [Запрос отчёта по заказам](src/Examples/getReportOrder.php)
+21. [Запрос быстрого отчёта по заказам для сверки](src/Examples/getReportOrder.php)
 
 ## Ссылки
 - [НКО «Твои платежи»](https://YPMN.ru/)
