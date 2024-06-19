@@ -118,6 +118,18 @@ interface ApiRequestInterface
      */
     public function sendReportGeneralRequest(array $params);
 
+    /**
+     * Отправить запрос быстрого отчёта по заказам для сверки
+     * @param array $params
+     */
+    public function sendReportOrderRequest(array $params);
+
+    /**
+     * Отправить запрос для получения детального отчета по заказу
+     * @param array $params
+     */
+    public function sendReportOrderDetailsRequest(array $params);
+
     /** @return string Хост для отправки запросов */
     public function getHost() : string;
 
