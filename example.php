@@ -49,6 +49,7 @@ if(isset($_GET['function'])){
             case 'getReportGeneral':
             case 'getReportChart':
             case 'getReportOrder':
+            case 'getReportOrderDetails':
             case 'getFasterPayment':
             case 'getBindingFasterPayment':
             case 'paymentByFasterBinding':

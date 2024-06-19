@@ -34,6 +34,7 @@ composer require yourpayments/php-api-client
 19. [Запрос отчёта в формате Json](src/Examples/getReportGeneral.php)
 20. [Запрос отчёта в виде графика](src/Examples/getReportChart.php)
 21. [Запрос быстрого отчёта по заказам для сверки](src/Examples/getReportOrder.php)
+22. [Запрос детального отчета по заказу](src/Examples/getReportOrderDetails.php)
 
 ## Ссылки
 - [НКО «Твои платежи»](https://YPMN.ru/)
