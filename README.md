@@ -1,7 +1,7 @@
-# «Твои платежи»: Интеграция для PHP
+# «Твои платежи»: Интеграция на PHP
 Готовая библиотека + подробные примеры с комментариями. Требования: [PHP 7.4 и выше](https://github.com/yourpayments/php-api-client/blob/main/composer.json)
 
-![](https://repository-images.githubusercontent.com/638835276/ff494b04-d65b-4843-8759-e85c689a7e80)
+![](https://repository-images.githubusercontent.com/638835276/2067d028-b541-4355-b069-3c12c8a28042)
 
 [Пакет Composer](https://packagist.org/packages/yourpayments/php-api-client) может 
 использоваться с любыми фреймворками, платформами и CMS, включая, но не ограничиваясь: Laravel, Bitrix, Wordpress, Symfony, и др.
