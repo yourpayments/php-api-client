@@ -12,8 +12,8 @@ composer require yourpayments/php-api-client
 ```
 (если на вашем проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория)
  
-##### Примеры
-### 1. Начало работы
+### Примеры с комментариями на русском языке:
+##### 1. Начало работы
 1. [Начало работы (настройка интеграции)](src/Examples/start.php)
 
 
