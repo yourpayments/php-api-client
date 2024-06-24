@@ -14,7 +14,7 @@ composer require yourpayments/php-api-client
  
 ### Примеры с комментариями на русском языке:
 ##### 1. Начало работы
-1. [Начало работы (настройка интеграции)](src/Examples/start.php)
+1. [Настройка интеграции](src/Examples/start.php)
 
 
 ##### 2. Платежи
