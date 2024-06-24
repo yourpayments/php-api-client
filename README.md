@@ -46,13 +46,11 @@ composer require yourpayments/php-api-client
 ##### 7 Выплаты
 1. [Выплаты на банковские карты](src/Examples/payoutCreate.php)
 
-##### 8 Безопасные поля (Secure fields)
-1. [Безопасные поля](src/Examples/secureFields.php)
+##### 8 [Безопасные поля (Secure fields)](src/Examples/secureFields.php)
 2. [Создание сессии](src/Examples/getSession.php)
 3. [Оплата одноразовым токеном](src/Examples/oneTimeTokenPayment.php)
 
-##### 9 Страница после оплаты
-1. [Страница после оплаты](src/Examples/returnPage.php)
+##### 9 [Страница после оплаты](src/Examples/returnPage.php)
 
 ## Ссылки
 - [НКО «Твои платежи»](https://YPMN.ru/)
