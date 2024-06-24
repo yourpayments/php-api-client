@@ -24,33 +24,33 @@ composer require yourpayments/php-api-client
 4. [Платёж со сплитом (разделением платежа)](src/Examples/getPaymentLinkMarketplace.php)
 5. [Списание средств](src/Examples/paymentCapture.php)
 
-##### 3 Подписки СБП  
+##### 3. Подписки СБП  
 1. [Создание подписки СБП](src/Examples/getBindingFasterPayment.php)
 2. [Оплата по подписке СБП](src/Examples/paymentByFasterBinding.php)
    
-##### 4 Токенизация карты (чтобы запомнить карту клиента и не вводить повторно)
+##### 4. Токенизация карты (чтобы запомнить карту клиента и не вводить повторно)
 1. [Создание платёжного токена ](src/Examples/getToken.php)
 2. [Оплата токеном](src/Examples/paymentByToken.php)
   
-##### 5 Отчёты
+##### 5. Отчёты
 1. [Проверка статуса платежа](src/Examples/paymentGetStatus.php)
 2. [Запрос детального отчета по заказу](src/Examples/getReportOrderDetails.php)
 3. [Запрос быстрого отчёта по заказам для сверки](src/Examples/getReportOrder.php)
 4 .[Запрос отчёта по заказам](src/Examples/getReportGeneral.php)
 3. [Запрос отчёта в виде графика](src/Examples/getReportChart.php)
 
-##### 6 Возврат средств плательщику (Refund)
+##### 6. Возврат средств плательщику (Refund)
 1. [Возврат средств](src/Examples/paymentRefund.php)
 2. [Возврат средств со сплитом (разделением платежа)](src/Examples/paymentRefundMarketplace.php)
 
-##### 7 Выплаты
+##### 7. Выплаты
 1. [Выплаты на банковские карты](src/Examples/payoutCreate.php)
 
-##### 8 [Безопасные поля (Secure fields)](src/Examples/secureFields.php)
+##### 8. [Безопасные поля (Secure fields)](src/Examples/secureFields.php)
 2. [Создание сессии](src/Examples/getSession.php)
 3. [Оплата одноразовым токеном](src/Examples/oneTimeTokenPayment.php)
 
-##### 9 [Страница после оплаты](src/Examples/returnPage.php)
+##### 9. [Страница после оплаты](src/Examples/returnPage.php)
 
 ## Ссылки
 - [НКО «Твои платежи»](https://YPMN.ru/)
