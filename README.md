@@ -36,7 +36,7 @@ composer require yourpayments/php-api-client
 1. [Проверка статуса платежа](src/Examples/paymentGetStatus.php)
 2. [Запрос детального отчета по заказу](src/Examples/getReportOrderDetails.php)
 3. [Запрос быстрого отчёта по заказам для сверки](src/Examples/getReportOrder.php)
-4 .[Запрос отчёта по заказам](src/Examples/getReportGeneral.php)
+4. [Запрос отчёта по заказам](src/Examples/getReportGeneral.php)
 5. [Запрос отчёта в виде графика](src/Examples/getReportChart.php)
 
 ##### 6. Возврат средств плательщику (Refund)
