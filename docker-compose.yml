@@ -1,0 +1,20 @@
+version: '4'
+name: php-api-client
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/php-api-client
+      - ./docker/nginx/logs:/var/log/nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - php
+    container_name: php-api-client-nginx-container
+  php:
+    build: ./docker/php
+    volumes:
+      - ./:/var/www/php-api-client
+    container_name: php-api-client-php-container
