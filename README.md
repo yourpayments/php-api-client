@@ -12,8 +12,8 @@ composer require yourpayments/php-api-client
 ```
 (если на вашем проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория)
 
-## Запуск с помощью docker compose
-Создайте и запустите docker контейнеры следующей командой:
+## Запуск в контейнере docker
+Создайте и запустите docker контейнер следующей командой:
 ```shell
 docker compose up
 ```
@@ -21,7 +21,7 @@ docker compose up
 ```shell
 docker compose up --detach
 ```
-После выполнения проект будет доступен по адресу http://localhost:8080/
+После выполнения сервис будет доступен по адресу http://localhost:8080/
  
 ### Примеры с комментариями на русском языке:
 ##### 1. Начало работы
