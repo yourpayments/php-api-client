@@ -64,7 +64,7 @@ docker compose up --detach
 ##### 9. [Страница после оплаты](src/Examples/returnPage.php)
 
 ## Ссылки
-- [НКО «Твои платежи»](https://YPMN.ru/)
+- [НКО «Твои Платежи»](https://YPMN.ru/)
 - [Докуметация API](https://ypmn.ru/ru/documentation/)
 - [Тестовые банковские карты](https://ypmn.ru/ru/documentation/#tag/testing)
 - [Задать вопрос или сообщить о проблеме](https://github.com/yourpayments/php-api-client/issues/new)
