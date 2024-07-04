@@ -31,7 +31,7 @@ docker compose up --detach
 ##### 2. Платежи
 1. [Cамый простой платёж](src/Examples/simpleGetPaymentLink.php)
 2. [Подробный платёж](src/Examples/getPaymentLink.php)
-3. [Платёж через СБП](src/Examples/getFasterPayment.php)
+3. [Платёж через СБП (Систему Быстрых Платежей)](src/Examples/getFasterPayment.php)
 4. [Платёж со сплитом (разделением платежа)](src/Examples/getPaymentLinkMarketplace.php)
 5. [Списание средств](src/Examples/paymentCapture.php)
 
