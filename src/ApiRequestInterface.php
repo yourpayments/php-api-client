@@ -146,4 +146,11 @@ interface ApiRequestInterface
      * @return array
      */
     public function sendPodeliRegistrationMerchantRequest(PodeliMerchant $merchant): array;
+
+    /**
+     * Отправить запрос на создание и отправку анкеты (по добавлению продавцов) на проверку
+     * @param Qst $qst
+     * @return array
+     */
+    public function sendQstCreateRequest(QstInterface $qst): array;
 }
