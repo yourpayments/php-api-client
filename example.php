@@ -53,6 +53,12 @@ if(isset($_GET['function'])){
             case 'getFasterPayment':
             case 'getBindingFasterPayment':
             case 'paymentByFasterBinding':
+            case 'qstCreateOrg':
+            case 'qstCreateIp':
+            case 'qstStatus':
+            case 'qstPrint':
+            case 'SOMGetPaymentLink':
+            case 'qstList':
                 require './src/Examples/start.php';
                 @include './src/Examples/'.$_GET['function'] . '__prepend.php';
                 require './src/Examples/'.$_GET['function'] . '.php';

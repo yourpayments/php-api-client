@@ -21,7 +21,7 @@ include_once 'start.php';
 $qst = new Qst();
 
 /* ИНН продавца */
-$qst->setInn('7750005806');
+$qst->setInn('7704217370');
 
 /* Данные продавца */
 $qstSchema = new QstSchema();
@@ -30,11 +30,12 @@ $qstSchema->addPhone('+7 499 7654321, доб. 321');
 $qstSchema->addEmail('example@ypmn.com');
 
 $qstLegalAddress = (new QstSchemaLegalAddress())
-    ->setZip('123456')
+    ->setZip('123112')
     ->setRegion('Москва')
     ->setCity('Москва')
-    ->setStreet('ул. Арбат')
-    ->setHouse('10');
+    ->setStreet('Пресненская наб.')
+    ->setHouse('д. 10')
+    ->setFlat('эт. 41, Пом. I, комн. 6');
 $qstSchema->setLegalAddress($qstLegalAddress);
 
 $qstActualAddress = (new QstSchemaActualAddress())->setChecked(true);
@@ -49,7 +50,7 @@ $qstCeoIdentityDoc = (new QstSchemaIdentityDoc())
 
 $qstCeo = (new QstSchemaCeo())
     ->setIdentityDoc($qstCeoIdentityDoc)
-    ->setBirthDate('1990-01-30')
+    ->setBirthDate('1980-01-30')
     ->setBirthPlace('Москва')
     ->setRegistrationAddress('г. Москва, ул. Ленина, д. 1, кв. 1');
 $qstSchema->setCeo($qstCeo);
@@ -58,9 +59,9 @@ $qstOwner = (new QstSchemaOwner())->setOwner('Иванов Иван Иванов
 $qstSchema->addOwner($qstOwner);
 
 $qstBankAccount = (new QstSchemaBankAccount())
-    ->setBankBIK('044525974')
-    ->setBankCorAccount('30101810145250000974')
-    ->setBankAccount('40817810400002911811');
+    ->setBankBIK('044525700')
+    ->setBankCorAccount('30101810200000000700')
+    ->setBankAccount('40702810100002400756');
 
 $qstSchema->addBankAccount($qstBankAccount);
 
@@ -74,15 +75,19 @@ $apiRequest = new ApiRequest($merchant);
 // Включить режим отладки (закомментируйте или удалите в рабочей программе!) //
 $apiRequest->setDebugMode();
 // Переключиться на тестовый сервер (закомментируйте или удалите в рабочей программе!) //
-$apiRequest->setLocalMode();
+$apiRequest->setSandboxMode();
 
-// Отправим запрос //
+/* Запрос на отправку анкеты */
 $responseData = $apiRequest->sendQstCreateRequest($qst);
 
 /* Преобразуем ответ из JSON в массив */
 try {
     $responseData = json_decode((string) $responseData["response"], true);
-    echo "Анкета #{$responseData['id']} создана и отправлена на проверка";
+    if (isset($responseData['id'])) {
+        echo "Анкета #{$responseData['id']} создана и отправлена на проверку";
+    } else {
+        echo "Анкета не создана, см. причину в ответа от сервера YPMN";
+    }
 } catch (Exception $exception) {
     echo "Ошибка запроса: {$exception->getMessage()}";
     throw new Exception($exception->getMessage());

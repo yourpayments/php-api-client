@@ -57,7 +57,7 @@ class QstSchemaBankAccount implements QstSchemaBankAccountInterface
     {
         return [
             'bankBIK' => $this->getBankBIK(),
-            'bankCorAccount' => $this->getBankAccount(),
+            'bankCorAccount' => $this->getBankCorAccount(),
             'bankAccount' => $this->getBankAccount()
         ];
     }

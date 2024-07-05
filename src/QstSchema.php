@@ -15,7 +15,7 @@ class QstSchema implements QstSchemaInterface
     private QstSchemaAddressInterface $legalAddress;
     private ?QstSchemaAddressInterface $postAddress = null;
     private QstSchemaAddressInterface $actualAddress;
-    private QstSchemaCeoInterface $ceo;
+    private ?QstSchemaCeoInterface $ceo = null;
     /** @var QstSchemaOwnerInterface[] */
     private array $owners = [];
     private ?string $boardOfDirectors = null;
@@ -111,7 +111,7 @@ class QstSchema implements QstSchemaInterface
     }
 
     /** @inheritdoc */
-    public function getCeo(): QstSchemaCeoInterface
+    public function getCeo(): ?QstSchemaCeoInterface
     {
         return $this->ceo;
     }
@@ -307,10 +307,13 @@ class QstSchema implements QstSchemaInterface
             'phones' => $this->getPhones(),
             'emails' => $this->getEmails(),
             'legalAddress' => $this->getLegalAddress()->toArray(),
-            'postAddress' => $this->getPostAddress()->toArray(),
-            'actualAddress' => $this->getPostAddress()->toArray(),
-            'ceo' => $this->getCeo()->toArray(),
-            'owners' => array_map(static fn (QstSchemaOwnerInterface $owner) => $owner->toArray(), $this->getOwners()),
+            'postAddress' => $this->getPostAddress() ? $this->getPostAddress()->toArray() : null,
+            'actualAddress' => $this->getActualAddress()->toArray(),
+            'ceo' => $this->getCeo() ? $this->getCeo()->toArray() : null,
+            'owners' =>
+                !empty($this->getOwners())
+                    ? array_map(static fn (QstSchemaOwnerInterface $owner) => $owner->toArray(), $this->getOwners())
+                    : null,
             'boardOfDirectors' => $this->getBoardOfDirectors(),
             'managementBoard' => $this->getManagementBoard(),
             'otherManagementBodies' => $this->getOtherManagementBodies(),
@@ -320,7 +323,7 @@ class QstSchema implements QstSchemaInterface
             'identityDoc' => $this->getIdentityDoc() ? $this->getIdentityDoc()->toArray() : null,
             'bankAccounts' => array_map(
                 static fn (QstSchemaBankAccountInterface $bankAccount) => ['bankAccount' => $bankAccount->toArray()],
-                $this->getOwners()
+                $this->getBankAccounts()
             ),
             'license' => $this->getLicense(),
             'actionInFavor' => $this->getActionInFavor(),

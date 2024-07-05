@@ -73,9 +73,9 @@ interface QstSchemaInterface extends QstToArrayInterface
     public function setActualAddress(QstSchemaAddressInterface $actualAddress): self;
 
     /**
-     * @return QstSchemaCeoInterface
+     * @return QstSchemaCeoInterface|null
      */
-    public function getCeo(): QstSchemaCeoInterface;
+    public function getCeo(): ?QstSchemaCeoInterface;
 
     /**
      * @param QstSchemaCeoInterface $ceo
