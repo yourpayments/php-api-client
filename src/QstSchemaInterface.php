@@ -7,88 +7,104 @@ namespace Ypmn;
 interface QstSchemaInterface extends QstToArrayInterface
 {
     /**
+     * Наименование на иностранном языке
      * @return string|null
      */
     public function getForeignName(): ?string;
 
     /**
+     * Наименование на иностранном языке
      * @param string $foreignName
      * @return $this
      */
     public function setForeignName(string $foreignName): self;
 
     /**
+     * Список телефонов
      * @return array
      */
     public function getPhones(): array;
 
     /**
+     * Добавить телефон
      * @param string $phone
      * @return $this
      */
     public function addPhone(string $phone): self;
 
     /**
+     * Список email
      * @return array
      */
     public function getEmails(): array;
 
     /**
+     * Добавить email
      * @param string $email
      * @return $this
      */
     public function addEmail(string $email): self;
 
     /**
+     * Юридический адрес
      * @return QstSchemaAddressInterface
      */
     public function getLegalAddress(): QstSchemaAddressInterface;
 
     /**
+     * Юридический адрес
      * @param QstSchemaAddressInterface $legalAddress
      * @return $this
      */
     public function setLegalAddress(QstSchemaAddressInterface $legalAddress): self;
 
     /**
+     * Почтовый адрес
      * @return QstSchemaAddressInterface|null
      */
     public function getPostAddress(): ?QstSchemaAddressInterface;
 
     /**
+     * Почтовый адрес
      * @param QstSchemaAddressInterface $postAddress
      * @return $this
      */
     public function setPostAddress(QstSchemaAddressInterface $postAddress): self;
 
     /**
+     * Фактический адрес
      * @return QstSchemaAddressInterface
      */
     public function getActualAddress(): QstSchemaAddressInterface;
 
     /**
+     * Фактический адрес
      * @param QstSchemaAddressInterface $actualAddress
      * @return $this
      */
     public function setActualAddress(QstSchemaAddressInterface $actualAddress): self;
 
     /**
+     * Данные о руководителе
      * @return QstSchemaCeoInterface|null
      */
     public function getCeo(): ?QstSchemaCeoInterface;
 
     /**
+     * Данные о руководителе
      * @param QstSchemaCeoInterface $ceo
      * @return $this
      */
     public function setCeo(QstSchemaCeoInterface $ceo): self;
 
     /**
+     * Список собственников
      * @return QstSchemaOwnerInterface[]
      */
     public function getOwners(): array;
 
     /**
+     * Список собственников
      * @param QstSchemaOwnerInterface $owner
      * @return $this
      */
@@ -244,20 +260,20 @@ interface QstSchemaInterface extends QstToArrayInterface
     public function setCommission(string $commission): self;
 
     /**
-     * Доп. поля в анкете
+     * Получить доп. поля в анкете
      * @return array
      */
     public function getAdditionalFields(): array;
 
     /**
-     * Доп. поля в анкете
+     * Получить доп. поле в анкете по индексу поля
      * @param int $key
      * @return string|null
      */
     public function getAdditionalFieldByKey(int $key): ?string;
 
     /**
-     * Доп. поля в анкете
+     * Установить значение доп. поля в анкете по индексу поля
      * @param int $key
      * @param string $value
      * @return $this

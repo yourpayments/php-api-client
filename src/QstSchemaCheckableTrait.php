@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Ypmn;
 
-/**
- * Это класс адреса продавца в анкете
- **/
 trait QstSchemaCheckableTrait
 {
     private bool $checked = false;
 
     /**
+     * Получить свойство isChecked для поля в анкете
      * @return bool|null
      */
     public function isChecked(): bool
@@ -20,6 +18,7 @@ trait QstSchemaCheckableTrait
     }
 
     /**
+     * Установить свойство isChecked для поля в анкете
      * @param bool|null $checked
      * @return $this
      */

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ypmn;
 
-/*
- * Руководитель продавца в анкете
+/**
+ * Данные о руководителе в анкете
  */
 class QstSchemaCeo implements QstSchemaCeoInterface
 {
