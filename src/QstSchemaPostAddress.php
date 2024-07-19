@@ -18,7 +18,7 @@ class QstSchemaPostAddress extends QstSchemaAddressAbstract
     {
         if ($this->isChecked()) {
             return [
-                'isChecked' => true
+                'isEqualToLegalAddress' => true
             ];
         }
 
