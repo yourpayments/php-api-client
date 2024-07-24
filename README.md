@@ -61,8 +61,8 @@ docker compose up --detach
 
 ##### 9. [Страница после оплаты](src/Examples/returnPage.php)
 
-##### 10. Подключение продавцов
-1. [Подключение продавца-организации (отправка анкеты)](src/Examples/qstCreateOrg.php)
+##### 10. Подключение продавцов (сабмерчантов маркетплейсов)
+1. [Подключение продавца-юридического лица (отправка анкеты)](src/Examples/qstCreateOrg.php)
 2. [Подключение продавца-ИП (отправка анкеты)](src/Examples/qstCreateIp.php)
 3. [Получение статуса анкеты](src/Examples/qstStatus.php)
 4. [Печать анкеты](src/Examples/qstPrint.php)
