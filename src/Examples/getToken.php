@@ -33,7 +33,7 @@ try {
                 <br>
                 <br>Вот он: <code>' . $responseData['token'] . '</code>
                 <br>
-                <br>Тперь его <a href="./?function=paymentByToken&token=' . $responseData['token'] . '">можно использовать</a> в платежах вместо данных карты
+                <br>Теперь его <a href="./?function=paymentByToken&token=' . $responseData['token'] . '">можно использовать</a> в платежах вместо данных карты
             ',
         ]);
     }

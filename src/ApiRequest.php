@@ -24,6 +24,10 @@ class ApiRequest implements ApiRequestInterface
     const REPORT_ORDERS_API_V4 = '/api/v4/reports/orders';
     const REPORT_ORDER_DETAILS_API = '/api/v4/reports/order-details';
     const PODELI_MERCHANT_REGISTRATION_API = '/api/v4/registration/merchant/podeli';
+    const QST_CREATE_API = '/api/v4/qst/create';
+    const QST_STATUS_API = '/api/v4/qst/status';
+    const QST_PRINT_API = '/api/v4/qst/print';
+    const QST_LIST_API = '/api/v4/qst/list';
     const HOST = 'https://secure.ypmn.ru';
     const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
     const LOCAL_HOST = 'http://127.0.0.1';
@@ -39,6 +43,9 @@ class ApiRequest implements ApiRequestInterface
 
     /** @var bool Режим Отладки (вывод системных сообщений) */
     private bool $debugModeIsOn = false;
+
+    /** @var bool Отображать заголовки ответа в режим отладки */
+    private bool $debugShowResponseHeaders = true;
 
     /** @var bool Формат результата в режиме отладки */
     private bool $jsonDebugResponse = true;
@@ -220,6 +227,12 @@ class ApiRequest implements ApiRequestInterface
             ]
         ];
 
+        $headers = [];
+
+        if ($this->getDebugShowResponseHeaders()) {
+            $this->addCurlOptHeaderFunction($setopt_array, $headers);
+        }
+
         curl_setopt_array($curl, $setopt_array);
 
         $response = curl_exec($curl);
@@ -231,9 +244,14 @@ class ApiRequest implements ApiRequestInterface
             $this->echoDebugMessage($this->getHost() . $api);
             $this->echoDebugMessage('Ответ от сервера Ypmn:');
             if ($this->getJsonDebugResponse()) {
-                $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT));
+                $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
             } else {
                 $this->echoDebugMessage($response);
+            }
+
+            if ($this->getDebugShowResponseHeaders()) {
+                $this->echoDebugMessage('Заголовки ответа от сервера Ypmn:');
+                $this->echoDebugMessage(implode("\n", $headers));
             }
 
             if (mb_strlen($err) > 0) {
@@ -296,7 +314,7 @@ class ApiRequest implements ApiRequestInterface
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
         $requestHttpVerb = 'POST';
 
-        curl_setopt_array($curl, [
+        $setOptArray = [
             CURLOPT_URL => $this->getHost() . $api,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -318,7 +336,15 @@ class ApiRequest implements ApiRequestInterface
                     $encodedJsonDataHash
                 )
             ]
-        ]);
+        ];
+
+        $headers = [];
+
+        if ($this->getDebugShowResponseHeaders()) {
+            $this->addCurlOptHeaderFunction($setOptArray, $headers);
+        }
+
+        curl_setopt_array($curl, $setOptArray);
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
@@ -328,7 +354,12 @@ class ApiRequest implements ApiRequestInterface
             $this->echoDebugMessage('POST-Запрос к серверу Ypmn:');
             $this->echoDebugMessage($encodedJsonData);
             $this->echoDebugMessage('Ответ от сервера Ypmn:');
-            $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT));
+            $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+
+            if ($this->getDebugShowResponseHeaders()) {
+                $this->echoDebugMessage('Заголовки ответа от сервера Ypmn:');
+                $this->echoDebugMessage(implode("\n", $headers));
+            }
 
             if (mb_strlen($err) > 0) {
                 $this->echoDebugMessage('Ошибка');
@@ -593,5 +624,61 @@ class ApiRequest implements ApiRequestInterface
     public function sendPodeliRegistrationMerchantRequest(PodeliMerchant $merchant): array
     {
         return $this->sendPostRequest($merchant, self::PODELI_MERCHANT_REGISTRATION_API);
+    }
+
+    /** @inheritdoc  */
+    public function sendQstCreateRequest(QstInterface $qst): array
+    {
+        return $this->sendPostRequest($qst, self::QST_CREATE_API);
+    }
+
+    /** @inheritdoc  */
+    public function sendQstStatusRequest(int $qstId): array
+    {
+        return $this->sendGetRequest(self::QST_STATUS_API . '/' . $qstId);
+    }
+
+    /** @inheritdoc  */
+    public function sendQstPrintRequest(int $qstId): array
+    {
+        return $this->sendGetRequest(self::QST_PRINT_API . '/' . $qstId);
+    }
+
+    /** @inheritdoc  */
+    public function sendQstListRequest(): array
+    {
+        return $this->sendGetRequest(self::QST_LIST_API);
+    }
+
+    /** @inheritdoc  */
+    public function getDebugShowResponseHeaders(): bool
+    {
+        return $this->debugShowResponseHeaders;
+    }
+
+    /** @inheritdoc  */
+    public function setDebugShowResponseHeaders(bool $debugShowResponseHeaders = true): self
+    {
+        $this->debugShowResponseHeaders = $debugShowResponseHeaders;
+        return $this;
+    }
+
+    /**
+     * @param array $curlOptArr
+     * @param array $headers
+     * @return void
+     */
+    private function addCurlOptHeaderFunction(array &$curlOptArr, array &$headers): void
+    {
+        $curlOptArr += [
+            CURLOPT_HEADERFUNCTION => static function($curl, $header) use (&$headers)
+            {
+                if (strlen(trim($header)) > 0) {
+                    $headers[] = trim($header);
+                }
+
+                return strlen($header);
+            }
+        ];
     }
 }

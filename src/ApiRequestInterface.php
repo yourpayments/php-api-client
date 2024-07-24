@@ -146,4 +146,44 @@ interface ApiRequestInterface
      * @return array
      */
     public function sendPodeliRegistrationMerchantRequest(PodeliMerchant $merchant): array;
+
+    /**
+     * Отправить запрос на создание и отправку анкеты (по добавлению продавцов) на проверку
+     * @param Qst $qst
+     * @return array
+     */
+    public function sendQstCreateRequest(QstInterface $qst): array;
+
+    /**
+     * Получить статус анкеты
+     * @param int $qstId
+     * @return array
+     */
+    public function sendQstStatusRequest(int $qstId): array;
+
+    /**
+     * Распечатать анкету
+     * @param int $qstId
+     * @return array
+     */
+    public function sendQstPrintRequest(int $qstId): array;
+
+    /**
+     * Получить список анкет
+     * @return array
+     */
+    public function sendQstListRequest(): array;
+
+    /**
+     * Получить установлен ли режим показывать заголовки ответа в режиме отладки
+     * @return bool
+     */
+    public function getDebugShowResponseHeaders(): bool;
+
+    /**
+     * Установить показывать заголовки ответа в режиме отладки
+     * @param bool $debugShowResponseHeaders
+     * @return self
+     */
+    public function setDebugShowResponseHeaders(bool $debugShowResponseHeaders = true): self;
 }

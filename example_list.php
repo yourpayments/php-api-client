@@ -131,9 +131,39 @@ $examples = [
         'link'  => '',
     ],
     'SOMGetPaymentLink' => [
-        'name'  => 'Самая простая кнопка оплаты',
+        'name'  => 'Оплата зарубежными картами',
         'about'  => 'В этом примере показана простая реализация оплаты заказа зарубежной картой.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api',
+        'link'  => '',
+    ],
+    'qstCreateOrg' => [
+        'name'  => 'Подключение продавца-организации (отправка анкеты)',
+        'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-организации на проверку в YPMN.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
+        'link'  => '',
+    ],
+    'qstCreateIp' => [
+        'name'  => 'Подключение продавца-ИП (отправка анкеты)',
+        'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-ИП на проверку в YPMN.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
+        'link'  => '',
+    ],
+    'qstStatus' => [
+        'name'  => 'Получение статуса анкеты',
+        'about'  => 'В этом примере показано получение статуса анкеты по её ID.<br/><br/>ID анкеты возвращается при отправке анкеты на проверку.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1status~1%7Bid%7D/get',
+        'link'  => '',
+    ],
+    'qstPrint' => [
+        'name'  => 'Печать анкеты',
+        'about'  => 'В этом примере показано получение заполненной pdf версии анкеты по её ID.<br/><br/>ID анкеты возвращается при отправке анкеты на проверку.<br/><br/>Распечатать можно только одобренную анкету - в статусе approved.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1print~1%7Bid%7D/get',
+        'link'  => '',
+    ],
+    'qstList' => [
+        'name'  => 'Список анкет',
+        'about'  => 'В этом примере показано получение списка анкет.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1list/get',
         'link'  => '',
     ],
 ];
