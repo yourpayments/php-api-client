@@ -28,6 +28,7 @@ class ApiRequest implements ApiRequestInterface
     const QST_STATUS_API = '/api/v4/qst/status';
     const QST_PRINT_API = '/api/v4/qst/print';
     const QST_LIST_API = '/api/v4/qst/list';
+    const MARKETPLACE_SELLER_API = '/api/v4/marketplace/sellers';
     const HOST = 'https://secure.ypmn.ru';
     const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
     const LOCAL_HOST = 'http://127.0.0.1';
@@ -680,5 +681,17 @@ class ApiRequest implements ApiRequestInterface
                 return strlen($header);
             }
         ];
+    }
+
+    /** @inheritdoc  */
+    public function sendMarketplaceGetSellerRequest(string $marketplaceSellerId): array
+    {
+        return $this->sendGetRequest(self::MARKETPLACE_SELLER_API . '/' . $marketplaceSellerId);
+    }
+
+    /** @inheritdoc  */
+    public function sendMarketplaceGetSellersRequest(): array
+    {
+        return $this->sendGetRequest(self::MARKETPLACE_SELLER_API);
     }
 }
