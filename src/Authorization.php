@@ -11,6 +11,9 @@ class Authorization implements AuthorizationInterface
     const TYPE_FASTER_PAYMENTS = 'FASTER_PAYMENTS';
 
     const TYPE_SOM = 'SOM';
+    const TYPE_SBERPAY = 'SBERPAY';
+    const TYPE_TPAY = 'TPAY';
+    const TYPE_ALFAPAY = 'ALFAPAY';
 
     /**
      * включить страницу оплаты Ypmn
@@ -51,14 +54,23 @@ class Authorization implements AuthorizationInterface
     public function setPaymentMethod(string $paymentMethodType) : self
     {
         switch ($paymentMethodType) {
-            case 'CCVISAMC':
+            case self::TYPE_CCVISAMC:
                 $this->paymentMethod = self::TYPE_CCVISAMC;
                 break;
-            case 'FASTER_PAYMENTS':
+            case self::TYPE_FASTER_PAYMENTS:
                 $this->paymentMethod = self::TYPE_FASTER_PAYMENTS;
                 break;
-            case 'SOM':
+            case self::TYPE_SOM:
                 $this->paymentMethod = self::TYPE_SOM;
+                break;
+            case self::TYPE_SBERPAY:
+                $this->paymentMethod = self::TYPE_SBERPAY;
+                break;
+            case self::TYPE_TPAY:
+                $this->paymentMethod = self::TYPE_TPAY;
+                break;
+            case self::TYPE_ALFAPAY:
+                $this->paymentMethod = self::TYPE_ALFAPAY;
                 break;
             default:
                 throw new PaymentException('Неверный тип оплаты в авторизации');
