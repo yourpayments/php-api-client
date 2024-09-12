@@ -135,7 +135,7 @@ $apiRequest->setDebugMode();
 // Переключиться на тестовый сервер (закомментируйте или удалите в рабочей программе!)
 $apiRequest->setSandboxMode();
 // Отправим запрос
-$responseData = $apiRequest->sendAuthRequest($payment, $merchant);
+$responseData = $apiRequest->sendAuthRequest($payment);
 // Преобразуем ответ из JSON в массив
 try {
     $responseData = json_decode((string) $responseData["response"], true);

@@ -46,11 +46,15 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function setCurrency(string $currency) : self
+    public function setCurrency(?string $currency) : self
     {
-        // TODO: Implement Currency check method.
+        if($currency === null) {
+            $currency = 'RUB';
+        }
+
         $this->currency = $currency;
 
+        // TODO: Implement Currency check method.
         return $this;
     }
 

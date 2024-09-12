@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Твои Платежи | Сервис для работы с электронными платежами</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/1c-light.min.css" integrity="sha512-kM8PiTB2J9j9MJxP4pg5Morv1nvatwpY0xsNsHDpHobti6+sdvObgLPhJ7lOIHYUqQmTAUAE+CaTcQXR47XO2w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    -->
 
     <link rel="prerender" href="https://ypnm.ru/ru/">
     <script async src="https://lib.usedesk.ru/secure.usedesk.ru/widget_163235_46456.js"></script>
@@ -31,6 +35,34 @@
         }
     </style>
 
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Corporation",
+            "name": "Your Payments",
+            "alternateName": "Твои Платежи",
+            "slogan": "Digital Payments Service",
+            "url": "https://ypmn.ru/",
+            "logo": "https://ypmn.ru/s/img/logo/ru/dark/horizontal_logo.svg",
+            "currenciesAccepted": ["RUB", "USD", "EUR"],
+            "address": "РФ, 119002, г. Москва, ул. Арбат, д. 10",
+            "priceRange": "$",
+            "image": "https://ypmn.ru/og-image-ru.png",
+            "telephone": "+74957213262",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+74957213262",
+                "email": "info@ympn.ru",
+                "areaServed": "Worldwide",
+                "availableLanguage": ["Russian","English"]
+            },
+            "sameAs": [
+                "https://ypmn.ru/",
+                "https://nco-payu.com/",
+                "https://твоиплатежи.рф/"
+            ]
+        }
+    </script>
 </head>
 <body>
 

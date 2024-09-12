@@ -12,7 +12,7 @@ class Authorization implements AuthorizationInterface
      * @var bool страница оплаты Ypmn включена?
      */
     private bool $usePaymentPage = true;
-    private string $paymentMethod = PaymentMethods::CCVISAMC;
+    private ?string $paymentMethod = PaymentMethods::CCVISAMC;
 
     /** @var CardDetailsInterface|null Данные карты */
     private ?CardDetailsInterface $cardDetails = null;
@@ -28,20 +28,23 @@ class Authorization implements AuthorizationInterface
 
     /**
      * Создать Платёжную Авторизацию
-     * @param string $paymentMethodType Метод оплаты (из справочника)
+     * (можно указать метод из справочника PaymentMethods.php,
+     * или передать null, чтобы плательщик выбрал метод сам)
+     * @param string|null $paymentMethodType Метод оплаты (из справочника)
      * @param bool $isPaymentPageUsed страница оплаты Ypmn включена?
-     * @return void
      * @throws PaymentException Ошибка оплаты
      */
-    public function __construct(string $paymentMethodType, bool $isPaymentPageUsed) {
+    public function __construct(?string $paymentMethodType = null, bool $isPaymentPageUsed = true) {
         $this->setPaymentMethod($paymentMethodType);
         $this->setUsePaymentPage($isPaymentPageUsed);
     }
 
     /** @inheritDoc */
-    public function setPaymentMethod(string $paymentMethod) : self
+    public function setPaymentMethod(?string $paymentMethod) : self
     {
-        $paymentMethod = strtoupper($paymentMethod);
+        if (is_string($paymentMethod)) {
+            $paymentMethod = strtoupper($paymentMethod);
+        }
 
         switch ($paymentMethod) {
             case PaymentMethods::CCVISAMC:
@@ -53,9 +56,12 @@ class Authorization implements AuthorizationInterface
             case PaymentMethods::SBERPAY:
             case PaymentMethods::PAYOUT:
             case PaymentMethods::PAYOUT_FP:
+            case null:
                 $this->paymentMethod = $paymentMethod;
                 break;
-
+            case '':
+                $this->paymentMethod = null;
+                break;
             default:
                 throw new PaymentException('Неверный тип оплаты в авторизации');
         }
@@ -86,7 +92,7 @@ class Authorization implements AuthorizationInterface
     }
 
     /** @inheritDoc */
-    public function getPaymentMethod(): string
+    public function getPaymentMethod(): ?string
     {
         return $this->paymentMethod;
     }
@@ -126,7 +132,7 @@ class Authorization implements AuthorizationInterface
     }
 
     /** @inheritDoc */
-    public function getOneTimeUseToken(): OneTimeUseToken
+    public function getOneTimeUseToken(): ?OneTimeUseToken
     {
         return $this->oneTimeUseToken;
     }

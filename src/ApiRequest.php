@@ -416,16 +416,23 @@ class ApiRequest implements ApiRequestInterface
         $paymentMethod = $payment->getAuthorization()->getPaymentMethod();
         $methodsWithPage = [
             PaymentMethods::CCVISAMC,
+            null,
         ];
 
         if (
             !in_array($paymentMethod, $methodsWithPage) // если метод не подразумевает страницу
-            || empty($paymentMethod) // или метод не выборан
-            || !empty($payment->getAuthorization()->getCardDetails()->getNumber()) // или передаются данные PCI-DSS
+            || (!empty($payment->getAuthorization()->getCardDetails())
+                && !empty($payment->getAuthorization()->getCardDetails()->getNumber())
+            ) // или передаются данные PCI-DSS
             || !empty($payment->getAuthorization()->getMerchantToken()) // или содержится токен мерчанта
-            || !empty($payment->getAuthorization()->getOneTimeUseToken()->getToken())  // или содержится однораз. токен
+            || (!empty($payment->getAuthorization()->getOneTimeUseToken())
+                && !empty($payment->getAuthorization()->getOneTimeUseToken()->getToken())
+            )  // или содержится одноразовый токен от "Secret Fields"
         ) {
             $payment->getAuthorization()->setUsePaymentPage(false);
+        } elseif (empty($paymentMethod)) {
+            $payment->getAuthorization()->setUsePaymentPage(true); // если метод не выборан
+
         }
 
         return $this->sendPostRequest($payment, self::AUTHORIZE_API);
@@ -531,11 +538,7 @@ class ApiRequest implements ApiRequestInterface
     private function getSignature(MerchantInterface $merchant, string $date, string $url, string $httpMethod, string $bodyHash): string
     {
         if (strlen($merchant->getCode()) < 2) {
-            throw new PaymentException('YPMN-001: No Merchant Code');
-        }
-
-        if (strlen($merchant->getCode()) < 2) {
-            throw new PaymentException('YPMN-001: No Merchant Code');
+            throw new PaymentException('YPMN-001: не установлен код мерчанта, уточните его в личном кабинете или у Вашего менеджера');
         }
 
         $urlParts = parse_url($url);
@@ -630,7 +633,7 @@ class ApiRequest implements ApiRequestInterface
                         border: 1px solid green;
                         white-space: pre-wrap;
                     "
-                >'.print_r($mixedInput, true).'</pre>';
+                ><code>'.print_r($mixedInput, true).'</code></pre>';
         }
     }
 

@@ -24,7 +24,7 @@ $merchantPaymentReference = "order_id_" . time();
 $orderAsProduct = new Product([
     'name'  => 'Заказ №' . $merchantPaymentReference,
     'sku'  => $merchantPaymentReference,
-    'unitPrice'  => 200.42,
+    'unitPrice'  => 20.42,
     'quantity'  => 1,
 ]);
 
@@ -54,8 +54,10 @@ $payment = new Payment;
 $payment->addProduct($orderAsProduct);
 // Установим валюту
 $payment->setCurrency('RUB');
-// Создадим и установим авторизацию по типу платежа
-$payment->setAuthorization(new Authorization('CCVISAMC',true));
+// Создадим запрос на  авторизацию платежа
+// здесь первым параметром можно передать конкретный способ оплаты из справочника
+// PaymentMethods.php
+$payment->setAuthorization(new Authorization());
 // Установим номер заказа (должен быть уникальным в вашей системе)
 $payment->setMerchantPaymentReference($merchantPaymentReference);
 // Установим адрес перенаправления пользователя после оплаты
@@ -72,14 +74,23 @@ $apiRequest->setSandboxMode();
 // Отправим запрос
 $responseData = $apiRequest->sendAuthRequest($payment, $merchant);
 // Преобразуем ответ из JSON в массив
+// TODO: перенести валидацию в функцию ApiClient
 try {
     $responseData = json_decode((string) $responseData["response"], true);
 
-    if ($responseData) {
+    if (isset($responseData['code'])
+        && $responseData['code'] === 429
+        && $responseData['status'] === 'LIMIT_CALLS_EXCEEDED'
+    ) {
+        throw new PaymentException('YPMN-002: LIMIT_CALLS_EXCEEDED (превышена частота запросов к серверу)');
+    }
+
+    if (isset($responseData["paymentResult"])) {
         // Выведем кнопку оплаты
         echo Std::drawYpmnButton([
             'url' => $responseData["paymentResult"]['url'],
             'sum' => $payment->sumProductsAmount(),
+            'newpage' => true,
         ]);
 
         // .. или сделаем редирект на форму оплаты (опционально)

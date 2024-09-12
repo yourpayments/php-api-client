@@ -3,7 +3,7 @@
 namespace Ypmn;
 
 /**
- * Это класс для
+ * Это класс-справочник платёжных методов
  **/
 class PaymentMethods
 {

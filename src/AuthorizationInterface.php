@@ -14,9 +14,9 @@ interface AuthorizationInterface
 
     /**
      * Получить Cпособ оплаты (из справочника)
-     * @return string Cпособ оплаты (из справочника)
+     * @return null|string Cпособ оплаты (из справочника)
      */
-    public function getPaymentMethod(): string;
+    public function getPaymentMethod(): ?string;
 
     /**
      * Установить Использование платёжной страницы

@@ -10,6 +10,7 @@ use Ypmn\Client;
 use Ypmn\Billing;
 use Ypmn\ApiRequest;
 use Ypmn\PaymentException;
+use Ypmn\PaymentMethods;
 use Ypmn\PaymentPageOptions;
 use Ypmn\Product;
 use Ypmn\Std;
@@ -113,8 +114,10 @@ $payment->addProduct($product2);
 // Установим валюту
 $payment->setCurrency('RUB');
 
-// Создадим авторизацию по типу платежа
-$authorization = new Authorization('CCVISAMC',true);
+// Создадим запрос на  авторизацию платежа
+// Здесь первым параметром можно передать конкретный способ оплаты из справочника
+// PaymentMethods.php
+$authorization = new Authorization(PaymentMethods::CCVISAMC);
 // Можно установить лимит времени для оплаты заказа (в секундах)
 $authorization->setPaymentPageOptions(new PaymentPageOptions(600));
 // Назначим авторизацию для нашего платежа
@@ -134,7 +137,7 @@ $apiRequest->setDebugMode();
 // Переключиться на тестовый сервер (закомментируйте или удалите в рабочей программе!)
 $apiRequest->setSandboxMode();
 // Отправим запрос
-$responseData = $apiRequest->sendAuthRequest($payment, $merchant);
+$responseData = $apiRequest->sendAuthRequest($payment);
 // Преобразуем ответ из JSON в массив
 try {
     $responseData = json_decode((string) $responseData["response"], true);
