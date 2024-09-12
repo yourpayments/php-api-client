@@ -68,6 +68,10 @@ docker compose up --detach
 4. [Печать анкеты](src/Examples/qstPrint.php)
 5. [Список анкет](src/Examples/qstList.php)
 
+##### 11. Маркетплейс
+1. [Запрос продавца МП](src/Examples/Marketplace/getSeller.php)
+2. [Запрос всех продавцов МП](src/Examples/Marketplace/getSellers.php)
+
 ## Ссылки
 - [НКО «Твои Платежи»](https://YPMN.ru/)
 - [Докуметация API](https://ypmn.ru/ru/documentation/)
