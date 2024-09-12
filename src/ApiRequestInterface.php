@@ -21,6 +21,7 @@ interface ApiRequestInterface
      * Отправить Запрос на Оплату
      * @param PaymentInterface $payment Оплата
      * @return array
+     * @throws PaymentException
      */
     public function sendAuthRequest(PaymentInterface $payment): array;
 
@@ -28,6 +29,7 @@ interface ApiRequestInterface
      * Отправить Запрос на Списание Средств
      * @param CaptureInterface $capture Списание Средств
      * @return array
+     * @throws PaymentException
      */
     public function sendCaptureRequest(CaptureInterface $capture): array;
 
@@ -35,6 +37,7 @@ interface ApiRequestInterface
      * Отправить Запрос на Возврат
      * @param RefundInterface $refund Возврат
      * @return array
+     * @throws PaymentException
      */
     public function sendRefundRequest(RefundInterface $refund): array;
 
@@ -42,6 +45,7 @@ interface ApiRequestInterface
      * Отправить Запрос о статусе платежа
      * @param string $merchantPaymentReference Номер транзакции на стороне мерчанта
      * @return array
+     * @throws PaymentException
      */
     public function sendStatusRequest(string $merchantPaymentReference): array;
 

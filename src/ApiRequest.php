@@ -307,7 +307,6 @@ class ApiRequest implements ApiRequestInterface
             throw new PaymentException('Incorrect request body JSON');
         }
 
-
         $encodedJsonDataHash = md5($encodedJsonData);
 
         $curl = curl_init();
@@ -411,9 +410,24 @@ class ApiRequest implements ApiRequestInterface
         return $this->sendPostRequest($sessionRequest, self::SESSION_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc */
     public function sendAuthRequest(PaymentInterface $payment): array
     {
+        $paymentMethod = $payment->getAuthorization()->getPaymentMethod();
+        $methodsWithPage = [
+            PaymentMethods::CCVISAMC,
+        ];
+
+        if (
+            !in_array($paymentMethod, $methodsWithPage) // если метод не подразумевает страницу
+            || empty($paymentMethod) // или метод не выборан
+            || !empty($payment->getAuthorization()->getCardDetails()->getNumber()) // или передаются данные PCI-DSS
+            || !empty($payment->getAuthorization()->getMerchantToken()) // или содержится токен мерчанта
+            || !empty($payment->getAuthorization()->getOneTimeUseToken()->getToken())  // или содержится однораз. токен
+        ) {
+            $payment->getAuthorization()->setUsePaymentPage(false);
+        }
+
         return $this->sendPostRequest($payment, self::AUTHORIZE_API);
     }
 

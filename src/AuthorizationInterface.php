@@ -6,10 +6,11 @@ interface AuthorizationInterface
 {
     /**
      * Установить Cпособ оплаты (из справочника)
-     * @param string $paymentMethodType Cпособ оплаты (из справочника)
+     * @param string $paymentMethod Cпособ оплаты (из справочника)
      * @return AuthorizationInterface
+     * @throws PaymentException Ошибка оплаты
      */
-    public function setPaymentMethod(string $paymentMethodType) : self;
+    public function setPaymentMethod(string $paymentMethod) : self;
 
     /**
      * Получить Cпособ оплаты (из справочника)
@@ -55,6 +56,19 @@ interface AuthorizationInterface
      * @return $this
      */
     public function setMerchantToken(?MerchantTokenInterface $merchantToken): self;
+
+    /**
+     * Установить Одноразовый Токен
+     * @param OneTimeUseToken|null $oneTimeUseToken Одноразовый Токен
+     * @return self
+     */
+    public function setOneTimeUseToken(?OneTimeUseToken $oneTimeUseToken): self;
+
+    /**
+     * Получить Одноразовый Токен
+     * @return OneTimeUseToken|null Одноразовый Токен
+     */
+    public function getOneTimeUseToken(): ?OneTimeUseToken;
 
     /**
      * Установить настройки платёжной страницы

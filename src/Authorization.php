@@ -7,22 +7,17 @@ namespace Ypmn;
  */
 class Authorization implements AuthorizationInterface
 {
-    const TYPE_CCVISAMC = 'CCVISAMC';
-    const TYPE_FASTER_PAYMENTS = 'FASTER_PAYMENTS';
-
-    const TYPE_SOM = 'SOM';
-
     /**
      * включить страницу оплаты Ypmn
      * @var bool страница оплаты Ypmn включена?
      */
     private bool $usePaymentPage = true;
-    private string $paymentMethod = self::TYPE_CCVISAMC;
+    private string $paymentMethod = PaymentMethods::CCVISAMC;
 
     /** @var CardDetailsInterface|null Данные карты */
     private ?CardDetailsInterface $cardDetails = null;
 
-    /** @var MerchantTokenInterface|null Данные карты (в виде токена) */
+    /** @var MerchantTokenInterface|null Данные карты (в виде объекта токена) */
     private ?MerchantTokenInterface $merchantToken = null;
 
     /** @var OneTimeUseToken|null Одноразовый токен оплаты */
@@ -30,7 +25,6 @@ class Authorization implements AuthorizationInterface
 
     /** @var PaymentPageOptions|null */
     private ?PaymentPageOptions $paymentPageOptions = null;
-
 
     /**
      * Создать Платёжную Авторизацию
@@ -44,22 +38,24 @@ class Authorization implements AuthorizationInterface
         $this->setUsePaymentPage($isPaymentPageUsed);
     }
 
-    /**
-     * @inheritDoc
-     * @throws PaymentException Ошибка оплаты
-     */
-    public function setPaymentMethod(string $paymentMethodType) : self
+    /** @inheritDoc */
+    public function setPaymentMethod(string $paymentMethod) : self
     {
-        switch ($paymentMethodType) {
-            case 'CCVISAMC':
-                $this->paymentMethod = self::TYPE_CCVISAMC;
+        $paymentMethod = strtoupper($paymentMethod);
+
+        switch ($paymentMethod) {
+            case PaymentMethods::CCVISAMC:
+            case PaymentMethods::FASTER_PAYMENTS:
+            case PaymentMethods::SOM:
+            case PaymentMethods::MIRPAY:
+            case PaymentMethods::ALFAPAY:
+            case PaymentMethods::TPAY:
+            case PaymentMethods::SBERPAY:
+            case PaymentMethods::PAYOUT:
+            case PaymentMethods::PAYOUT_FP:
+                $this->paymentMethod = $paymentMethod;
                 break;
-            case 'FASTER_PAYMENTS':
-                $this->paymentMethod = self::TYPE_FASTER_PAYMENTS;
-                break;
-            case 'SOM':
-                $this->paymentMethod = self::TYPE_SOM;
-                break;
+
             default:
                 throw new PaymentException('Неверный тип оплаты в авторизации');
         }
@@ -119,6 +115,7 @@ class Authorization implements AuthorizationInterface
         return $this->merchantToken;
     }
 
+    /** @inheritDoc */
     public function setOneTimeUseToken(?OneTimeUseToken $oneTimeUseToken): self
     {
         $this->setCardDetails(null);
@@ -126,6 +123,12 @@ class Authorization implements AuthorizationInterface
         $this->oneTimeUseToken = $oneTimeUseToken;
 
         return $this;
+    }
+
+    /** @inheritDoc */
+    public function getOneTimeUseToken(): OneTimeUseToken
+    {
+        return $this->oneTimeUseToken;
     }
 
     /**

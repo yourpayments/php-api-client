@@ -177,7 +177,7 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
             /* При создании привязки через СБП необходимо 2 поля consentType и subscriptionPurpose */
             if (
                 empty($requestData['storedCredentials']['consentType']) === false &&
-                $requestData['authorization']['paymentMethod'] === Authorization::TYPE_FASTER_PAYMENTS
+                $requestData['authorization']['paymentMethod'] === PaymentMethods::FASTER_PAYMENTS
             ) {
                 $requestData['storedCredentials']['subscriptionPurpose'] = $this->getStoredCredentials()->getSubscriptionPurpose();
             }
