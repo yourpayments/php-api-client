@@ -28,8 +28,8 @@ class OrderData implements OrderDataInterface
     /** @var string Идентификатор запроса на возмещение средств */
     private string $refundRequestId;
 
-    /** @var string Количество баллов лояльности */
-    private string $loyaltyPointsAmount;
+    /** @var int|null Количество баллов лояльности */
+    private ?int $loyaltyPointsAmount = null;
 
     /** @var array Детализация баллов лояльности */
     private array $loyaltyPointsDetails;
@@ -44,19 +44,15 @@ class OrderData implements OrderDataInterface
     public function setOrderDate(string $orderDate): self
     {
         $this->orderDate = $orderDate;
-        return $this;
-    }
 
-    /** @inheritDoc */
-    public function getUpmnPaymentReference(): string
-    {
-        return $this->ypmnPaymentReference;
+        return $this;
     }
 
     /** @inheritDoc */
     public function setYpmnPaymentReference(string $ypmnPaymentReference): self
     {
         $this->ypmnPaymentReference = $ypmnPaymentReference;
+
         return $this;
     }
 
@@ -76,6 +72,7 @@ class OrderData implements OrderDataInterface
     public function setMerchantPaymentReference(string $merchantPaymentReference): self
     {
         $this->merchantPaymentReference = $merchantPaymentReference;
+
         return $this;
     }
 
@@ -89,6 +86,7 @@ class OrderData implements OrderDataInterface
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -102,6 +100,7 @@ class OrderData implements OrderDataInterface
     public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
+
         return $this;
     }
 
@@ -115,6 +114,7 @@ class OrderData implements OrderDataInterface
     public function setAmount(float $amount): self
     {
         $this->amount = $amount;
+
         return $this;
     }
 
@@ -148,15 +148,16 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getLoyaltyPointsAmount(): ?string
+    public function getLoyaltyPointsAmount(): ?int
     {
         return $this->loyaltyPointsAmount;
     }
 
     /** @inheritDoc */
-    public function setLoyaltyPointsAmount(string $loyaltyPointsAmount): self
+    public function setLoyaltyPointsAmount(int $loyaltyPointsAmount): self
     {
         $this->loyaltyPointsAmount = $loyaltyPointsAmount;
+
         return $this;
     }
 
@@ -172,6 +173,7 @@ class OrderData implements OrderDataInterface
         if(count($loyaltyPointsDetails) > 0) {
             $this->loyaltyPointsDetails = $loyaltyPointsDetails;
         }
+
         return $this;
     }
 }

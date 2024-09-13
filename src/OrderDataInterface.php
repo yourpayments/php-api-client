@@ -111,16 +111,16 @@ interface OrderDataInterface
 
     /**
      * Получить Количество Баллов Лояльности
-     * @return string Количество Баллов Лояльности
+     * @return int|null Количество Баллов Лояльности
      */
-    public function getLoyaltyPointsAmount(): ?string;
+    public function getLoyaltyPointsAmount(): ?int;
 
     /**
      * Установить Количество Баллов Лояльности
-     * @param string $loyaltyPointsAmount
+     * @param int $loyaltyPointsAmount
      * @return $this Количество Баллов Лояльности
      */
-    public function setLoyaltyPointsAmount(string $loyaltyPointsAmount): self;
+    public function setLoyaltyPointsAmount(int $loyaltyPointsAmount): self;
 
     /**
      * Получить Детализацию Баллов Лояльности

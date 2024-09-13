@@ -16,7 +16,7 @@ class Merchant implements MerchantInterface
     private string $merchantCode;
 
     /**
-     * Секретный Ключможно
+     * Секретный Ключ
      * !НЕ передавать в открытом виде
      * получить в https://ypmn.ru/cpanel/account_settings.php
      * Или в https://sandbox.ypmn.ru/cpanel/account_settings.php для тестов
