@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -6,24 +6,16 @@ use JsonSerializable;
 
 class Capture implements CaptureInterface, JsonSerializable, TransactionInterface
 {
-    /**
-     * @var string Номер платежа Ypmn
-     */
+    /** @var string Номер платежа Ypmn */
     private string $payuPaymentReference;
 
-    /**
-     * @var float Cумма исходной операции на авторизацию
-     */
+    /** @var float Cумма исходной операции на авторизацию */
     private float $originalAmount;
 
-    /**
-     * @var float Сумма списания
-     */
+    /** @var float Сумма списания */
     private float $amount;
 
-    /**
-     * @var string Валюта
-     */
+    /** @var string Валюта */
     private string $currency;
 
     /** @inheritDoc */
@@ -105,6 +97,7 @@ class Capture implements CaptureInterface, JsonSerializable, TransactionInterfac
         return $this;
     }
 
+    #[\ReturnTypeWillChange]
     /** @inheritDoc */
     public function jsonSerialize()
     {

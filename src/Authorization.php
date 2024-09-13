@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -40,7 +40,7 @@ class Authorization implements AuthorizationInterface
     }
 
     /** @inheritDoc */
-    public function setPaymentMethod(?string $paymentMethod) : self
+    public function setPaymentMethod(?string $paymentMethod = null) : self
     {
         if (is_string($paymentMethod)) {
             $paymentMethod = strtoupper($paymentMethod);
@@ -137,10 +137,7 @@ class Authorization implements AuthorizationInterface
         return $this->oneTimeUseToken;
     }
 
-    /**
-     * @inheritDoc
-     * @throws PaymentException
-     */
+    /** @inheritDoc */
     public function setMerchantToken(?MerchantTokenInterface $merchantToken): self
     {
         if (is_null($this->getCardDetails()) && $this->getUsePaymentPage() === false) {

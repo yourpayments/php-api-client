@@ -50,10 +50,8 @@ $client->setBilling($billing);
 
 // Создадим платёж
 $payment = new Payment;
-// Установим позиции
+// Присвоим товарные позиции
 $payment->addProduct($orderAsProduct);
-// Установим валюту
-$payment->setCurrency('RUB');
 // Создадим запрос на  авторизацию платежа
 // здесь первым параметром можно передать конкретный способ оплаты из справочника
 // PaymentMethods.php

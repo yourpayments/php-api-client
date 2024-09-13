@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -427,12 +427,11 @@ class ApiRequest implements ApiRequestInterface
             || !empty($payment->getAuthorization()->getMerchantToken()) // или содержится токен мерчанта
             || (!empty($payment->getAuthorization()->getOneTimeUseToken())
                 && !empty($payment->getAuthorization()->getOneTimeUseToken()->getToken())
-            )  // или содержится одноразовый токен от "Secret Fields"
+            )  // или содержится одноразовый токен от "Secure Fields"
         ) {
             $payment->getAuthorization()->setUsePaymentPage(false);
         } elseif (empty($paymentMethod)) {
-            $payment->getAuthorization()->setUsePaymentPage(true); // если метод не выборан
-
+            $payment->getAuthorization()->setUsePaymentPage(true); // если метод не выбран
         }
 
         return $this->sendPostRequest($payment, self::AUTHORIZE_API);

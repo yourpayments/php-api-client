@@ -70,7 +70,7 @@ $billing->setEmail('test1@ypmn.ru');
 $delivery = new Delivery;
 // Установим документ, подтверждающий право приёма доставки
 $delivery->setIdentityDocument(
-    new IdentityDocument('123456', 'PERSONALID')
+    new IdentityDocument(123456, 'PERSONALID')
 );
 // Установим Код страны
 $delivery->setCountryCode('RU');
@@ -108,7 +108,7 @@ $client->setCurrentClientTime();
 
 // Создадим платёж
 $payment = new Payment;
-// Установим позиции
+// Присвоим товарные позиции
 $payment->addProduct($product1);
 $payment->addProduct($product2);
 // Установим валюту

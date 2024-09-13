@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Ypmn;
 
 interface PaymentInterface
@@ -24,7 +25,7 @@ interface PaymentInterface
      * @param string|null $currency Код валюты
      * @return $this
      */
-    public function setCurrency(?string $currency) : self;
+    public function setCurrency(?string $currency = 'RUB') : self;
 
     /**
      * Получить Код валюты

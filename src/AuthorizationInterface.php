@@ -1,20 +1,20 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
 interface AuthorizationInterface
 {
     /**
-     * Установить Cпособ оплаты (из справочника)
-     * @param string $paymentMethod Cпособ оплаты (из справочника)
+     * Установить Cпособ Оплаты (из справочника PaymentMethods.php) || NULL чтобы плательщик выбрал сам
+     * @param string|null $paymentMethod Cпособ Оплаты
      * @return AuthorizationInterface
      * @throws PaymentException Ошибка оплаты
      */
-    public function setPaymentMethod(string $paymentMethod) : self;
+    public function setPaymentMethod(?string $paymentMethod): self;
 
     /**
-     * Получить Cпособ оплаты (из справочника)
-     * @return null|string Cпособ оплаты (из справочника)
+     * Получить Cпособ Оплаты (из справочника PaymentMethods.php) || NULL чтобы плательщик выбрал сам
+     * @return null|string Cпособ Оплаты
      */
     public function getPaymentMethod(): ?string;
 
@@ -23,7 +23,7 @@ interface AuthorizationInterface
      * @param bool $isUsed Использовать платёжную страницу
      * @return AuthorizationInterface
      */
-    public function setUsePaymentPage(bool $isUsed) : self;
+    public function setUsePaymentPage(bool $isUsed): self;
 
     /**
      * Получить Данные Карты
@@ -42,7 +42,7 @@ interface AuthorizationInterface
      * Получить Использование платёжной страницы
      * @return bool Использование платёжной страницы
      */
-    public function getUsePaymentPage() : bool;
+    public function getUsePaymentPage(): bool;
 
     /**
      * Получить Токен мерчанта
@@ -61,6 +61,7 @@ interface AuthorizationInterface
      * Установить Одноразовый Токен
      * @param OneTimeUseToken|null $oneTimeUseToken Одноразовый Токен
      * @return self
+     * @throws PaymentException
      */
     public function setOneTimeUseToken(?OneTimeUseToken $oneTimeUseToken): self;
 
@@ -77,5 +78,9 @@ interface AuthorizationInterface
      */
     public function setPaymentPageOptions(PaymentPageOptionsInterface $paymentPageOptions): self;
 
+    /**
+     * Получить настройки платёжной страницы
+     * @return PaymentPageOptionsInterface
+     */
     public function getPaymentPageOptions(): PaymentPageOptionsInterface;
 }

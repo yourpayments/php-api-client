@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -14,7 +14,7 @@ class IdentityDocument implements IdentityDocumentInterface
     private string $type;
 
     /** @inheritDoc */
-    public function __construct(string $number, string $type) {
+    public function __construct(int $number, string $type) {
         $this
             ->setNumber($number)
             ->setType($type);

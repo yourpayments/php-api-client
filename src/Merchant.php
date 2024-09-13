@@ -1,16 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
 /**
- * Мерчант
+ * Мерчант (продавец, юридическое лицо)
  */
 class Merchant implements MerchantInterface
 {
     /**
      * Код Продавца (Идентификатор Мерчанта)
-     * можно получить в https://payu.ru/cpanel/account_settings.php
-     * Или в https://sandbox.payu.ru/cpanel/account_settings.php для тестов
+     * можно получить в https://ypmn.ru/cpanel/account_settings.php
+     * Или в https://sandbox.ypmn.ru/cpanel/account_settings.php для тестов
      * @var string Код Продавца (Идентификатор Мерчанта)
      */
     private string $merchantCode;
@@ -18,8 +18,8 @@ class Merchant implements MerchantInterface
     /**
      * Секретный Ключможно
      * !НЕ передавать в открытом виде
-     * получить в https://payu.ru/cpanel/account_settings.php
-     * Или в https://sandbox.payu.ru/cpanel/account_settings.php для тестов
+     * получить в https://ypmn.ru/cpanel/account_settings.php
+     * Или в https://sandbox.ypmn.ru/cpanel/account_settings.php для тестов
      @var string Секретный Ключ (!НЕ передавать в открытом виде)
      */
     private string $merchantSecret;
@@ -34,35 +34,27 @@ class Merchant implements MerchantInterface
         $this->setSecret($merchantSecret);
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function setCode(string $merchantCode): MerchantInterface
     {
         $this->merchantCode = $merchantCode;
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function getCode(): string
     {
         return $this->merchantCode;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function setSecret(string $merchantSecret): MerchantInterface
     {
         $this->merchantSecret = $merchantSecret;
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function getSecret(): string
     {
         return $this->merchantSecret;

@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
 /**
  * Принятие информации о запросе на стороне мерчанта
- * https://secure.payu.ru/docs/#tag/Webhooks/paths/~1merchant-ipn-url/post
+ * https://secure.ypmn.ru/docs/#tag/Webhooks/paths/~1merchant-ipn-url/post
  */
 class Webhook implements WebhookInterface
 {
@@ -32,7 +32,7 @@ class Webhook implements WebhookInterface
         $this->orderData->setCurrency($request['orderData']['currency']);
         $this->orderData->setAmount($request['orderData']['amount']);
         $this->orderData->setCommission((float) $request['orderData']['commission']);
-        $this->orderData->setLoyaltyPointsAmount((int) $request['orderData']['loyaltyPointsAmount']);
+        $this->orderData->setLoyaltyPointsAmount((string) $request['orderData']['loyaltyPointsAmount']);
         $this->orderData->setLoyaltyPointsDetails((array) $request['orderData']['loyaltyPointsDetails']);
 
         $cardDetails = new CardDetails;
@@ -46,7 +46,7 @@ class Webhook implements WebhookInterface
         $this->paymentResult->setCardDetails($cardDetails);
         $this->paymentResult->setPaymentMethod($request['paymentResult']['paymentMethod']);
         $this->paymentResult->setPaymentDate($request['paymentResult']['paymentDate']);
-        $this->paymentResult->setAuthCode((int) $request['paymentResult']['authCode']);
+        $this->paymentResult->setAuthCode((string) $request['paymentResult']['authCode']);
         $this->paymentResult->setMerchantId($request['paymentResult']['merchantId']);
 
         if (isset($request['paymentResult']['captureDate'])) {

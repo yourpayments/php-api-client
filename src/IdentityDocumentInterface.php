@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -9,7 +9,7 @@ interface IdentityDocumentInterface
      * @param int $number Номер документа
      * @param string $type Вид документа
      */
-    public function __construct(string $number, string $type);
+    public function __construct(int $number, string $type);
 
     /**
      * Получить Номер Документа

@@ -76,7 +76,7 @@ $billing->setEmail('test1@ypmn.ru');
 $delivery = new Delivery;
 // Установим документ, подтверждающий право приёма доставки
 $delivery->setIdentityDocument(
-    new IdentityDocument('123456', 'PERSONALID')
+    new IdentityDocument(123456, 'PERSONALID')
 );
 // Установим Код страны
 $delivery->setCountryCode('RU');

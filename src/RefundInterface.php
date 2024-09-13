@@ -1,5 +1,5 @@
-<?php
-//TODO: CaptureInterface и PaymentInterface и RefundInterface имеют много общих методов, реорганизовать интерфейсы
+<?php declare(strict_types=1);
+
 namespace Ypmn;
 
 interface RefundInterface

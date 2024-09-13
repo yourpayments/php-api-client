@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -94,6 +94,7 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
         return $resultArray;
     }
 
+    #[\ReturnTypeWillChange]
     /**
      * @return mixed
      * @throws PaymentException

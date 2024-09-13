@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -7,19 +7,30 @@ namespace Ypmn;
  */
 class PaymentReference implements \JsonSerializable
 {
-    private ?int $paymentReference = null;
+    private ?string $paymentReference = null;
 
     /**
-     * @param string $paymentReference номер транзакции
+     * @param null $paymentReference номер транзакции
+     * @param bool $autoGenerate генерировать номер автоматически
+     * @throws PaymentException
      */
-    public function __construct(string $paymentReference)
+    public function __construct($paymentReference = null, bool $autoGenerate = true)
     {
-        $this->setPaymentReference($paymentReference);
+        if (empty($paymentReference)) {
+            if($autoGenerate) {
+                $paymentReference = 'Заказ__' . uniqid() . '__' . time();
+            } else {
+                throw new PaymentException('YPMN-003 Передайтие корректный уникальный номер заказа в вашей системе');
+            }
+        }
+
+        $this->setPaymentReference((string) $paymentReference);
     }
 
-    private function setPaymentReference(int $paymentReference) : self
+    private function setPaymentReference(string $paymentReference) : self
     {
         $this->paymentReference = $paymentReference;
+
         return $this;
     }
 
