@@ -1,27 +1,13 @@
 <?php
 /**
- * Пример интеграции API многофункциональной платёжной системы Ypmn, версия 4
+ * Пример интеграции API платёжной системы Ypmn
  * Документация:
- *      https://dev.payu.ru/ru/documents/apiv4/
- *      https://secure.payu.ru/docs/#tag/Payment-API
+ *      https://ypmn.ru/ru/documentation/
  * Начните знакомство с кодом с текущего файла
  *  и класса PaymentInterface
  */
 
-use Ypmn\Authorization;
-use Ypmn\Delivery;
-use Ypmn\IdentityDocument;
-use Ypmn\Merchant;
-use Ypmn\MerchantToken;
-use Ypmn\Payment;
-use Ypmn\Client;
-use Ypmn\Billing;
-use Ypmn\ApiRequest;
 use Ypmn\PaymentException;
-use Ypmn\Product;
-use Ypmn\Capture;
-use Ypmn\Refund;
-use Ypmn\Std;
 use Ypmn\PaymentReference;
 
 

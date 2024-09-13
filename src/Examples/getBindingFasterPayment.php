@@ -72,7 +72,7 @@ $billing->setEmail('develop@ypmn.ru'); // Установим Email Плател�
 $delivery = new Delivery;
 // Установим документ, подтверждающий право приёма доставки
 $delivery->setIdentityDocument(
-    new IdentityDocument('123456', 'PERSONALID')
+    new IdentityDocument(123456, 'PERSONALID')
 );
 $delivery->setCountryCode('RU'); // Установим Код страны
 $delivery->setCity('Москва'); // Установим Город

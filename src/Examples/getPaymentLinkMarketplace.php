@@ -76,7 +76,7 @@ $billing->setEmail('test1@ypmn.ru');
 $delivery = new Delivery;
 // Установим документ, подтверждающий право приёма доставки
 $delivery->setIdentityDocument(
-    new IdentityDocument('123456', 'PERSONALID')
+    new IdentityDocument(123456, 'PERSONALID')
 );
 // Установим Код страны
 $delivery->setCountryCode('RU');
@@ -135,7 +135,7 @@ $apiRequest->setDebugMode();
 // Переключиться на тестовый сервер (закомментируйте или удалите в рабочей программе!)
 $apiRequest->setSandboxMode();
 // Отправим запрос
-$responseData = $apiRequest->sendAuthRequest($payment, $merchant);
+$responseData = $apiRequest->sendAuthRequest($payment);
 // Преобразуем ответ из JSON в массив
 try {
     $responseData = json_decode((string) $responseData["response"], true);

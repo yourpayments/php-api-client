@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Ypmn;
 
 interface PaymentInterface
@@ -21,10 +22,10 @@ interface PaymentInterface
      * Установить Код валюты (например, RUB)
      * формат кодов валюты ISO 4217
      * (https://en.wikipedia.org/wiki/ISO_4217)
-     * @param string $currency Код валюты
+     * @param string|null $currency Код валюты
      * @return $this
      */
-    public function setCurrency(string $currency) : self;
+    public function setCurrency(?string $currency = 'RUB') : self;
 
     /**
      * Получить Код валюты

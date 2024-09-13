@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -46,11 +46,15 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function setCurrency(string $currency) : self
+    public function setCurrency(?string $currency = 'RUB') : self
     {
-        // TODO: Implement Currency check method.
+        if($currency === null) {
+            $currency = 'RUB';
+        }
+
         $this->currency = $currency;
 
+        // TODO: Implement Currency check method.
         return $this;
     }
 
