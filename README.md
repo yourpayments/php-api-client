@@ -6,9 +6,12 @@
 [Пакет Composer](https://packagist.org/packages/yourpayments/php-api-client) может 
 использоваться с любыми фреймворками, платформами и CMS, включая, но не ограничиваясь: Laravel, Bitrix, Wordpress, Yii, Symfony, и др.
 
-## Установка за 1 минуту
+## Установка и обновление за 1 минуту
 ```shell
 composer require yourpayments/php-api-client
+```
+```shell
+composer update yourpayments/php-api-client
 ```
 (если на вашем проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория)
 
