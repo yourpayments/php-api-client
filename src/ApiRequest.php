@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
 
@@ -11,26 +13,26 @@ use JsonSerializable;
  */
 class ApiRequest implements ApiRequestInterface
 {
-    const AUTHORIZE_API = '/api/v4/payments/authorize';
-    const CAPTURE_API = '/api/v4/payments/capture';
-    const TOKEN_API = '/api/v4/token';
-    const REFUND_API = '/api/v4/payments/refund';
-    const STATUS_API = '/api/v4/payments/status';
-    const PAYOUT_CREATE_API = '/api/v4/payout';
-    const REPORTS_ORDERS_API = '/reports/orders';
-    const SESSION_API = '/api/v4/payments/sessions';
-    const REPORT_CHART_API = '/api/v4/reports/chart';
-    const REPORT_GENERAL_API = '/api/v4/reports/general';
-    const REPORT_ORDERS_API_V4 = '/api/v4/reports/orders';
-    const REPORT_ORDER_DETAILS_API = '/api/v4/reports/order-details';
-    const PODELI_MERCHANT_REGISTRATION_API = '/api/v4/registration/merchant/podeli';
-    const QST_CREATE_API = '/api/v4/qst/create';
-    const QST_STATUS_API = '/api/v4/qst/status';
-    const QST_PRINT_API = '/api/v4/qst/print';
-    const QST_LIST_API = '/api/v4/qst/list';
-    const HOST = 'https://secure.ypmn.ru';
-    const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
-    const LOCAL_HOST = 'http://127.0.0.1';
+    public const AUTHORIZE_API = '/api/v4/payments/authorize';
+    public const CAPTURE_API = '/api/v4/payments/capture';
+    public const TOKEN_API = '/api/v4/token';
+    public const REFUND_API = '/api/v4/payments/refund';
+    public const STATUS_API = '/api/v4/payments/status';
+    public const PAYOUT_CREATE_API = '/api/v4/payout';
+    public const REPORTS_ORDERS_API = '/reports/orders';
+    public const SESSION_API = '/api/v4/payments/sessions';
+    public const REPORT_CHART_API = '/api/v4/reports/chart';
+    public const REPORT_GENERAL_API = '/api/v4/reports/general';
+    public const REPORT_ORDERS_API_V4 = '/api/v4/reports/orders';
+    public const REPORT_ORDER_DETAILS_API = '/api/v4/reports/order-details';
+    public const PODELI_MERCHANT_REGISTRATION_API = '/api/v4/registration/merchant/podeli';
+    public const QST_CREATE_API = '/api/v4/qst/create';
+    public const QST_STATUS_API = '/api/v4/qst/status';
+    public const QST_PRINT_API = '/api/v4/qst/print';
+    public const QST_LIST_API = '/api/v4/qst/list';
+    public const HOST = 'https://secure.ypmn.ru';
+    public const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
+    public const LOCAL_HOST = 'http://127.0.0.1';
 
     /** @var MerchantInterface Мерчант, от имени которого отправляется запрос */
     private MerchantInterface $merchant;
@@ -60,13 +62,13 @@ class ApiRequest implements ApiRequestInterface
     }
 
     /** @inheritdoc  */
-    public function getHost() : string
+    public function getHost(): string
     {
         return $this->host;
     }
 
     /** @inheritdoc  */
-    public function setHost(string $host) : self
+    public function setHost(string $host): self
     {
         if (filter_var($host, FILTER_VALIDATE_URL)) {
             $this->host = $host;
@@ -185,7 +187,7 @@ class ApiRequest implements ApiRequestInterface
      * @param $parameters
      * @return string
      */
-    private function reportsSign($parameters)
+    private function reportsSign($parameters): string
     {
         $sourceString = $this->buildReportsSourceString($parameters);
 
@@ -198,7 +200,7 @@ class ApiRequest implements ApiRequestInterface
      * @return array ответ сервера Ypmn
      * @throws PaymentException
      */
-    private function sendGetRequest(string $api): array
+    public function sendGetRequest(string $api): array
     {
         $curl = curl_init();
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
@@ -244,7 +246,7 @@ class ApiRequest implements ApiRequestInterface
             $this->echoDebugMessage($this->getHost() . $api);
             $this->echoDebugMessage('Ответ от сервера Ypmn:');
             if ($this->getJsonDebugResponse()) {
-                $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+                $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             } else {
                 $this->echoDebugMessage($response);
             }
@@ -261,7 +263,7 @@ class ApiRequest implements ApiRequestInterface
                 echo '<br><a href="https://github.com/yourpayments/php-api-client/issues">Оставить заявку на улучшение</a>';
                 echo '<br><a href="https://ypmn.ru/ru/contacts/">Контакты</a>';
             } else {
-                $cpanel_url = 'https://' . ($this->getSandboxMode() ? 'sandbox' : 'secure' ). '.ypmn.ru/cpanel/';
+                $cpanel_url = 'https://' . ($this->getSandboxMode() ? 'sandbox' : 'secure' ) . '.ypmn.ru/cpanel/';
 
                 if ($this->getSandboxMode()) {
                     echo Std::alert([
@@ -287,14 +289,49 @@ class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * Отправка POST-запроса
+     * Функция-декоратор для отправки POST-запроса
      * @param string|JsonSerializable $data запрос
      * @param string $api адрес API (URI)
+     * @param string|null $customErrorMessage Переопредеяемое пользователем сообщение
+     *                                         при отсутствии ответа от сервера (опционально)
      * @return array ответ сервера Ypmn
      * @throws PaymentException
      */
-    public function sendPostRequest($data, string $api): array
+    public function sendPostRequest($data, string $api, ?string $customErrorMessage = null): array
     {
+        return $this->sendPostPutRequest($data, $api, 'POST', $customErrorMessage);
+    }
+
+    /**
+     * Функция-декоратор для отправки PUT-запроса
+     * @param string|JsonSerializable $data запрос
+     * @param string $api адрес API (URI)
+     * @param string|null $customErrorMessage Переопредеяемое пользователем сообщение
+     *                                         при отсутствии ответа от сервера (опционально)
+     * @return array ответ сервера Ypmn
+     * @throws PaymentException
+     */
+    public function sendPutRequest($data, string $api, ?string $customErrorMessage = null): array
+    {
+        return $this->sendPostPutRequest($data, $api, 'PUT', $customErrorMessage);
+    }
+
+    /**
+     * Отправка POST и PUT запросов
+     * @param string|JsonSerializable $data запрос
+     * @param string $api адрес API (URI)
+     * @param string $method HTTP-метод (POST | PUT)
+     * @param string|null $customErrorMessage Переопредеяемое пользователем сообщение
+     *                                        при отсутствии ответа от сервера (опционально)
+     * @return array ответ сервера Ypmn
+     * @throws PaymentException
+     */
+    private function sendPostPutRequest(
+        $data,
+        string $api,
+        string $method,
+        ?string $customErrorMessage = null
+    ): array {
         if ($data instanceof JsonSerializable) {
             $encodedJsonData = $data->jsonSerialize();
         } elseif (is_string($data)) {
@@ -307,18 +344,19 @@ class ApiRequest implements ApiRequestInterface
             throw new PaymentException('Incorrect request body JSON');
         }
 
+
         $encodedJsonDataHash = md5($encodedJsonData);
 
         $curl = curl_init();
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
-        $requestHttpVerb = 'POST';
+        $requestHttpVerb = $method;
 
         $setOptArray = [
             CURLOPT_URL => $this->getHost() . $api,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 60,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $requestHttpVerb,
             CURLOPT_POSTFIELDS => $encodedJsonData,
@@ -350,10 +388,10 @@ class ApiRequest implements ApiRequestInterface
         curl_close($curl);
 
         if (true === $this->getDebugMode()) {
-            $this->echoDebugMessage('POST-Запрос к серверу Ypmn:');
+            $this->echoDebugMessage("$method-Запрос к серверу Ypmn:");
             $this->echoDebugMessage($encodedJsonData);
             $this->echoDebugMessage('Ответ от сервера Ypmn:');
-            $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
+            $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
             if ($this->getDebugShowResponseHeaders()) {
                 $this->echoDebugMessage('Заголовки ответа от сервера Ypmn:');
@@ -369,7 +407,7 @@ class ApiRequest implements ApiRequestInterface
                 echo '<br><a href="https://github.com/yourpayments/php-api-client/issues">Оставить заявку на улучшение</a>';
                 echo '<br><a href="https://ypmn.ru/ru/contacts/">Контакты</a>';
             } else {
-                $cpanel_url = 'https://' . ($this->getSandboxMode() ? 'sandbox' : 'secure' ). '.ypmn.ru/cpanel/';
+                $cpanel_url = 'https://' . ($this->getSandboxMode() ? 'sandbox' : 'secure' ) . '.ypmn.ru/cpanel/';
 
                 if ($this->getSandboxMode()) {
                     echo Std::alert([
@@ -396,7 +434,9 @@ class ApiRequest implements ApiRequestInterface
         }
 
         if ($response == null || strlen($response) === 0) {
-            throw new PaymentException('Вы можете попробовать другой способ оплаты, либо свяжитесь с продавцом.');
+            throw new PaymentException(
+                $customErrorMessage ?? 'Вы можете попробовать другой способ оплаты, либо свяжитесь с продавцом.'
+            );
         }
 
         return ['response' => $response, 'error' => $err];
@@ -410,46 +450,33 @@ class ApiRequest implements ApiRequestInterface
         return $this->sendPostRequest($sessionRequest, self::SESSION_API);
     }
 
-    /** @inheritdoc */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendAuthRequest(PaymentInterface $payment): array
     {
-        $paymentMethod = $payment->getAuthorization()->getPaymentMethod();
-        $methodsWithPage = [
-            PaymentMethods::CCVISAMC,
-            null,
-        ];
-
-        if (
-            !in_array($paymentMethod, $methodsWithPage) // если метод не подразумевает страницу
-            || (!empty($payment->getAuthorization()->getCardDetails())
-                && !empty($payment->getAuthorization()->getCardDetails()->getNumber())
-            ) // или передаются данные PCI-DSS
-            || !empty($payment->getAuthorization()->getMerchantToken()) // или содержится токен мерчанта
-            || (!empty($payment->getAuthorization()->getOneTimeUseToken())
-                && !empty($payment->getAuthorization()->getOneTimeUseToken()->getToken())
-            )  // или содержится одноразовый токен от "Secure Fields"
-        ) {
-            $payment->getAuthorization()->setUsePaymentPage(false);
-        } elseif (empty($paymentMethod)) {
-            $payment->getAuthorization()->setUsePaymentPage(true); // если метод не выбран
-        }
-
         return $this->sendPostRequest($payment, self::AUTHORIZE_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendCaptureRequest(CaptureInterface $capture): array
     {
         return $this->sendPostRequest($capture, self::CAPTURE_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendRefundRequest(RefundInterface $refund): array
     {
         return $this->sendPostRequest($refund, self::REFUND_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendStatusRequest(string $merchantPaymentReference): array
     {
         $responseData = $this->sendGetRequest(self::STATUS_API . '/' . $merchantPaymentReference);
@@ -465,32 +492,42 @@ class ApiRequest implements ApiRequestInterface
         return $responseData;
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendTokenCreationRequest(PaymentReference $payuPaymentReference): array
     {
         return $this->sendPostRequest($payuPaymentReference, self::TOKEN_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendTokenPaymentRequest(MerchantToken $tokenHash): array
     {
         return $this->sendPostRequest($tokenHash, self::AUTHORIZE_API);
     }
 
-    /** @inheritDoc */
-    public function sendPayoutCreateRequest(PayoutInterface $payout)
+    /**
+     * @throws PaymentException
+     */
+    public function sendPayoutCreateRequest(PayoutInterface $payout): array
     {
         return $this->sendPostRequest($payout, self::PAYOUT_CREATE_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendReportChartRequest(array $params): array
     {
         $this->setJsonDebugResponse(false);
         return $this->sendGetRequest(self::REPORT_CHART_API . '/?' . http_build_query($params));
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendReportChartUpdateRequest(array $params): array
     {
         $getParams = [
@@ -507,19 +544,25 @@ class ApiRequest implements ApiRequestInterface
         return $this->sendGetRequest(self::REPORT_CHART_API . '/?' . http_build_query($params));
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendReportGeneralRequest(array $params): array
     {
         return $this->sendGetRequest(self::REPORT_GENERAL_API . '/?' . http_build_query($params));
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendReportOrderRequest(array $params): array
     {
         return $this->sendGetRequest(self::REPORT_ORDERS_API_V4 . '/?' . http_build_query($params));
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendReportOrderDetailsRequest(array $params): array
     {
         return $this->sendGetRequest(self::REPORT_ORDER_DETAILS_API . '/?' . http_build_query($params));
@@ -533,11 +576,12 @@ class ApiRequest implements ApiRequestInterface
      * @param string $httpMethod HTTP
      * @param string $bodyHash md5-хэш запроса
      * @return string подпись
+     * @throws PaymentException
      */
     private function getSignature(MerchantInterface $merchant, string $date, string $url, string $httpMethod, string $bodyHash): string
     {
         if (strlen($merchant->getCode()) < 2) {
-            throw new PaymentException('YPMN-001: не установлен код мерчанта, уточните его в личном кабинете или у Вашего менеджера');
+            throw new PaymentException('YPMN-001: No Merchant Code');
         }
 
         $urlParts = parse_url($url);
@@ -570,13 +614,11 @@ class ApiRequest implements ApiRequestInterface
         return $this;
     }
 
-    /** @inheritdoc  */
     public function getLocalMode(): bool
     {
         return $this->localModeIsOn;
     }
 
-    /** @inheritdoc  */
     public function setLocalMode(bool $localModeIsOn = true): self
     {
         if ($localModeIsOn) {
@@ -602,14 +644,14 @@ class ApiRequest implements ApiRequestInterface
     }
 
     /** @inheritdoc  */
-    public function  setJsonDebugResponse(bool $jsonDebugResponse): self
+    public function setJsonDebugResponse(bool $jsonDebugResponse): self
     {
         $this->jsonDebugResponse = $jsonDebugResponse;
         return $this;
     }
 
     /** @inheritdoc  */
-    public function  getJsonDebugResponse(): bool
+    public function getJsonDebugResponse(): bool
     {
         return $this->jsonDebugResponse;
     }
@@ -632,35 +674,45 @@ class ApiRequest implements ApiRequestInterface
                         border: 1px solid green;
                         white-space: pre-wrap;
                     "
-                ><code>'.print_r($mixedInput, true).'</code></pre>';
+                >' . print_r($mixedInput, true) . '</pre>';
         }
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendPodeliRegistrationMerchantRequest(PodeliMerchant $merchant): array
     {
         return $this->sendPostRequest($merchant, self::PODELI_MERCHANT_REGISTRATION_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendQstCreateRequest(QstInterface $qst): array
     {
         return $this->sendPostRequest($qst, self::QST_CREATE_API);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendQstStatusRequest(int $qstId): array
     {
         return $this->sendGetRequest(self::QST_STATUS_API . '/' . $qstId);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendQstPrintRequest(int $qstId): array
     {
         return $this->sendGetRequest(self::QST_PRINT_API . '/' . $qstId);
     }
 
-    /** @inheritdoc  */
+    /** @inheritdoc
+     * @throws PaymentException
+     */
     public function sendQstListRequest(): array
     {
         return $this->sendGetRequest(self::QST_LIST_API);
@@ -687,8 +739,7 @@ class ApiRequest implements ApiRequestInterface
     private function addCurlOptHeaderFunction(array &$curlOptArr, array &$headers): void
     {
         $curlOptArr += [
-            CURLOPT_HEADERFUNCTION => static function($curl, $header) use (&$headers)
-            {
+            CURLOPT_HEADERFUNCTION => static function ($curl, $header) use (&$headers) {
                 if (strlen(trim($header)) > 0) {
                     $headers[] = trim($header);
                 }
