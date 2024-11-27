@@ -80,14 +80,14 @@ final class Widget
      */
     public function makeBuyForm(): string
     {
-        return "<script src='https://secure.ypmn.ru/pay/widget/v1/js/ypayments.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js'></script>
+        return "<script src='https://secure.ypmn.ru/pay/widget/v1/js/YPMNFrames.js'></script>
+        <script src='https://secure.ypmn.ru/assets/js/crypto-js/4.2.0/crypto-js.min.js'></script>
         <script>
             window.document.body.onload = function() {
                 const payButtons = document.getElementsByClassName('buyBtn');
                 for (let payButton of payButtons) {
                     payButton.addEventListener('click', async () => {
-                        const yPay = new YPayments(
+                        const ypmn = new YPMNFrames(
                             {
                                 merchantCode:             '{$this->merchantCode}',
                                 countryCode:              '{$this->countryCode}',
@@ -106,8 +106,8 @@ final class Widget
                             Math.max(document.body.scrollHeight, window.screen.availHeight)
                         );
                         // Подписываем параметры
-                        yPay.data.payment.signature = doSigned(yPay.data.payment);
-                        yPay.start();
+                        ypmn.data.payment.signature = doSigned(ypmn.data.payment);
+                        ypmn.start();
                     });
                 }
             };
