@@ -8,7 +8,7 @@ use JsonSerializable;
 /**
  * Платеж
  */
-class Payment implements PaymentInterface, JsonSerializable, TransactionInterface
+class Payment implements PaymentInterface, JsonSerializable, TransactionInterface, PaymentDetailsInterface
 {
     /** @var string Идентификатор платежа у Мерчанта */
     private string $merchantPaymentReference;
@@ -30,6 +30,9 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
 
     /** @var Product[] Массив продуктов */
     private array $products;
+
+    /** @var Details|null Данные с расширенными сведениями в парах ключ/значение */
+    private ?Details $details = null;
 
     /** @inheritDoc */
     public function setMerchantPaymentReference(string $paymentIdString) : self
@@ -164,6 +167,19 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
         return $sum;
     }
 
+    /** @inheritdoc */
+    public function getDetails(): ?Details
+    {
+        return $this->details;
+    }
+
+    /** @inheritdoc */
+    public function setDetails(?Details $details): self
+    {
+        $this->details = $details;
+        return $this;
+    }
+
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
@@ -189,6 +205,10 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
 
         $requestData['client']   = $this->getClient()->arraySerialize();
         $requestData['products'] = $this->getProductsArray();
+
+        if (!is_null($this->details)) {
+            $requestData['details'] = $this->details->toArray();
+        }
 
         $requestData = Std::removeNullValues($requestData);
 

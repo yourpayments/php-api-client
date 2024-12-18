@@ -106,6 +106,12 @@ interface ProductInterface
     public function getAdditionalDetails() : ?string;
 
     /**
+     * Получить сабмерчанта
+     * @return MarketplaceSubmerchantInterface|null
+     */
+    public function getMarketplaceSubmerchant(): ?MarketplaceSubmerchantInterface;
+
+    /**
      * Добавить к Продукту Сабмерчанта
      * (для маркетплейса/сплита/разделения платежа)
      * с помощью Кода Сабмерчанта

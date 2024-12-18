@@ -7,7 +7,7 @@ use JsonSerializable;
 /**
  * Запрос на возврат средств
  */
-class Refund implements RefundInterface, JsonSerializable, TransactionInterface
+class Refund implements RefundInterface, JsonSerializable, TransactionInterface, PaymentDetailsInterface
 {
     /**
      * @var string Номер платежа Ypmn
@@ -36,6 +36,9 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface
     private array $products;
 
     private bool $skipCheckSkuAmount = false;
+
+    /** @var Details|null Данные с расширенными сведениями в парах ключ/значение */
+    private ?Details $details = null;
 
     /**
      * @inheritDoc
@@ -192,6 +195,19 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface
         return $this;
     }
 
+    /** @inheritDoc */
+    public function getDetails(): ?Details
+    {
+        return $this->details;
+    }
+
+    /** @inheritDoc */
+    public function setDetails(?Details $details): self
+    {
+        $this->details = $details;
+        return $this;
+    }
+
     /**
      * @inheritDoc
      */
@@ -221,6 +237,10 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface
                     'merchant' => $marketplaceSubmerchant->getMerchantCode(),
                 ];
             }
+        }
+
+        if ($this->details) {
+            $requestData['details'] = $this->details->toArray();
         }
 
         return json_encode($requestData, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_LINE_TERMINATORS);

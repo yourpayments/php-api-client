@@ -34,6 +34,12 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/',
         'link'  => '',
     ],
+    'getFasterPaymentWithReceipts' => [
+        'name'  => 'Оплата через СБП с регистрацией чека',
+        'about'  => 'Пример платежа через систему быстрых платежей с регистрацией чека',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+        'link'  => '',
+    ],
     'getBindingFasterPayment' => [
         'name'  => 'Создание подписки СБП',
         'about'  => 'В этом примере отправляется запрос на создание подписки СБП с одновременной оплатой',
@@ -49,6 +55,12 @@ $examples = [
     'getPaymentLinkMarketplace' => [
         'name'  => 'Платёж со сплитом',
         'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков).',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-split-api',
+        'link'  => '',
+    ],
+    'getPaymentLinkMarketplaceWithReceipts' => [
+        'name'  => 'Платёж со сплитом и регистрацией чеков',
+        'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков) и регистрацией чеков.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-split-api',
         'link'  => '',
     ],

@@ -4,7 +4,7 @@ namespace Ypmn;
 
 use JsonSerializable;
 
-class Capture implements CaptureInterface, JsonSerializable, TransactionInterface
+class Capture implements CaptureInterface, JsonSerializable, TransactionInterface, PaymentDetailsInterface
 {
     /** @var string Номер платежа Ypmn */
     private string $payuPaymentReference;
@@ -17,6 +17,9 @@ class Capture implements CaptureInterface, JsonSerializable, TransactionInterfac
 
     /** @var string Валюта */
     private string $currency;
+
+    /** @var Details|null Данные с расширенными сведениями в парах ключ/значение */
+    private ?Details $details = null;
 
     /** @inheritDoc */
     public function setYpmnPaymentReference(string $paymentIdString): CaptureInterface
@@ -97,6 +100,19 @@ class Capture implements CaptureInterface, JsonSerializable, TransactionInterfac
         return $this;
     }
 
+    /** @inheritDoc */
+    public function getDetails(): ?Details
+    {
+        return $this->details;
+    }
+
+    /** @inheritDoc */
+    public function setDetails(?Details $details): self
+    {
+        $this->details = $details;
+        return $this;
+    }
+
     #[\ReturnTypeWillChange]
     /** @inheritDoc */
     public function jsonSerialize()
@@ -108,6 +124,10 @@ class Capture implements CaptureInterface, JsonSerializable, TransactionInterfac
             'amount'	=> $this->getAmount(),
             'currency' => $this->getCurrency()
         ];
+
+        if ($this->details) {
+            $requestData['details'] = $this->details->toArray();
+        }
 
         return json_encode($requestData, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_LINE_TERMINATORS);
     }
