@@ -4,6 +4,7 @@
  */
 declare(strict_types=1);
 
+use Ypmn\Details;
 use Ypmn\Product;
 use Ypmn\ApiRequest;
 use Ypmn\Billing;
@@ -109,6 +110,58 @@ $payment->setMerchantPaymentReference('primer_nomer__' . time());
 // Установим адрес перенаправления пользователя после оплаты //
 $payment->setReturnUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage');
 $payment->setClient($client); // Установим клиентское подключение
+
+// Создадим объект расширенных данных по транзакции
+$details = new Details();
+
+// Ниже пример данных для регистрации чека в онлайн кассе АТОЛ
+// Подробнее см. в документации АТОЛ
+$receiptsArr = [
+    'external_id' => $payment->getMerchantPaymentReference(),
+    'receipt' => [
+            'client' => ['email' => $billing->getEmail()],
+            'company' => [
+                'email' => 'chek@romashka.ru', // Электронная почта отправителя чека
+                'sno' => 'osn', // Система налогообложения
+                'inn' => '5544332219', // ИНН организации
+                'payment_address' => 'https://v4.online.atol.ru' // место расчетов
+            ],
+            'items' => [],
+            'payments' => [
+                [
+                    'type' => 1,
+                    'sum' => 0,
+                ]
+            ],
+            'vats' => [],
+            'total' => 0,
+    ],
+    'timestamp' => (new DateTime())->format('d.m.Y H:i:s')
+];
+
+foreach ($payment->getProducts() as $product) {
+    $receiptsArr['receipt']['items'][] = [
+        'name' => $product->getName(),
+        'price' => $product->getUnitPrice(),
+        'quantity' => $product->getQuantity(),
+        'sum' => $product->getUnitPrice() * $product->getQuantity(),
+        'measurement_unit' => 'кг',
+        'payment_method' => 'full_payment',
+        'payment_object' => 'commodity',
+        'vat' => ['type' => 'vat120'],
+    ];
+    $receiptsArr['receipt']['vats'][] = ['type' => 'vat120'];
+    $receiptsArr['receipt']['payments'][0]['sum'] += $product->getUnitPrice() * $product->getQuantity();
+    $receiptsArr['receipt']['total'] += $product->getUnitPrice() * $product->getQuantity();
+}
+
+// Закодируем данные для онлайн кассы АТОЛ в JSON строку
+$receipts = json_encode($receiptsArr);
+
+// Установим данные для передачи в АТОЛ для регистрации чеков
+$details->setReceipts($receipts);
+// Добавим расширенные данные по транзакции в запрос на авторизацию платежа
+$payment->setDetails($details);
 
 /* Создадим HTTP-запрос к API */
 $apiRequest = new ApiRequest($merchant);

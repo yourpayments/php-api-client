@@ -20,6 +20,7 @@ if(isset($_GET['function'])){
             case 'simpleGetPaymentLink':
             case 'getPaymentLink':
             case 'getPaymentLinkMarketplace':
+            case 'getPaymentLinkMarketplaceWithReceipts':
             case 'getToken':
             case 'paymentByToken':
             case 'paymentCapture':
@@ -37,6 +38,7 @@ if(isset($_GET['function'])){
             case 'getReportOrder':
             case 'getReportOrderDetails':
             case 'getFasterPayment':
+            case 'getFasterPaymentWithReceipts':
             case 'getBindingFasterPayment':
             case 'paymentByFasterBinding':
             case 'qstCreateOrg':

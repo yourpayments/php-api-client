@@ -174,6 +174,12 @@ class Product implements ProductInterface
     }
 
     /** @inheritDoc */
+    public function getMarketplaceSubmerchant(): ?MarketplaceSubmerchantInterface
+    {
+        return $this->marketplaceSubmerchant;
+    }
+
+    /** @inheritDoc */
     public function setMarketplaceSubmerchantByCode(string $merchantCode): self
     {
         $this->marketplaceSubmerchant = new MarketplaceSubmerchant($merchantCode);
