@@ -178,4 +178,16 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1list/get',
         'link'  => '',
     ],
+    'getSeller' => [
+        'name'  => 'Запрос продавца МП',
+        'about'  => 'В этом примере показана реализация запроса продавца маркетплейса по его ID.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api',
+        'link'  => '',
+    ],
+    'getSellers' => [
+        'name'  => 'Запрос всех продавцов МП',
+        'about'  => 'В этом примере показана реализация запроса всех продавцов маркетплейса.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api',
+        'link'  => '',
+    ],
 ];
