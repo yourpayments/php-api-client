@@ -121,7 +121,7 @@ class Std
   </div>
   <div class="payment_btn__sign">
     Оплатить<br>
-    <span class="payment_btn__sum">' . number_format($params['sum'], 2, '.', ' ') . ' '. ( isset($params['currency']) ? htmlspecialchars($params['currency']) : '₽' ) . '</span>
+    <span class="payment_btn__sum">' . number_format($params['sum'], 2, '.', ' ') . ' '. ( isset($params['currency']) ? htmlspecialchars($params['currency']) : '&#8381;' ) . '</span>
   </div>
 </a>
 <br>
@@ -232,7 +232,7 @@ class Std
         $str = str_replace( '(', '', $str);
         $str = str_replace( "'", '', $str);
         $str = str_replace( ':', '', $str);
-        $str = str_replace( 'Ø', '', $str);
+        $str = str_replace( "\xc3\x98", '', $str);
         $str = str_replace( '@', '', $str);
         $str = str_replace( '«', '', $str);
         $str = str_replace( '»', '', $str);
