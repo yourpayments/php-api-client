@@ -121,7 +121,7 @@ class Std
   </div>
   <div class="payment_btn__sign">
     Оплатить<br>
-    <span class="payment_btn__sum">' . number_format($params['sum'], 2, '.', ' ') . ' '. ( isset($params['currency']) ? htmlspecialchars($params['currency']) : '₽' ) . '</span>
+    <span class="payment_btn__sum">' . number_format($params['sum'], 2, '.', ' ') . ' '. ( isset($params['currency']) ? htmlspecialchars($params['currency']) : '&#8381;' ) . '</span>
   </div>
 </a>
 <br>
@@ -223,8 +223,8 @@ class Std
     /**
      * Преобразование кириллических имён в URI slugs
      * Удобно для продуктов, категорий и т.д.
-     * @param string $str
-     * @return string
+     * @param string $str Строка на русском или английском
+     * @return string URI
      */
     public static function str2uri(string $str) : string {
         // Спецсимволы
@@ -232,7 +232,7 @@ class Std
         $str = str_replace( '(', '', $str);
         $str = str_replace( "'", '', $str);
         $str = str_replace( ':', '', $str);
-        $str = str_replace( 'Ø', '', $str);
+        $str = str_replace( '\xc3\x98', '', $str);
         $str = str_replace( '@', '', $str);
         $str = str_replace( '«', '', $str);
         $str = str_replace( '»', '', $str);
@@ -249,7 +249,7 @@ class Std
         // удаляем начальные и конечные '-'
         $str = trim($str, "-");
 
-        // тут немного частных случаев для клипов
+        // тут немного частных случаев
         $str = str_replace( '----', '-', $str);
         $str = str_replace( '---', '-', $str);
         $str = str_replace( '--', '-', $str);
