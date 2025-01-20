@@ -223,8 +223,8 @@ class Std
     /**
      * Преобразование кириллических имён в URI slugs
      * Удобно для продуктов, категорий и т.д.
-     * @param string $str
-     * @return string
+     * @param string $str Строка на русском или английском
+     * @return string URI
      */
     public static function str2uri(string $str) : string {
         // Спецсимволы
@@ -249,7 +249,7 @@ class Std
         // удаляем начальные и конечные '-'
         $str = trim($str, "-");
 
-        // тут немного частных случаев для клипов
+        // тут немного частных случаев
         $str = str_replace( '----', '-', $str);
         $str = str_replace( '---', '-', $str);
         $str = str_replace( '--', '-', $str);
