@@ -71,6 +71,9 @@ docker compose up --detach
 4. [Печать анкеты](src/Examples/qstPrint.php)
 5. [Список анкет](src/Examples/qstList.php)
 
+##### 11. Виджет
+- [Подключение виджета](src/Examples/getWidget.php)
+
 ## Ссылки
 - [НКО «Твои Платежи»](https://YPMN.ru/)
 - [Докуметация API](https://ypmn.ru/ru/documentation/)
