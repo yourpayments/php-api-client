@@ -178,4 +178,10 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1list/get',
         'link'  => '',
     ],
+    'getWidget' => [
+        'name'  => 'Получение виджета',
+        'about'  => 'В этом примере показано получение виджета.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/widget-integration',
+        'link'  => '',
+    ],
 ];
