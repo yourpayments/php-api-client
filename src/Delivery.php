@@ -11,41 +11,41 @@ namespace Ypmn;
  */
 class Delivery implements DeliveryInterface
 {
-    /** @var string Имя */
-    private string $firstName;
+    /** @var ?string Имя */
+    private ?string $firstName = null;
 
-    /** @var string Фамилия */
-    private string $lastName;
+    /** @var ?string Фамилия */
+    private ?string $lastName = null;
 
-    /** @var string Email */
-    private string $email;
+    /** @var ?string Email */
+    private ?string $email = null;
 
-    /** @var string Номер телефона */
-    private string $phone;
+    /** @var ?string Номер телефона */
+    private ?string $phone = null;
 
-    /** @var string Код Страны */
-    private string $countryCode;
+    /** @var ?string Код Страны */
+    private ?string $countryCode = null;
 
-    /** @var string Регион */
-    private string $state;
+    /** @var ?string Регион */
+    private ?string $state = null;
 
-    /** @var string Город */
-    private string $city;
+    /** @var ?string Город */
+    private ?string $city = null;
 
-    /** @var string Адрес - Первая Строка */
-    private string $addressLine1;
+    /** @var ?string Адрес - Первая Строка */
+    private ?string $addressLine1 = null;
 
-    /** @var string Адрес - Вторая Строка */
-    private string $addressLine2;
+    /** @var ?string Адрес - Вторая Строка */
+    private ?string $addressLine2 = null;
 
-    /** @var string Почтовый Индекс */
-    private string $zipCode;
+    /** @var ?string Почтовый Индекс */
+    private ?string $zipCode = null;
 
-    /** @var string Наименование Компании */
-    private string $companyName;
+    /** @var ?string Наименование Компании */
+    private ?string $companyName = null;
 
-    /** @var IdentityDocumentInterface Удостоверение Личности */
-    private IdentityDocumentInterface $identityDocument;
+    /** @var ?IdentityDocumentInterface Удостоверение Личности */
+    private ?IdentityDocumentInterface $identityDocument = null;
 
     /** @inheritDoc */
     public function getFirstName(): ?string
@@ -80,9 +80,14 @@ class Delivery implements DeliveryInterface
     }
 
     /** @inheritDoc */
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
-        $this->email = $email;
+        if (empty($email)) {
+            $this->email = null;
+        } else {
+            $this->email = $email;
+        }
+
         return $this;
     }
 
