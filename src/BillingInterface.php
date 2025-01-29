@@ -39,9 +39,9 @@ interface BillingInterface
 
     /**
      * Получить Email
-     * @return string
+     * @return ?string
      */
-    public function getEmail() : string;
+    public function getEmail() : ?string;
 
     /**
      * Установить Номер Телефона

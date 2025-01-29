@@ -7,10 +7,7 @@ class PaymentException extends \Exception
     /** @var string Подробности для логирования */
     private string $logText;
 
-    /**
-     * Ошибка в формате Bootstrap
-     * @return string текст ошибки
-     */
+    /** @return string Ошибка в формате Bootstrap */
     public function getHtmlMessage(): string
     {
         return '

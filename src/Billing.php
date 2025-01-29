@@ -13,38 +13,38 @@ class Billing implements BillingInterface
     /** @var ?string Фамилия */
     private string $lastName;
 
-    /** @var string Email */
-    private string $email;
+    /** @var ?string Email */
+    private ?string $email = null;
 
     /** @var ?string Номер телефона */
-    private ?string $phone;
+    private ?string $phone = null;
 
     /** @var ?string Код Страны */
-    private ?string $countryCode;
+    private ?string $countryCode = null;
 
     /** @var ?string Город */
-    private ?string $city;
+    private ?string $city = null;
 
     /** @var ?string Регион */
-    private ?string $state;
+    private ?string $state = null;
 
     /** @var ?string Название Компании */
-    private ?string $companyName;
+    private ?string $companyName = null;
 
     /** @var ?string Налоговый Идентификатор */
-    private ?string $taxId;
+    private ?string $taxId = null;
 
     /** @var ?string Первая строка адреса */
-    private ?string $addressLine1;
+    private ?string $addressLine1 = null;
 
     /** @var ?string Вторая строка адреса */
-    private ?string $addressLine2;
+    private ?string $addressLine2 = null;
 
     /** @var ?string Почтовый индекс */
-    private ?string $zipCode;
+    private ?string $zipCode = null;
 
     /** @var ?IdentityDocumentInterface удостоверение личности */
-    private ?IdentityDocumentInterface $identityDocument;
+    private ?IdentityDocumentInterface $identityDocument = null;
 
     /** @inheritDoc */
     public function getFirstName(): string
@@ -73,7 +73,7 @@ class Billing implements BillingInterface
     }
 
     /** @inheritDoc */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -81,6 +81,7 @@ class Billing implements BillingInterface
     /** @inheritDoc */
     public function setEmail(string $email): self
     {
+
         $this->email = $email;
         return $this;
     }

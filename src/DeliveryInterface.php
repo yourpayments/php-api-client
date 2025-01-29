@@ -32,10 +32,10 @@ interface DeliveryInterface
 
     /**
      * Установить Email Получателя
-     * @param string $email Email Получателя
+     * @param ?string $email Email Получателя
      * @return $this
      */
-    public function setEmail(string $email) : self;
+    public function setEmail(?string $email) : self;
 
     /**
      * Получить Email Получателя
