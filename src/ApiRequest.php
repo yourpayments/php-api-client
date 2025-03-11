@@ -44,6 +44,8 @@ class ApiRequest implements ApiRequestInterface
     /** @var string Хост для отправки запросов */
     private string $host = self::HOST;
 
+    private string $idempotencyKey;
+
     /** @inheritdoc  */
     public function __construct(MerchantInterface $merchant)
     {
@@ -65,6 +67,24 @@ class ApiRequest implements ApiRequestInterface
             return $this;
         } else {
             throw new PaymentException('Некорректный URL для отправки запросов');
+        }
+    }
+
+    /** @inheritdoc */
+    public function getIdempotencyKey(): string
+    {
+        return $this->idempotencyKey;
+    }
+
+    /** @inheritdoc */
+    public function setIdempotencyKey(string $idempotencyKey): self
+    {
+        if (mb_strlen($idempotencyKey) <= 36) {
+            $this->idempotencyKey = $idempotencyKey;
+
+            return $this;
+        } else {
+            throw new PaymentException('Ключ идемпотентности должен быть не длинее 36 символов, подробнее: https://ypmn.ru/ru/documentation/#tag/idempotency');
         }
     }
 
@@ -294,6 +314,24 @@ class ApiRequest implements ApiRequestInterface
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
         $requestHttpVerb = 'POST';
 
+        $headers = [
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'X-Header-Date: ' . $date,
+            'X-Header-Merchant: ' . $this->merchant->getCode(),
+            'X-Header-Signature:' . $this->getSignature(
+                $this->merchant,
+                $date,
+                $this->getHost() . $api,
+                $requestHttpVerb,
+                $encodedJsonDataHash
+            )
+        ];
+
+        if ($this->getIdempotencyKey()) {
+            $headers[] = 'X-Header-Idempotency-Key: ' . $this->getIdempotencyKey();
+        }
+
         curl_setopt_array($curl, [
             CURLOPT_URL => $this->getHost() . $api,
             CURLOPT_RETURNTRANSFER => true,
@@ -303,19 +341,7 @@ class ApiRequest implements ApiRequestInterface
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $requestHttpVerb,
             CURLOPT_POSTFIELDS => $encodedJsonData,
-            CURLOPT_HTTPHEADER => [
-                'Accept: application/json',
-                'Content-Type: application/json',
-                'X-Header-Date: ' . $date,
-                'X-Header-Merchant: ' . $this->merchant->getCode(),
-                'X-Header-Signature:' . $this->getSignature(
-                    $this->merchant,
-                    $date,
-                    $this->getHost() . $api,
-                    $requestHttpVerb,
-                    $encodedJsonDataHash
-                )
-            ]
+            CURLOPT_HTTPHEADER => $headers
         ]);
 
         $response = curl_exec($curl);

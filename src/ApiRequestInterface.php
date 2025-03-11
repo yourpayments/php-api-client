@@ -128,6 +128,16 @@ interface ApiRequestInterface
      */
     public function setHost(string $host) : self;
 
+    /** @return string Ключ идемпотентности https://ypmn.ru/ru/documentation/#tag/idempotency */
+    public function getIdempotencyKey() : string;
+
+    /**
+     * @param string $idempotencyKey Ключ идемпотентности https://ypmn.ru/ru/documentation/#tag/idempotency
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setIdempotencyKey(string $idempotencyKey) : self;
+
     /**
      * Отправить запрос на регистрацию мерчанта
      * @param PodeliMerchant $merchant
