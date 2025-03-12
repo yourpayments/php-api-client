@@ -53,11 +53,33 @@ class ApiRequest implements ApiRequestInterface
     /** @var string Хост для отправки запросов */
     private string $host = self::HOST;
 
+    /** @var string Ключ идемпотентности */
+    private string $idempotencyKey;
+
     /** @inheritdoc  */
     public function __construct(MerchantInterface $merchant)
     {
         $this->merchant = $merchant;
     }
+
+    /** @inheritdoc */
+    public function getIdempotencyKey(): string
+    {
+        return $this->idempotencyKey;
+    }
+
+    /** @inheritdoc */
+    public function setIdempotencyKey(string $idempotencyKey): self
+    {
+        if (mb_strlen($idempotencyKey) <= 36) {
+            $this->idempotencyKey = $idempotencyKey;
+
+            return $this;
+        } else {
+            throw new PaymentException('Ключ идемпотентности должен быть не длинее 36 символов, подробнее: https://ypmn.ru/ru/documentation/#tag/idempotency');
+        }
+    }
+
 
     /** @inheritdoc  */
     public function getHost() : string
@@ -341,6 +363,10 @@ class ApiRequest implements ApiRequestInterface
 
         if ($this->getDebugShowResponseHeaders()) {
             $this->addCurlOptHeaderFunction($setOptArray, $headers);
+        }
+
+        if ($this->getIdempotencyKey()) {
+            $headers[] = 'X-Header-Idempotency-Key: ' . $this->getIdempotencyKey();
         }
 
         curl_setopt_array($curl, $setOptArray);
