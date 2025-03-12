@@ -128,6 +128,16 @@ interface ApiRequestInterface
      */
     public function sendReportOrderRequest(array $params);
 
+    /** @return string Ключ идемпотентности https://ypmn.ru/ru/documentation/#tag/idempotency */
+    public function getIdempotencyKey() : string;
+
+    /**
+     * @param string $idempotencyKey Ключ идемпотентности https://ypmn.ru/ru/documentation/#tag/idempotency
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setIdempotencyKey(string $idempotencyKey) : self;
+
     /**
      * Отправить запрос для получения детального отчета по заказу
      * @param array $params
