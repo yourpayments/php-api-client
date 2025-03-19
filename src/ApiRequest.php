@@ -54,7 +54,7 @@ class ApiRequest implements ApiRequestInterface
     private string $host = self::HOST;
 
     /** @var string Ключ идемпотентности */
-    private string $idempotencyKey;
+    private string $idempotencyKey = "";
 
     /** @inheritdoc  */
     public function __construct(MerchantInterface $merchant)
