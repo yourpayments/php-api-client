@@ -14,6 +14,7 @@ use Ypmn\PaymentMethods;
 use Ypmn\PaymentPageOptions;
 use Ypmn\Product;
 use Ypmn\Std;
+use Ypmn\Details;
 
 // Подключим файл, в котором заданы параметры мерчанта
 include_once 'start.php';
@@ -72,6 +73,69 @@ $delivery = new Delivery;
 $delivery->setIdentityDocument(
     new IdentityDocument(123456, 'PERSONALID')
 );
+
+// (необязательно) Опишем поля для чеков
+$details = new Details;
+$details->setReceipts(<<<DETAILS
+[
+    {
+        "merchantCode": "MERCHANT_CODE",
+        "receipt": {
+            "client": {
+                "email": "5fa752fd-8be8-42c5-8049-d2e62691aa01@emailhook.site"
+            },
+            "company": {
+                "email": "chek@romashka.ru",
+                "sno": "osn",
+                "inn": "FISCAL_CODE",
+                "payment_address": "https://v4.online.atol.ru"
+            },
+            "items": [
+                {
+                    "name": "колбаса Клинский Брауншвейгская с/к в/с ",
+                    "price": 1000.00,
+                    "quantity": 0.3,
+                    "sum": 300.00,
+                    "measurement_unit": "кг",
+                    "payment_method": "full_payment",
+                    "payment_object": "commodity",
+                    "vat": {
+                        "type": "vat120"
+                    }
+                },
+                {
+                    "name": "яйцо Окское куриное С0 белое",
+                    "price": 100.00,
+                    "quantity": 1.0,
+                    "sum": 100.00,
+                    "measurement_unit": "Упаковка 10 шт.",
+                    "payment_method": "full_payment",
+                    "payment_object": "commodity",
+                    "vat": {
+                        "type": "vat120"
+                    }
+                }
+            ],
+            "payments": [
+                {
+                    "type": 1,
+                    "sum": 400.0
+                }
+            ],
+            "vats": [
+                {
+                    "type": "vat120"
+                },
+                {
+                    "type": "vat120"
+                }
+            ],
+            "total": 400.0
+        }
+    }
+]
+DETAILS);
+
 // Установим Код страны
 $delivery->setCountryCode('RU');
 // Установим Город
@@ -113,6 +177,8 @@ $payment->addProduct($product1);
 $payment->addProduct($product2);
 // Установим валюту
 $payment->setCurrency('RUB');
+// Установим дополнительные поля
+$payment->setDetails($details);
 
 // Создадим запрос на  авторизацию платежа
 // Здесь первым параметром можно передать конкретный способ оплаты из справочника
