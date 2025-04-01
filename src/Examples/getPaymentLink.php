@@ -79,15 +79,15 @@ $details = new Details;
 $details->setReceipts(<<<DETAILS
 [
     {
-        "merchantCode": "MERCHANT_CODE",
+        "merchantCode": "{$merchant->getCode()}",
         "receipt": {
             "client": {
-                "email": "5fa752fd-8be8-42c5-8049-d2e62691aa01@emailhook.site"
+                "email": "sales@romashka.ru"
             },
             "company": {
                 "email": "chek@romashka.ru",
                 "sno": "osn",
-                "inn": "FISCAL_CODE",
+                "inn": "1234567890",
                 "payment_address": "https://v4.online.atol.ru"
             },
             "items": [
