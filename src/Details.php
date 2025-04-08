@@ -56,7 +56,7 @@ class Details
 
         if (is_string($this->getReceipts())) {
             $array += [
-                'receipts' => $this->getReceipts()
+                'receipts' => json_decode($this->getReceipts())
             ];
         } else {
             $array += ['receipts' => []];
