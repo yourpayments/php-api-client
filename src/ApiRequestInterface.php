@@ -105,6 +105,13 @@ interface ApiRequestInterface
     public function sendTokenPaymentRequest(MerchantToken $tokenHash): array;
 
     /**
+     * Отправить запрос на получение баланса
+     * @param array $params
+     * @return array
+     */
+    public function sendPayoutGetBalanceRequest(array $params = []): array;
+
+    /**
      * Отправить запрос для получения графика
      * @param array $params
      */

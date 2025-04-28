@@ -118,6 +118,12 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api',
         'link'  => '',
     ],
+    'payoutGetBalance' => [
+        'name'  => 'Получение баланса для выплаты',
+        'about'  => 'Запрос к YPMN для проверки баланса на вылпату',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api/paths/~1v4~1payout~1balance/get',
+        'link'  => '',
+    ],
     'getSession' => [
         'name'  => 'Создание сессии',
         'about'  => 'Создание уникальной сессии YPMN',
