@@ -726,7 +726,7 @@ class ApiRequest implements ApiRequestInterface
                         border: 1px solid green;
                         white-space: pre-wrap;
                     "
-                >' . print_r($mixedInput, true) . '</pre>';
+                >' . htmlspecialchars(print_r($mixedInput, true)) . '</pre>';
         }
     }
 
