@@ -52,6 +52,18 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/',
         'link'  => '',
     ],
+    'getBindingPays' => [
+        'name'  => 'Создание токена SberPay',
+        'about'  => 'В этом примере отправляется запрос на создание токена SberPay с одновременной оплатой',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
+    'paymentByBindingPays' => [
+        'name'  => 'Оплата по токену SberPay',
+        'about'  => 'Это пример демонстрирует оплату через SberPay по средством ранее созданного токена',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
     'getPaymentLinkMarketplace' => [
         'name'  => 'Платёж со сплитом',
         'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков).',

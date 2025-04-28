@@ -41,6 +41,8 @@ if(isset($_GET['function'])){
             case 'getFasterPaymentWithReceipts':
             case 'getBindingFasterPayment':
             case 'paymentByFasterBinding':
+            case 'paymentByBindingPays':
+            case 'getBindingPays':
             case 'qstCreateOrg':
             case 'qstCreateIp':
             case 'qstStatus':
