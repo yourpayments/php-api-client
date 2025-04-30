@@ -9,17 +9,20 @@ use Exception;
 /**
  * Расширенные данные по транзакции
  */
-#[AllowDynamicProperties]
 class Details
 {
     /** @var string|SubmerchantReceipt[]|null */
     private $receipts = null;
 
+    /** @var array динамические свойства */
+    private array $valuesContainer = [];
+
     public function __set(string $name, $value): void {
-        $this->{$name} = $value;
+        $this->valuesContainer[$name] = $value;
     }
 
     /**
+     * Установка динамических свойств по ключу
      * @param mixed $keys
      * @param mixed $values
      * @return self
@@ -28,18 +31,23 @@ class Details
     {
         if (is_array($keys) && is_array($values)) {
             foreach ($keys as $i => $key) {
-                $this->${$key} = $values[$i];
+                $this->valuesContainer[$key] = $values[$i];
             }
         } elseif (!is_array($keys) && !is_array($values)) {
-            $this->${$keys} = $values;
+            $this->valuesContainer[$keys] = $values;
         }
 
         return $this;
     }
 
+    /**
+     * Запрос динамических свойств по ключу
+     * @param $key
+     * @return mixed|null
+     */
     public function get($key)
     {
-        return @$this->{$key} ?? null;
+        return $this->valuesContainer[$key] ?? null;
     }
 
     /**
@@ -97,7 +105,7 @@ class Details
             }
         }
 
-        foreach ($this as $key => $value) {
+        foreach ($this->valuesContainer as $key => $value) {
             if ($key === 'receipts') {
                 break;
             }
