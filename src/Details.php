@@ -17,10 +17,6 @@ class Details
     /** @var array динамические свойства */
     private array $valuesContainer = [];
 
-    public function __set(string $name, $value): void {
-        $this->valuesContainer[$name] = $value;
-    }
-
     /**
      * Установка динамических свойств по ключу
      * @param mixed $keys
@@ -41,11 +37,31 @@ class Details
     }
 
     /**
+     * Перенаправим определение свойств
+     * @param $name
+     * @param $value
+     * @return void
+     */
+    public function __set($name, $value): void {
+        $this->valuesContainer[$name] = $value;
+    }
+
+    /**
      * Запрос динамических свойств по ключу
      * @param $key
      * @return mixed|null
      */
     public function get($key)
+    {
+        return $this->valuesContainer[$key] ?? null;
+    }
+
+    /**
+     * Перенаправим запрос публичных свойств
+     * @param $key
+     * @return mixed|null
+     */
+    public function __get($key)
     {
         return $this->valuesContainer[$key] ?? null;
     }
