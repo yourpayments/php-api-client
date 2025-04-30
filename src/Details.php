@@ -14,6 +14,58 @@ class Details
     /** @var string|SubmerchantReceipt[]|null */
     private $receipts = null;
 
+    /** @var array динамические свойства */
+    private array $valuesContainer = [];
+
+    /**
+     * Установка динамических свойств по ключу
+     * @param mixed $keys
+     * @param mixed $values
+     * @return self
+     */
+    public function set($keys, $values) : self
+    {
+        if (is_array($keys) && is_array($values)) {
+            foreach ($keys as $i => $key) {
+                $this->valuesContainer[$key] = $values[$i];
+            }
+        } elseif (!is_array($keys) && !is_array($values)) {
+            $this->valuesContainer[$keys] = $values;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Перенаправим определение свойств
+     * @param $name
+     * @param $value
+     * @return void
+     */
+    public function __set($name, $value): void {
+        $this->valuesContainer[$name] = $value;
+    }
+
+    /**
+     * Запрос динамических свойств по ключу
+     * @param $key
+     * @return mixed|null
+     */
+    public function get($key)
+    {
+        return $this->valuesContainer[$key] ?? null;
+    }
+
+    /**
+     * Перенаправим запрос публичных свойств
+     * @param $key
+     * @return mixed|null
+     */
+    public function __get($key)
+    {
+        return $this->valuesContainer[$key] ?? null;
+    }
+
     /**
      * Получить:
      *  - массив объектов, каждый из которых содержит мерчант код и строку с данными для регистрации чеков
@@ -46,6 +98,8 @@ class Details
         return $this;
     }
 
+
+
     /**
      * Преобразовать объект в строку
      * @return array
@@ -67,6 +121,14 @@ class Details
             }
         }
 
-        return array_filter($array, static fn ($value) => $value !== null);
+        foreach ($this->valuesContainer as $key => $value) {
+            if ($key === 'receipts') {
+                break;
+            }
+
+            $array[$key] = $value;
+        }
+
+        return array_filter($array, static fn ($value) => !empty($value));
     }
 }
