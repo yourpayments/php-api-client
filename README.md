@@ -39,39 +39,44 @@ docker compose up --detach
 ##### 3. Подписки СБП  
 1. [Создание подписки СБП](src/Examples/getBindingFasterPayment.php)
 2. [Оплата по подписке СБП](src/Examples/paymentByFasterBinding.php)
+
+##### 4. Подписки SberPay
+1. [Создание подписки SberPay](src/Examples/getBindingPays.php)
+2. [Оплата по подписке SberPay](src/Examples/paymentByBindingPays.php)
    
-##### 4. Токенизация карты (чтобы запомнить карту клиента и не вводить повторно)
+##### 5. Токенизация карты (чтобы запомнить карту клиента и не вводить повторно)
 1. [Создание платёжного токена ](src/Examples/getToken.php)
 2. [Оплата токеном](src/Examples/paymentByToken.php)
   
-##### 5. Отчёты
+##### 6. Отчёты
 1. [Проверка статуса платежа](src/Examples/paymentGetStatus.php)
 2. [Запрос детального отчета по заказу](src/Examples/getReportOrderDetails.php)
 3. [Запрос быстрого отчёта по заказам для сверки](src/Examples/getReportOrder.php)
 4. [Запрос отчёта по заказам](src/Examples/getReportGeneral.php)
 5. [Запрос отчёта в виде графика](src/Examples/getReportChart.php)
 
-##### 6. Возврат средств плательщику (Refund)
+##### 7. Возврат средств плательщику (Refund)
 1. [Возврат средств](src/Examples/paymentRefund.php)
 2. [Возврат средств со сплитом (разделением платежа)](src/Examples/paymentRefundMarketplace.php)
 
-##### 7. Выплаты
+##### 8. Выплаты
 1. [Выплаты на банковские карты](src/Examples/payoutCreate.php)
+2. [Запрос баланса для выплаты](src/Examples/payoutGetBalance.php)
 
-##### 8. [Безопасные поля (Secure fields)](src/Examples/secureFields.php)
+##### 9. [Безопасные поля (Secure fields)](src/Examples/secureFields.php)
 2. [Создание сессии](src/Examples/getSession.php)
 3. [Оплата одноразовым токеном](src/Examples/oneTimeTokenPayment.php)
 
-##### 9. [Страница после оплаты](src/Examples/returnPage.php)
+##### 10. [Страница после оплаты](src/Examples/returnPage.php)
 
-##### 10. Подключение продавцов (сабмерчантов маркетплейсов)
+##### 11. Подключение продавцов (сабмерчантов маркетплейсов)
 1. [Подключение продавца-юридического лица (отправка анкеты)](src/Examples/qstCreateOrg.php)
 2. [Подключение продавца-ИП (отправка анкеты)](src/Examples/qstCreateIp.php)
 3. [Получение статуса анкеты](src/Examples/qstStatus.php)
 4. [Печать анкеты](src/Examples/qstPrint.php)
 5. [Список анкет](src/Examples/qstList.php)
 
-##### 11. Виджет
+##### 12. Виджет
 - [Подключение виджета](src/Examples/getWidget.php)
 
 ## Ссылки
