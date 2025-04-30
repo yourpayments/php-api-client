@@ -129,6 +129,6 @@ class Details
             $array[$key] = $value;
         }
 
-        return array_filter($array, static fn ($value) => $value !== null);
+        return array_filter($array, static fn ($value) => !empty($value));
     }
 }
