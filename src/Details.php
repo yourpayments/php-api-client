@@ -112,7 +112,7 @@ class Details
             $array += [
                 'receipts' => json_decode($this->getReceipts())
             ];
-        } else {
+        } elseif(!empty($this->getReceipts())) {
             $array += ['receipts' => []];
             /** @var SubmerchantReceipt[] $receipts */
             $receipts = $this->getReceipts();
