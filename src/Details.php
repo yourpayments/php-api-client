@@ -9,10 +9,38 @@ use Exception;
 /**
  * Расширенные данные по транзакции
  */
+#[AllowDynamicProperties]
 class Details
 {
     /** @var string|SubmerchantReceipt[]|null */
     private $receipts = null;
+
+    public function __set(string $name, $value): void {
+        $this->{$name} = $value;
+    }
+
+    /**
+     * @param mixed $keys
+     * @param mixed $values
+     * @return self
+     */
+    public function set($keys, $values) : self
+    {
+        if (is_array($keys) && is_array($values)) {
+            foreach ($keys as $i => $key) {
+                $this->${$key} = $values[$i];
+            }
+        } elseif (!is_array($keys) && !is_array($values)) {
+            $this->${$keys} = $values;
+        }
+
+        return $this;
+    }
+
+    public function get($key)
+    {
+        return @$this->{$key} ?? null;
+    }
 
     /**
      * Получить:
@@ -46,6 +74,8 @@ class Details
         return $this;
     }
 
+
+
     /**
      * Преобразовать объект в строку
      * @return array
@@ -65,6 +95,14 @@ class Details
             foreach ($receipts as $submerchantReceipt) {
                 $array['receipts'][] = $submerchantReceipt->toArray();
             }
+        }
+
+        foreach ($this as $key => $value) {
+            if ($key === 'receipts') {
+                break;
+            }
+
+            $array[$key] = $value;
         }
 
         return array_filter($array, static fn ($value) => $value !== null);
