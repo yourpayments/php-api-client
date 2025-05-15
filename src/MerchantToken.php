@@ -7,6 +7,9 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
     /** @var string Токен подписки СБП */
     private string $bindingId;
 
+    /** @var string Токен подписки SberPay */
+    private string $ypmnBindingId;
+
     /** @var string Хэш Токен карты */
     private string $tokenHash;
 
@@ -65,6 +68,19 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
     public function setBindingId(string $bindingId): self
     {
         $this->bindingId = $bindingId;
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function getYpmnBindingId(): string
+    {
+        return $this->ypmnBindingId;
+    }
+
+    /** @inheritDoc */
+    public function setYpmnBindingId(string $ypmnBindingId): self
+    {
+        $this->ypmnBindingId = $ypmnBindingId;
         return $this;
     }
 

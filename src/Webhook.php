@@ -14,6 +14,9 @@ class Webhook implements WebhookInterface
     /** @var OrderDataInterface Информация о Заказе */
     private OrderDataInterface $orderData;
 
+    /** @var WebhookAuthorizationInterface Информация об авторизации */
+    private WebhookAuthorizationInterface $authorization;
+
     /** @inheritDoc */
     public function catchJsonRequest(): self
     {
@@ -32,7 +35,7 @@ class Webhook implements WebhookInterface
         $this->orderData->setCurrency($request['orderData']['currency']);
         $this->orderData->setAmount($request['orderData']['amount']);
         $this->orderData->setCommission((float) $request['orderData']['commission']);
-        $this->orderData->setLoyaltyPointsAmount((string) $request['orderData']['loyaltyPointsAmount']);
+        $this->orderData->setLoyaltyPointsAmount((int) $request['orderData']['loyaltyPointsAmount']);
         $this->orderData->setLoyaltyPointsDetails((array) $request['orderData']['loyaltyPointsDetails']);
 
         $cardDetails = new CardDetails;
@@ -95,6 +98,23 @@ class Webhook implements WebhookInterface
             $client->setDelivery($delivery);
         }
 
+        if (isset($request['authorization']['storedCredentials'])) {
+            $storedCredentialsArray = $request['authorization']['storedCredentials'];
+
+            $storedCredentials = new WebhookStoredCredentials;
+
+            if (isset($storedCredentialsArray['ypmnBindingId'])) {
+                $storedCredentials->setYpmnBindingId($storedCredentialsArray['ypmnBindingId']);
+            }
+
+            if (isset($storedCredentialsArray['useId'])) {
+                $storedCredentials->setUseId($storedCredentialsArray['useId']);
+            }
+
+            $this->authorization = new WebhookAuthorization;
+            $this->authorization->setStoredCredentials($storedCredentials);
+        }
+
         return $this;
     }
 
@@ -122,5 +142,18 @@ class Webhook implements WebhookInterface
     {
         $this->orderData = $orderData;
         return $this;
+    }
+
+    /** @inheritDoc */
+    public function setAuthorization(WebhookAuthorizationInterface $authorization): self
+    {
+        $this->authorization = $authorization;
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function getAuthorization(): WebhookAuthorizationInterface
+    {
+        return $this->authorization;
     }
 }

@@ -52,6 +52,18 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/',
         'link'  => '',
     ],
+    'getBindingPays' => [
+        'name'  => 'Создание токена SberPay',
+        'about'  => 'В этом примере отправляется запрос на создание токена SberPay с одновременной оплатой',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
+    'paymentByBindingPays' => [
+        'name'  => 'Оплата по токену SberPay',
+        'about'  => 'Это пример демонстрирует оплату через SberPay по средством ранее созданного токена',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
     'getPaymentLinkMarketplace' => [
         'name'  => 'Платёж со сплитом',
         'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков).',
@@ -104,6 +116,12 @@ $examples = [
         'name'  => 'Создание выплаты',
         'about'  => 'Запрос к YPMN для совершения выплаты на карту (для компаний, сертифицированных по PCI-DSS). У вас должно быть достаточно средств на специальном счету для выплат.<br><br>Тестовая карта (для выплат на тестовом контуре): 4149605380309302',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api',
+        'link'  => '',
+    ],
+    'payoutGetBalance' => [
+        'name'  => 'Получение баланса для выплаты',
+        'about'  => 'Запрос к YPMN для проверки баланса на вылпату',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api/paths/~1v4~1payout~1balance/get',
         'link'  => '',
     ],
     'getSession' => [

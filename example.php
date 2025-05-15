@@ -26,6 +26,7 @@ if(isset($_GET['function'])){
             case 'paymentCapture':
             case 'paymentGetStatus':
             case 'payoutCreate':
+            case 'payoutGetBalance':
             case 'paymentWebhook':
             case 'paymentRefund':
             case 'paymentRefundMarketplace':
@@ -41,6 +42,8 @@ if(isset($_GET['function'])){
             case 'getFasterPaymentWithReceipts':
             case 'getBindingFasterPayment':
             case 'paymentByFasterBinding':
+            case 'paymentByBindingPays':
+            case 'getBindingPays':
             case 'qstCreateOrg':
             case 'qstCreateIp':
             case 'qstStatus':

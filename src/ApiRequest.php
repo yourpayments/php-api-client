@@ -19,6 +19,7 @@ class ApiRequest implements ApiRequestInterface
     public const REFUND_API = '/api/v4/payments/refund';
     public const STATUS_API = '/api/v4/payments/status';
     public const PAYOUT_CREATE_API = '/api/v4/payout';
+    public const PAYOUT_GET_BALANCE_API = '/api/v4/payout/balance';
     public const REPORTS_ORDERS_API = '/reports/orders';
     public const SESSION_API = '/api/v4/payments/sessions';
     public const REPORT_CHART_API = '/api/v4/reports/chart';
@@ -542,6 +543,31 @@ class ApiRequest implements ApiRequestInterface
         return $this->sendPostRequest($payout, self::PAYOUT_CREATE_API);
     }
 
+    /**
+     * @inheritdoc
+     * @throws PaymentException
+     */
+    public function sendPayoutGetBalanceRequest(array $params = []): array
+    {
+        $url = self::PAYOUT_GET_BALANCE_API;
+
+        if (!empty($params)) {
+            $url .= '?' . http_build_query($params);
+        }
+
+        $responseData = $this->sendGetRequest($url);
+
+        if (mb_strlen($responseData['error']) > 0) {
+            throw new PaymentException($responseData['error']);
+        }
+
+        if ($responseData['response'] == null || strlen($responseData['response']) === 0) {
+            throw new PaymentException('Непредвиденная ошибка!.');
+        }
+
+        return $responseData;
+    }
+
     /** @inheritdoc
      * @throws PaymentException
      */
@@ -700,7 +726,7 @@ class ApiRequest implements ApiRequestInterface
                         border: 1px solid green;
                         white-space: pre-wrap;
                     "
-                >' . print_r($mixedInput, true) . '</pre>';
+                >' . htmlspecialchars(print_r($mixedInput, true)) . '</pre>';
         }
     }
 

@@ -36,4 +36,17 @@ interface WebhookInterface
      * @return Webhook
      */
     public function setOrderData(OrderDataInterface $orderData): self;
+
+    /**
+     * Установить информацию об авторизации
+     * @param WebhookAuthorizationInterface $authorization
+     * @return $this
+     */
+    public function setAuthorization(WebhookAuthorizationInterface $authorization): self;
+
+    /**
+     * Получить информацию об авторизации
+     * @return WebhookAuthorizationInterface
+     */
+    public function getAuthorization(): WebhookAuthorizationInterface;
 }

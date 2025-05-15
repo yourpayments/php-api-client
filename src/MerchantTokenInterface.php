@@ -55,4 +55,17 @@ interface MerchantTokenInterface
      * @return $this
      */
     public function setBindingId(string $bindingId): self;
+
+    /**
+     * Получить токен подписки SberPay
+     * @return string токен подписки
+     */
+    public function getYpmnBindingId(): string;
+
+    /**
+     * Установить токен подписки SberPay
+     * @param string $ypmnBindingId токен подписки SberPay
+     * @return $this
+     */
+    public function setYpmnBindingId(string $ypmnBindingId): self;
 }
