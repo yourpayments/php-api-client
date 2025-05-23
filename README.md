@@ -40,9 +40,9 @@ docker compose up --detach
 1. [Создание подписки СБП](src/Examples/getBindingFasterPayment.php)
 2. [Оплата по подписке СБП](src/Examples/paymentByFasterBinding.php)
 
-##### 4. Подписки SberPay
-1. [Создание подписки SberPay](src/Examples/getBindingPays.php)
-2. [Оплата по подписке SberPay](src/Examples/paymentByBindingPays.php)
+##### 4. Подписки SberPay, T-Pay
+1. [Создание подписки](src/Examples/getBindingPays.php)
+2. [Оплата по подписке](src/Examples/paymentByBindingPays.php)
    
 ##### 5. Токенизация карты (чтобы запомнить карту клиента и не вводить повторно)
 1. [Создание платёжного токена ](src/Examples/getToken.php)
