@@ -40,7 +40,7 @@ docker compose up --detach
 1. [Создание подписки СБП](src/Examples/getBindingFasterPayment.php)
 2. [Оплата по подписке СБП](src/Examples/paymentByFasterBinding.php)
 
-##### 4. Подписки SberPay, T-Pay
+##### 4. Подписки SberPay, T-Pay, картой не РФ
 1. [Создание подписки](src/Examples/getBindingPays.php)
 2. [Оплата по подписке](src/Examples/paymentByBindingPays.php)
    
