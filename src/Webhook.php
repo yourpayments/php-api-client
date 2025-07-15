@@ -39,11 +39,11 @@ class Webhook implements WebhookInterface
         $this->orderData->setLoyaltyPointsDetails((array) $request['orderData']['loyaltyPointsDetails']);
 
         $cardDetails = new CardDetails;
-        $cardDetails->setBin($request['paymentResult']['paymentMethod']['cardDetails']['bin']);
-        $cardDetails->setOwner($request['paymentResult']['paymentMethod']['cardDetails']['owner']);
-        $cardDetails->setPan($request['paymentResult']['paymentMethod']['cardDetails']['pan']);
-        $cardDetails->setType($request['paymentResult']['paymentMethod']['cardDetails']['type']);
-        $cardDetails->setCardIssuerBank($request['paymentResult']['paymentMethod']['cardDetails']['cardIssuerBank']);
+        $cardDetails->setBin($request['paymentResult']['cardDetails']['bin']);
+        $cardDetails->setOwner($request['paymentResult']['cardDetails']['owner']);
+        $cardDetails->setPan($request['paymentResult']['cardDetails']['pan']);
+        $cardDetails->setType($request['paymentResult']['cardDetails']['type']);
+        $cardDetails->setCardIssuerBank($request['paymentResult']['cardDetails']['cardIssuerBank']);
 
         $this->paymentResult = new PaymentResult;
         $this->paymentResult->setCardDetails($cardDetails);
