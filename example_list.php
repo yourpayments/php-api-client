@@ -202,4 +202,10 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/widget-integration',
         'link'  => '',
     ],
+    'createWebhook' => [
+        'name' => 'Обработка вебхука',
+        'about' => 'В этом примере показана обработка вебхука IPN',
+        'docLink' => 'https://ypmn.ru/ru/documentation/#tag/webhooks',
+        'link' => '',
+    ]
 ];
