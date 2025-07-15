@@ -1,7 +1,7 @@
 <?php
 
 /**
- * createWebhook.php
+ * webhookProcessing.php
  *
  * На адрес этого файла будет приходить вебхук IPN
  * Чтобы изменить адрес, отредактируйте параметр URL на странице
@@ -11,7 +11,6 @@
 
 declare(strict_types=1);
 
-use Ypmn\PaymentException;
 use Ypmn\Webhook;
 
 // Создадим обработчик вебхука
