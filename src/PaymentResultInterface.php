@@ -110,11 +110,10 @@ interface PaymentResultInterface
     public function setCardDetails(CardDetailsInterface $cardDetails): self;
 
     /**
-     * Установить Информацию о Карте
-     * @param $cardDetails
+     * Получить информацию о Карте
      * @return CardDetailsInterface
      */
-    public function getCardDetails($cardDetails) : CardDetailsInterface;
+    public function getCardDetails() : CardDetailsInterface;
 
 
     /**

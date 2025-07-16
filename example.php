@@ -50,6 +50,7 @@ if(isset($_GET['function'])){
             case 'qstPrint':
             case 'SOMGetPaymentLink':
             case 'qstList':
+            case 'webhookProcessing':
                 require './src/Examples/start.php';
                 @include './src/Examples/'.$_GET['function'] . '__prepend.php';
                 require './src/Examples/'.$_GET['function'] . '.php';

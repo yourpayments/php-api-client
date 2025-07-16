@@ -152,7 +152,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getCardDetails($cardDetails) : CardDetailsInterface
+    public function getCardDetails() : CardDetailsInterface
     {
         return $this->cardDetails;
     }
