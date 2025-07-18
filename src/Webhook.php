@@ -28,62 +28,154 @@ class Webhook implements WebhookInterface
         }
 
         $this->orderData = new OrderData;
-        $this->orderData->setOrderDate($request['orderData']['orderDate']);
-        $this->orderData->setPayUPaymentReference($request['orderData']['payuPaymentReference']);
-        $this->orderData->setMerchantPaymentReference($request['orderData']['merchantPaymentReference']);
-        $this->orderData->setStatus($request['orderData']['status']);
-        $this->orderData->setCurrency($request['orderData']['currency']);
-        $this->orderData->setAmount($request['orderData']['amount']);
-        $this->orderData->setCommission((float) $request['orderData']['commission']);
-        $this->orderData->setLoyaltyPointsAmount((int) $request['orderData']['loyaltyPointsAmount']);
-        $this->orderData->setLoyaltyPointsDetails((array) $request['orderData']['loyaltyPointsDetails']);
 
-        $cardDetails = new CardDetails;
-        $cardDetails->setBin($request['paymentResult']['cardDetails']['bin']);
-        $cardDetails->setOwner($request['paymentResult']['cardDetails']['owner']);
-        $cardDetails->setPan($request['paymentResult']['cardDetails']['pan']);
-        $cardDetails->setType($request['paymentResult']['cardDetails']['type']);
-        $cardDetails->setCardIssuerBank($request['paymentResult']['cardDetails']['cardIssuerBank']);
-
-        $this->paymentResult = new PaymentResult;
-        $this->paymentResult->setCardDetails($cardDetails);
-        $this->paymentResult->setPaymentMethod($request['paymentResult']['paymentMethod']);
-        $this->paymentResult->setPaymentDate($request['paymentResult']['paymentDate']);
-        $this->paymentResult->setAuthCode((string) $request['paymentResult']['authCode']);
-        $this->paymentResult->setMerchantId($request['paymentResult']['merchantId']);
-
-        if (isset($request['paymentResult']['captureDate'])) {
-            $this->paymentResult->setCaptureDate($request['paymentResult']['captureDate']);
+        if (!empty($request['orderData']['orderDate'])) {
+            $this->orderData->setOrderDate($request['orderData']['orderDate']);
         }
 
-        if (isset($request['paymentResult']['rrn'])) {
-            $this->paymentResult->setRrn((int) $request['paymentResult']['rrn']);
+        if (!empty($request['orderData']['payuPaymentReference'])) {
+            $this->orderData->setPayUPaymentReference($request['orderData']['payuPaymentReference']);
         }
 
-        if (isset($request['paymentResult']['cardProgramName'])) {
-            $this->paymentResult->setCardProgramName($request['paymentResult']['cardProgramName']);
+        if (!empty($request['orderData']['merchantPaymentReference'])) {
+            $this->orderData->setMerchantPaymentReference($request['orderData']['merchantPaymentReference']);
         }
 
-        if (isset($request['paymentResult']['installmentsNumber'])) {
-            $this->paymentResult->setInstallmentsNumber($request['paymentResult']['installmentsNumber']);
+        if (!empty($request['orderData']['status'])) {
+            $this->orderData->setStatus($request['orderData']['status']);
         }
 
-        if (isset($request['client']) && count($request['client']) > 0) {
+        if (!empty($request['orderData']['currency'])) {
+            $this->orderData->setCurrency($request['orderData']['currency']);
+        }
+
+        if (!empty($request['orderData']['amount'])) {
+            $this->orderData->setAmount($request['orderData']['amount']);
+        }
+
+        if (isset($request['orderData']['commission'])) {
+            $this->orderData->setCommission((float) $request['orderData']['commission']);
+        }
+
+        if (isset($request['orderData']['loyaltyPointsAmount'])) {
+            $this->orderData->setLoyaltyPointsAmount((int) $request['orderData']['loyaltyPointsAmount']);
+        }
+
+        if (!empty($request['orderData']['loyaltyPointsDetails'])) {
+            $this->orderData->setLoyaltyPointsDetails((array) $request['orderData']['loyaltyPointsDetails']);
+        }
+
+        if (!empty($request['paymentResult']['cardDetails'])) {
+            $cardDetails = new CardDetails;
+
+            if (!empty($request['paymentResult']['cardDetails']['bin'])) {
+                $cardDetails->setBin($request['paymentResult']['cardDetails']['bin']);
+            }
+
+            if (!empty($request['paymentResult']['cardDetails']['owner'])) {
+                $cardDetails->setOwner($request['paymentResult']['cardDetails']['owner']);
+            }
+
+            if (!empty($request['paymentResult']['cardDetails']['pan'])) {
+                $cardDetails->setPan($request['paymentResult']['cardDetails']['pan']);
+            }
+
+            if (!empty($request['paymentResult']['cardDetails']['type'])) {
+                $cardDetails->setType($request['paymentResult']['cardDetails']['type']);
+            }
+
+            if (!empty($request['paymentResult']['cardDetails']['cardIssuerBank'])) {
+                $cardDetails->setCardIssuerBank($request['paymentResult']['cardDetails']['cardIssuerBank']);
+            }
+
+            $this->paymentResult = new PaymentResult;
+            $this->paymentResult->setCardDetails($cardDetails);
+
+            if (!empty($request['paymentResult']['paymentMethod'])) {
+                $this->paymentResult->setPaymentMethod($request['paymentResult']['paymentMethod']);
+            }
+
+            if (!empty($request['paymentResult']['paymentDate'])) {
+                $this->paymentResult->setPaymentDate($request['paymentResult']['paymentDate']);
+            }
+
+            if (isset($request['paymentResult']['authCode'])) {
+                $this->paymentResult->setAuthCode((string) $request['paymentResult']['authCode']);
+            }
+
+            if (!empty($request['paymentResult']['merchantId'])) {
+                $this->paymentResult->setMerchantId($request['paymentResult']['merchantId']);
+            }
+
+            if (!empty($request['paymentResult']['captureDate'])) {
+                $this->paymentResult->setCaptureDate($request['paymentResult']['captureDate']);
+            }
+
+            if (isset($request['paymentResult']['rrn'])) {
+                $this->paymentResult->setRrn((int) $request['paymentResult']['rrn']);
+            }
+
+            if (!empty($request['paymentResult']['cardProgramName'])) {
+                $this->paymentResult->setCardProgramName($request['paymentResult']['cardProgramName']);
+            }
+
+            if (isset($request['paymentResult']['installmentsNumber'])) {
+                $this->paymentResult->setInstallmentsNumber($request['paymentResult']['installmentsNumber']);
+            }
+        }
+
+        if (!empty($request['client']) && count($request['client']) > 0) {
             $billing = new Billing;
-            $billing->setFirstName($request['client']['billing']['firstName']);
-            $billing->setLastName($request['client']['billing']['lastName']);
-            $billing->setEmail($request['client']['billing']['email']);
-            $billing->setPhone($request['client']['billing']['phone']);
-            $billing->setCountryCode($request['client']['billing']['countryCode']);
-            $billing->setCity($request['client']['billing']['city']);
-            $billing->setState($request['client']['billing']['state']);
-            $billing->setCompanyName($request['client']['billing']['companyName']);
-            $billing->setTaxId($request['client']['billing']['taxId']);
-            $billing->setAddressLine1($request['client']['billing']['addressLine1']);
-            $billing->setAddressLine1($request['client']['billing']['addressLine2']);
-            $billing->setZipCode($request['client']['billing']['zipCode']);
 
-            if (isset($request['client']['billing']['identityDocument']) && count($request['client']['billing']['identityDocument']) > 0) {
+            if (!empty($request['client']['billing']['firstName'])) {
+                $billing->setFirstName($request['client']['billing']['firstName']);
+            }
+
+            if (!empty($request['client']['billing']['lastName'])) {
+                $billing->setLastName($request['client']['billing']['lastName']);
+            }
+
+            if (!empty($request['client']['billing']['email'])) {
+                $billing->setEmail($request['client']['billing']['email']);
+            }
+
+            if (!empty($request['client']['billing']['phone'])) {
+                $billing->setPhone($request['client']['billing']['phone']);
+            }
+
+            if (!empty($request['client']['billing']['countryCode'])) {
+                $billing->setCountryCode($request['client']['billing']['countryCode']);
+            }
+
+            if (!empty($request['client']['billing']['city'])) {
+                $billing->setCity($request['client']['billing']['city']);
+            }
+
+            if (!empty($request['client']['billing']['state'])) {
+                $billing->setState($request['client']['billing']['state']);
+            }
+
+            if (!empty($request['client']['billing']['companyName'])) {
+                $billing->setCompanyName($request['client']['billing']['companyName']);
+            }
+
+            if (!empty($request['client']['billing']['taxId'])) {
+                $billing->setTaxId($request['client']['billing']['taxId']);
+            }
+
+            if (!empty($request['client']['billing']['addressLine1'])) {
+                $billing->setAddressLine1($request['client']['billing']['addressLine1']);
+            }
+
+            if (!empty($request['client']['billing']['addressLine2'])) {
+                $billing->setAddressLine2($request['client']['billing']['addressLine2']);
+            }
+
+            if (!empty($request['client']['billing']['zipCode'])) {
+                $billing->setZipCode($request['client']['billing']['zipCode']);
+            }
+
+            if (!empty($request['client']['billing']['identityDocument']) && count($request['client']['billing']['identityDocument']) > 0) {
                 $identityDocument = new IdentityDocument(
                     (int) $request['client']['billing']['identityDocument']['number'],
                     $request['client']['billing']['identityDocument']['type']
@@ -98,16 +190,16 @@ class Webhook implements WebhookInterface
             $client->setDelivery($delivery);
         }
 
-        if (isset($request['authorization']['storedCredentials'])) {
+        if (!empty($request['authorization']['storedCredentials'])) {
             $storedCredentialsArray = $request['authorization']['storedCredentials'];
 
             $storedCredentials = new WebhookStoredCredentials;
 
-            if (isset($storedCredentialsArray['ypmnBindingId'])) {
+            if (!empty($storedCredentialsArray['ypmnBindingId'])) {
                 $storedCredentials->setYpmnBindingId($storedCredentialsArray['ypmnBindingId']);
             }
 
-            if (isset($storedCredentialsArray['useId'])) {
+            if (!empty($storedCredentialsArray['useId'])) {
                 $storedCredentials->setUseId($storedCredentialsArray['useId']);
             }
 

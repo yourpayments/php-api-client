@@ -35,7 +35,7 @@ class OrderData implements OrderDataInterface
     private array $loyaltyPointsDetails;
 
     /** @inheritDoc */
-    public function getOrderDate(): string
+    public function getOrderDate(): ?string
     {
         return $this->orderDate;
     }
@@ -57,7 +57,7 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getYpmnPaymentReference(): string
+    public function getYpmnPaymentReference(): ?string
     {
         return $this->payUPaymentReference;
     }
@@ -71,13 +71,13 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getPayUPaymentReference(): string
+    public function getPayUPaymentReference(): ?string
     {
         return $this->payUPaymentReference;
     }
 
     /** @inheritDoc */
-    public function getMerchantPaymentReference(): string
+    public function getMerchantPaymentReference(): ?string
     {
         return $this->merchantPaymentReference;
     }
@@ -91,7 +91,7 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -105,7 +105,7 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getCurrency(): string
+    public function getCurrency(): ?string
     {
         return $this->currency;
     }

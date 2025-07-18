@@ -7,9 +7,9 @@ interface OrderDataInterface
 
     /**
      * Получить Дату Заказа
-     * @return string Дата Заказа
+     * @return string|null Дата Заказа
      */
-    public function getOrderDate(): string;
+    public function getOrderDate(): ?string;
 
     /**
      * Установть Дату Заказа
@@ -20,11 +20,11 @@ interface OrderDataInterface
 
     /**
      * Получить Номер Заказа в Ypmn
-     * @return string Номер Заказа в Ypmn
+     * @return string|null Номер Заказа в Ypmn
      *
      * @deprecated Используйте getPayUPaymentReference
      */
-    public function getYpmnPaymentReference(): string;
+    public function getYpmnPaymentReference(): ?string;
 
     /**
      * Установить Номер Заказа в Ypmn
@@ -37,9 +37,9 @@ interface OrderDataInterface
 
     /**
      * Получить Номер Заказа в Ypmn
-     * @return string Номер Заказа в Ypmn
+     * @return string|null Номер Заказа в Ypmn
      */
-    public function getPayUPaymentReference(): string;
+    public function getPayUPaymentReference(): ?string;
     /**
      * Установить Номер Заказа в Ypmn
      * @param string $payUPaymentReference Номер Заказа в Ypmn
@@ -49,9 +49,9 @@ interface OrderDataInterface
 
     /**
      * Получить Номер Заказа у Мерчанта
-     * @return string Номер Заказа у Мерчанта
+     * @return string|null Номер Заказа у Мерчанта
      */
-    public function getMerchantPaymentReference(): string;
+    public function getMerchantPaymentReference(): ?string;
 
     /**
      * Установить Номер Заказа у Мерчанта
@@ -62,9 +62,9 @@ interface OrderDataInterface
 
     /**
      * Получить Состояние Платежа
-     * @return string Состояние Платежа
+     * @return string|null Состояние Платежа
      */
-    public function getStatus(): string;
+    public function getStatus(): ?string;
 
     /**
      * Установить Состояние Платежа
@@ -75,9 +75,9 @@ interface OrderDataInterface
 
     /**
      * Получить Валюту Платежа
-     * @return string Валюта Платежа
+     * @return string|null Валюта Платежа
      */
-    public function getCurrency(): string;
+    public function getCurrency(): ?string;
 
     /**
      * Установить Валюту Платежа
@@ -113,13 +113,13 @@ interface OrderDataInterface
     public function setCommission(float $commission): self;
 
     /**
-     * Получить
-     * @return string
+     * Получить ID запроса возврата
+     * @return string|null
      */
     public function getRefundRequestId(): ?string;
 
     /**
-     * Установить
+     * Установить ID запроса возврата
      * @param string $refundRequestId
      * @return $this
      */
