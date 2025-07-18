@@ -49,7 +49,7 @@ class Billing implements BillingInterface
     /** @inheritDoc */
     public function getFirstName(): ?string
     {
-        return $this->firstName;
+        return $this->firstName ?? null;
     }
 
     /** @inheritDoc */
@@ -62,7 +62,7 @@ class Billing implements BillingInterface
     /** @inheritDoc */
     public function getLastName(): ?string
     {
-        return $this->lastName;
+        return $this->lastName ?? null;
     }
 
     /** @inheritDoc */
@@ -75,7 +75,7 @@ class Billing implements BillingInterface
     /** @inheritDoc */
     public function getEmail(): ?string
     {
-        return $this->email;
+        return $this->email ?? null;
     }
 
     /** @inheritDoc */
