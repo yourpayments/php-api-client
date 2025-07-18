@@ -50,7 +50,7 @@ class Webhook implements WebhookInterface
         }
 
         if (!empty($request['orderData']['amount'])) {
-            $this->orderData->setAmount($request['orderData']['amount']);
+            $this->orderData->setAmount((float) $request['orderData']['amount']);
         }
 
         if (isset($request['orderData']['commission'])) {
@@ -69,7 +69,7 @@ class Webhook implements WebhookInterface
             $cardDetails = new CardDetails;
 
             if (!empty($request['paymentResult']['cardDetails']['bin'])) {
-                $cardDetails->setBin($request['paymentResult']['cardDetails']['bin']);
+                $cardDetails->setBin((int) $request['paymentResult']['cardDetails']['bin']);
             }
 
             if (!empty($request['paymentResult']['cardDetails']['owner'])) {
@@ -213,7 +213,7 @@ class Webhook implements WebhookInterface
     /** @inheritDoc */
     public function getPaymentResult(): PaymentResultInterface
     {
-        return $this->paymentResult;
+        return $this->paymentResult ?? new PaymentResult();
     }
 
     /** @inheritDoc */
@@ -226,7 +226,7 @@ class Webhook implements WebhookInterface
     /** @inheritDoc */
     public function getOrderData(): OrderDataInterface
     {
-        return $this->orderData;
+        return $this->orderData ?? new OrderData();
     }
 
     /** @inheritDoc */
@@ -246,6 +246,6 @@ class Webhook implements WebhookInterface
     /** @inheritDoc */
     public function getAuthorization(): WebhookAuthorizationInterface
     {
-        return $this->authorization;
+        return $this->authorization ?? new WebhookAuthorization();
     }
 }

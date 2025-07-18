@@ -16,6 +16,6 @@ class WebhookAuthorization implements WebhookAuthorizationInterface
     /** @inheritDoc */
     public function getStoredCredentials(): WebhookStoredCredentialsInterface
     {
-        return $this->storedCredentials;
+        return $this->storedCredentials ?? new WebhookStoredCredentials();
     }
 }
