@@ -47,7 +47,7 @@ class Billing implements BillingInterface
     private ?IdentityDocumentInterface $identityDocument = null;
 
     /** @inheritDoc */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -60,7 +60,7 @@ class Billing implements BillingInterface
     }
 
     /** @inheritDoc */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -218,7 +218,7 @@ class Billing implements BillingInterface
     }
 
     /** @inheritdoc */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
