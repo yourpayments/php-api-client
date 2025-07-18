@@ -41,7 +41,7 @@ class PaymentResult implements PaymentResultInterface
     private CardDetailsInterface $cardDetails;
 
     /** @inheritDoc */
-    public function getPaymentMethod(): string
+    public function getPaymentMethod(): ?string
     {
         return $this->paymentMethod;
     }
@@ -54,7 +54,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getPaymentDate(): string
+    public function getPaymentDate(): ?string
     {
         return $this->paymentDate;
     }
@@ -67,7 +67,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getCaptureDate(): string
+    public function getCaptureDate(): ?string
     {
         return $this->captureDate;
     }
@@ -80,7 +80,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getCardProgramName(): string
+    public function getCardProgramName(): ?string
     {
         return $this->cardProgramName;
     }
@@ -93,7 +93,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getAuthCode(): string
+    public function getAuthCode(): ?string
     {
         return $this->authCode;
     }
@@ -106,7 +106,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getMerchantId(): string
+    public function getMerchantId(): ?string
     {
         return $this->merchantId;
     }
@@ -119,7 +119,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getRrn(): int
+    public function getRrn(): ?int
     {
         return $this->rrn;
     }
@@ -132,7 +132,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getInstallmentsNumber(): string
+    public function getInstallmentsNumber(): ?string
     {
         return $this->installmentsNumber;
     }
@@ -158,7 +158,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getPaymentBankShortName(): string
+    public function getPaymentBankShortName(): ?string
     {
         return $this->paymentBankShortName;
     }
@@ -171,7 +171,7 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getServiceProcessingType(): string
+    public function getServiceProcessingType(): ?string
     {
         return $this->serviceProcessingType;
     }
