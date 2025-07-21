@@ -1,0 +1,11 @@
+# Main project pipeline
+variables:
+  GIT_STRATEGY: none
+
+stages:
+  - code-approve-reset
+  - mr-approve-check
+
+include:
+  - local: 'ci/code-approve-reset.yml'
+  - local: 'ci/mr-approve-check.yml'

@@ -1,0 +1,7 @@
+## Removes all previously applied approvers in MR
+clear_code_approved:
+  stage: code-approve-reset
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+  script:
+    - 'curl -f -X PUT -H "PRIVATE-TOKEN: $REMOVE_APPROVE_TOKEN" -H "Content-Type: application/json" "http://gtl01.dev.ruo.payudc.net/api/v4/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/reset_approvals"'
