@@ -1,5 +1,6 @@
 ## Blocks the pipeline if MR is not approved by any
 ## of defined gitlab users (ALLOWED_APPROVERS)
+
 mr-approve-check:
   stage: mr-approve-check
   needs: ["clear_code_approved"]
