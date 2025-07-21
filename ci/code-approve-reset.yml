@@ -4,7 +4,4 @@ clear_code_approved:
   rules:
     - if: $CI_MERGE_REQUEST_ID
   script:
-    - echo "$REMOVE_APPROVE_TOKEN"
-    - echo "$CI_PROJECT_ID"
-    - echo "$CI_MERGE_REQUEST_IID"
     - 'curl -f -X PUT -H "PRIVATE-TOKEN: $REMOVE_APPROVE_TOKEN" -H "Content-Type: application/json" "http://gtl01.dev.ruo.payudc.net/api/v4/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/reset_approvals"'

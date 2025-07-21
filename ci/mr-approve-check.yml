@@ -27,7 +27,7 @@ mr-approve-check:
       APPROVALS=$(curl --silent -H "PRIVATE-TOKEN: $REMOVE_APPROVE_TOKEN" -H "Content-Type: application/json" "http://gtl01.dev.ruo.payudc.net/api/v4/projects/$CI_PROJECT_ID/merge_requests/$MR_ID/approvals")
 
       # Define a list of allowed approvers
-      ALLOWED_APPROVERS=("oleg.pavlov" "alexander.viktorchik" "alexey.babak" "roman.zimin")
+      ALLOWED_APPROVERS=("alexander.viktorchik" "alexey.babak" "roman.zimin")
 
       # Check if any of the allowed users have approved the merge request
       APPROVED=false
