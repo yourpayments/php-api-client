@@ -14,9 +14,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить Месяц прекращения действия Карты
-     * @return int
+     * @return int|null
      */
-    public function getExpiryMonth() : int;
+    public function getExpiryMonth() : ?int;
 
     /**
      * Установить Год прекращения действия Карты
@@ -28,9 +28,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить Год прекращения действия Карты
-     * @return int Год прекращения действия Карты
+     * @return int|null Год прекращения действия Карты
      */
-    public function getExpiryYear() : int;
+    public function getExpiryYear() : ?int;
 
     /**
      * Установить CVV Карты
@@ -41,9 +41,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить CVV Карты
-     * @return string CVV Карты
+     * @return string|null CVV Карты
      */
-    public function getCvv() : string;
+    public function getCvv() : ?string;
 
     /**
      * Установить Имя Владельца Карты
@@ -54,9 +54,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить Имя Владельца Карты
-     * @return string Имя Владельца Карты
+     * @return string|null Имя Владельца Карты
      */
-    public function getOwner() : string;
+    public function getOwner() : ?string;
 
     /**
      * Установить Время набора Номера Карты (сек)
@@ -67,9 +67,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить Время набора номера Карты (сек)
-     * @return int Время набора Номера Карты (сек)
+     * @return int|null Время набора Номера Карты (сек)
      */
-    public function getTimeSpentTypingNumber() : int;
+    public function getTimeSpentTypingNumber() : ?int;
 
     /**
      * Установить Время набора Имени Владельца Карты (сек)
@@ -80,9 +80,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить Время набора Имени Владельца Карты
-     * @return int Время набора Имени Владельца Карты (сек)
+     * @return int|null Время набора Имени Владельца Карты (сек)
      */
-    public function getTimeSpentTypingOwner() : int;
+    public function getTimeSpentTypingOwner() : ?int;
 
     /**
      * Установить BIN (Bank Identification Number)
@@ -93,9 +93,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить BIN (Bank Identification Number)
-     * @return int BIN (Bank Identification Number)
+     * @return int|null BIN (Bank Identification Number)
      */
-    public function getBin() : int;
+    public function getBin() : ?int;
 
     /**
      * Установить PAN (Permanent Account Number)
@@ -106,9 +106,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить PAN (Permanent Account Number)
-     * @return string PAN (Permanent Account Number)
+     * @return string|null PAN (Permanent Account Number)
      */
-    public function getPan() : string;
+    public function getPan() : ?string;
 
     /**
      * Установить Тип Карты (например, Visa, MIR)
@@ -119,9 +119,9 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить Тип Карты (например, Visa, MIR)
-     * @return string Тип Карты
+     * @return string|null Тип Карты
      */
-    public function getType() : string;
+    public function getType() : ?string;
 
     /**
      * Установить Банк, выпустивший карту
@@ -132,15 +132,15 @@ interface CardDetailsInterface extends DetailsInterface
 
     /**
      * Получить Банк, выпустивший карту
-     * @return string Банк, выпустивший карту
+     * @return string|null Банк, выпустивший карту
      */
-    public function getCardIssuerBank() : string;
+    public function getCardIssuerBank() : ?string;
 
     /**
      * Получить Год Карты
-     * @return int Год Карты
+     * @return int|null Год Карты
      */
-    public function getYear(): int;
+    public function getYear(): ?int;
 
     /**
      *

@@ -41,9 +41,9 @@ class PaymentResult implements PaymentResultInterface
     private CardDetailsInterface $cardDetails;
 
     /** @inheritDoc */
-    public function getPaymentMethod(): string
+    public function getPaymentMethod(): ?string
     {
-        return $this->paymentMethod;
+        return $this->paymentMethod ?? null;
     }
 
     /** @inheritDoc */
@@ -54,9 +54,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getPaymentDate(): string
+    public function getPaymentDate(): ?string
     {
-        return $this->paymentDate;
+        return $this->paymentDate ?? null;
     }
 
     /** @inheritDoc */
@@ -67,9 +67,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getCaptureDate(): string
+    public function getCaptureDate(): ?string
     {
-        return $this->captureDate;
+        return $this->captureDate ?? null;
     }
 
     /** @inheritDoc */
@@ -80,9 +80,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getCardProgramName(): string
+    public function getCardProgramName(): ?string
     {
-        return $this->cardProgramName;
+        return $this->cardProgramName ?? null;
     }
 
     /** @inheritDoc */
@@ -93,9 +93,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getAuthCode(): string
+    public function getAuthCode(): ?string
     {
-        return $this->authCode;
+        return $this->authCode ?? null;
     }
 
     /** @inheritDoc */
@@ -106,9 +106,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getMerchantId(): string
+    public function getMerchantId(): ?string
     {
-        return $this->merchantId;
+        return $this->merchantId ?? null;
     }
 
     /** @inheritDoc */
@@ -119,9 +119,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getRrn(): int
+    public function getRrn(): ?int
     {
-        return $this->rrn;
+        return $this->rrn ?? null;
     }
 
     /** @inheritDoc */
@@ -132,9 +132,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getInstallmentsNumber(): string
+    public function getInstallmentsNumber(): ?string
     {
-        return $this->installmentsNumber;
+        return $this->installmentsNumber ?? null;
     }
 
     /** @inheritDoc */
@@ -154,13 +154,13 @@ class PaymentResult implements PaymentResultInterface
     /** @inheritDoc */
     public function getCardDetails() : CardDetailsInterface
     {
-        return $this->cardDetails;
+        return $this->cardDetails ?? new CardDetails();
     }
 
     /** @inheritDoc */
-    public function getPaymentBankShortName(): string
+    public function getPaymentBankShortName(): ?string
     {
-        return $this->paymentBankShortName;
+        return $this->paymentBankShortName ?? null;
     }
 
     /** @inheritDoc */
@@ -171,9 +171,9 @@ class PaymentResult implements PaymentResultInterface
     }
 
     /** @inheritDoc */
-    public function getServiceProcessingType(): string
+    public function getServiceProcessingType(): ?string
     {
-        return $this->serviceProcessingType;
+        return $this->serviceProcessingType ?? null;
     }
 
     /** @inheritDoc */

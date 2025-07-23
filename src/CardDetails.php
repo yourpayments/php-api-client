@@ -38,7 +38,7 @@ class CardDetails implements CardDetailsInterface
     private string $cardIssuerBank;
 
     /** @inheritDoc */
-    public function getNumber(): string
+    public function getNumber(): ?string
     {
         return $this->number;
     }
@@ -53,9 +53,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getExpiryMonth(): int
+    public function getExpiryMonth(): ?int
     {
-        return $this->expiryMonth;
+        return $this->expiryMonth ?? null;
     }
 
     /** @inheritDoc */
@@ -66,9 +66,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getYear(): int
+    public function getYear(): ?int
     {
-        return $this->year;
+        return $this->year ?? null;
     }
 
     /** @inheritDoc */
@@ -83,9 +83,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getExpiryYear(): int
+    public function getExpiryYear(): ?int
     {
-        return $this->expiryYear;
+        return $this->expiryYear ?? null;
     }
 
     /** @inheritDoc */
@@ -96,9 +96,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getCvv(): string
+    public function getCvv(): ?string
     {
-        return $this->cvv;
+        return $this->cvv ?? null;
     }
 
     /** @inheritDoc */
@@ -109,9 +109,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getOwner(): string
+    public function getOwner(): ?string
     {
-        return $this->owner;
+        return $this->owner ?? null;
     }
 
     /** @inheritDoc */
@@ -122,9 +122,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getTimeSpentTypingNumber(): int
+    public function getTimeSpentTypingNumber(): ?int
     {
-        return $this->timeSpentTypingNumber;
+        return $this->timeSpentTypingNumber ?? null;
     }
 
     /** @inheritDoc */
@@ -135,9 +135,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getTimeSpentTypingOwner(): int
+    public function getTimeSpentTypingOwner(): ?int
     {
-        return $this->timeSpentTypingOwner;
+        return $this->timeSpentTypingOwner ?? null;
     }
 
     /** @inheritDoc */
@@ -148,9 +148,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getBin(): int
+    public function getBin(): ?int
     {
-        return $this->bin;
+        return $this->bin ?? null;
     }
 
     /** @inheritDoc */
@@ -161,9 +161,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getPan(): string
+    public function getPan(): ?string
     {
-        return $this->pan;
+        return $this->pan ?? null;
     }
 
     /** @inheritDoc */
@@ -174,9 +174,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getType(): string
+    public function getType(): ?string
     {
-        return $this->type;
+        return $this->type ?? null;
     }
 
     /** @inheritDoc */
@@ -187,9 +187,9 @@ class CardDetails implements CardDetailsInterface
     }
 
     /** @inheritDoc */
-    public function getCardIssuerBank(): string
+    public function getCardIssuerBank(): ?string
     {
-        return $this->cardIssuerBank;
+        return $this->cardIssuerBank ?? null;
     }
 
     /** @inheritDoc */

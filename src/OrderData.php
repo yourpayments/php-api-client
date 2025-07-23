@@ -35,9 +35,9 @@ class OrderData implements OrderDataInterface
     private array $loyaltyPointsDetails;
 
     /** @inheritDoc */
-    public function getOrderDate(): string
+    public function getOrderDate(): ?string
     {
-        return $this->orderDate;
+        return $this->orderDate ?? null;
     }
 
     /** @inheritDoc */
@@ -57,9 +57,9 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getYpmnPaymentReference(): string
+    public function getYpmnPaymentReference(): ?string
     {
-        return $this->payUPaymentReference;
+        return $this->payUPaymentReference ?? null;
     }
 
     /** @inheritDoc */
@@ -71,15 +71,15 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getPayUPaymentReference(): string
+    public function getPayUPaymentReference(): ?string
     {
-        return $this->payUPaymentReference;
+        return $this->payUPaymentReference ?? null;
     }
 
     /** @inheritDoc */
-    public function getMerchantPaymentReference(): string
+    public function getMerchantPaymentReference(): ?string
     {
-        return $this->merchantPaymentReference;
+        return $this->merchantPaymentReference ?? null;
     }
 
     /** @inheritDoc */
@@ -91,9 +91,9 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
-        return $this->status;
+        return $this->status ?? null;
     }
 
     /** @inheritDoc */
@@ -105,9 +105,9 @@ class OrderData implements OrderDataInterface
     }
 
     /** @inheritDoc */
-    public function getCurrency(): string
+    public function getCurrency(): ?string
     {
-        return $this->currency;
+        return $this->currency ?? null;
     }
 
     /** @inheritDoc */
@@ -121,7 +121,7 @@ class OrderData implements OrderDataInterface
     /** @inheritDoc */
     public function getAmount(): ?float
     {
-        return $this->amount;
+        return $this->amount ?? null;
     }
 
     /** @inheritDoc */
@@ -135,7 +135,7 @@ class OrderData implements OrderDataInterface
     /** @inheritDoc */
     public function getCommission(): ?float
     {
-        return $this->commission;
+        return $this->commission ?? null;
     }
 
     /** @inheritDoc */
@@ -151,7 +151,7 @@ class OrderData implements OrderDataInterface
     /** @inheritDoc */
     public function getRefundRequestId(): ?string
     {
-        return $this->refundRequestId;
+        return $this->refundRequestId ?? null;
     }
 
     /** @inheritDoc */
@@ -164,7 +164,7 @@ class OrderData implements OrderDataInterface
     /** @inheritDoc */
     public function getLoyaltyPointsAmount(): ?int
     {
-        return $this->loyaltyPointsAmount;
+        return $this->loyaltyPointsAmount ?? null;
     }
 
     /** @inheritDoc */
@@ -178,7 +178,7 @@ class OrderData implements OrderDataInterface
     /** @inheritDoc */
     public function getLoyaltyPointsDetails(): ?array
     {
-        return $this->loyaltyPointsDetails;
+        return $this->loyaltyPointsDetails ?? null;
     }
 
     /** @inheritDoc */

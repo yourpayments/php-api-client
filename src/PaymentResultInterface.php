@@ -6,9 +6,9 @@ interface PaymentResultInterface
 {
     /**
      * Получить Метод Оплаты
-     * @return string Метод Оплаты
+     * @return string|null Метод Оплаты
      */
-    public function getPaymentMethod(): string;
+    public function getPaymentMethod(): ?string;
 
     /**
      * Установить Метод Оплаты
@@ -19,9 +19,9 @@ interface PaymentResultInterface
 
     /**
      * Получить Дату Авторизации платежа
-     * @return string Дата Авторизации платежа
+     * @return string|null Дата Авторизации платежа
      */
-    public function getPaymentDate(): string;
+    public function getPaymentDate(): ?string;
 
     /**
      * Установить Дату Авторизации платежа
@@ -32,9 +32,9 @@ interface PaymentResultInterface
 
     /**
      * Получить Дату Списания денежных средств
-     * @return string Дата Списания денежных средств
+     * @return string|null Дата Списания денежных средств
      */
-    public function getCaptureDate(): string;
+    public function getCaptureDate(): ?string;
 
     /**
      * Установить Дату Списания денежных средств
@@ -44,9 +44,9 @@ interface PaymentResultInterface
     public function setCaptureDate(string $captureDate): self;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCardProgramName(): string;
+    public function getCardProgramName(): ?string;
 
     /**
      * @param string $cardProgramName
@@ -56,9 +56,9 @@ interface PaymentResultInterface
 
     /**
      * Получить Код Авторизации
-     * @return string Код Авторизации
+     * @return string|null Код Авторизации
      */
-    public function getAuthCode(): string;
+    public function getAuthCode(): ?string;
 
     /**
      * Установить Код Авторизации
@@ -69,9 +69,9 @@ interface PaymentResultInterface
 
     /**
      * Получить Идентификатор марчанта (Merchant ID)
-     * @return string Идентификатор марчанта (Merchant ID)
+     * @return string|null Идентификатор марчанта (Merchant ID)
      */
-    public function getMerchantId(): string;
+    public function getMerchantId(): ?string;
 
     /**
      * Установить Идентификатор марчанта (Merchant ID)
@@ -81,9 +81,9 @@ interface PaymentResultInterface
     public function setMerchantId(string $merchantId): self;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getRrn(): int;
+    public function getRrn(): ?int;
 
     /**
      * @param int $rrn
@@ -92,9 +92,9 @@ interface PaymentResultInterface
     public function setRrn(int $rrn): self;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInstallmentsNumber(): string;
+    public function getInstallmentsNumber(): ?string;
 
     /**
      * @param string $installmentsNumber
@@ -118,9 +118,9 @@ interface PaymentResultInterface
 
     /**
      * Получить Краткую запись Названия Банка Плательщика
-     * @return string Краткая запись Названия Банка Плательщика
+     * @return string|null Краткая запись Названия Банка Плательщика
      */
-    public function getPaymentBankShortName(): string;
+    public function getPaymentBankShortName(): ?string;
 
     /**
      * Установить Краткую запись Названия Банка Плательщика
@@ -131,9 +131,9 @@ interface PaymentResultInterface
 
     /**
      * Получить Тип Сервиса Процессинга
-     * @return string Тип Сервиса Процессинга
+     * @return string|null Тип Сервиса Процессинга
      */
-    public function getServiceProcessingType(): string;
+    public function getServiceProcessingType(): ?string;
 
     /**
      * Установить Тип Сервиса Процессинга

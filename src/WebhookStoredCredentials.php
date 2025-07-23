@@ -13,9 +13,9 @@ class WebhookStoredCredentials implements WebhookStoredCredentialsInterface
         return $this;
     }
 
-    public function getYpmnBindingId(): string
+    public function getYpmnBindingId(): ?string
     {
-        return $this->ypmnBindingId;
+        return $this->ypmnBindingId ?? null;
     }
 
     public function setUseId(string $useId): self
@@ -24,8 +24,8 @@ class WebhookStoredCredentials implements WebhookStoredCredentialsInterface
         return $this;
     }
 
-    public function getUseId(): string
+    public function getUseId(): ?string
     {
-        return $this->useId;
+        return $this->useId ?? null;
     }
 }

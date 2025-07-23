@@ -13,9 +13,9 @@ interface WebhookStoredCredentialsInterface
 
     /**
      * Получить токен подписки SberPay
-     * @return string
+     * @return string|null
      */
-    public function getYpmnBindingId(): string;
+    public function getYpmnBindingId(): ?string;
 
     /**
      * Установить идентификатор первоначальной операции
@@ -26,7 +26,7 @@ interface WebhookStoredCredentialsInterface
 
     /**
      * Получить идентификатор первоначальной операции
-     * @return string
+     * @return string|null
      */
-    public function getUseId(): string;
+    public function getUseId(): ?string;
 }

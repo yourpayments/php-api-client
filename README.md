@@ -13,7 +13,7 @@ composer require yourpayments/php-api-client
 ```shell
 composer update yourpayments/php-api-client
 ```
-(если на вашем проекте нет composer, слонируйте или скачайте, а затем подключите ([require](https://www.php.net/manual/ru/function.require.php)) файлы этого репозитория)
+(если на вашем проекте нет composer, склонируйте или скачайте, а затем подключите файлы этого репозитория ([файл автозагрузки](src/Examples/autoload.php)))
 
 ## Запуск в контейнере docker
 Создайте и запустите docker контейнер следующей командой:

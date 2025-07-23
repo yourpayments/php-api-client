@@ -13,9 +13,9 @@ interface BillingInterface
 
     /**
      * Получить Имя
-     * @return string
+     * @return string|null
      */
-    public function getFirstName() : string;
+    public function getFirstName() : ?string;
 
     /**
      * Установить Фамилия
@@ -26,9 +26,9 @@ interface BillingInterface
 
     /**
      * Получить Фамилия
-     * @return string
+     * @return string|null
      */
-    public function getLastName() : string;
+    public function getLastName() : ?string;
 
     /**
      * Установить Email
@@ -52,7 +52,7 @@ interface BillingInterface
 
     /**
      * Получить Номер Телефона
-     * @return string
+     * @return string|null
      */
     public function getPhone() : ?string;
 
@@ -65,7 +65,7 @@ interface BillingInterface
 
     /**
      * Получить Код Страны
-     * @return string
+     * @return string|null
      */
     public function getCountryCode() : ?string;
 
@@ -78,7 +78,7 @@ interface BillingInterface
 
     /**
      * Получить Город
-     * @return string
+     * @return string|null
      */
     public function getCity() : ?string;
 
@@ -91,7 +91,7 @@ interface BillingInterface
 
     /**
      * Получить Регион
-     * @return string
+     * @return string|null
      */
     public function getState() : ?string;
 
@@ -176,9 +176,9 @@ interface BillingInterface
 
     /**
      * Получить тип биллинга
-     * @return string
+     * @return string|null
      */
-    public function getType(): string;
+    public function getType(): ?string;
 
     /**
      * Установить тип биллинга

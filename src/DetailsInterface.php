@@ -13,7 +13,7 @@ interface DetailsInterface
 
     /**
      * Получить Номер карты
-     * @return string Номер карты
+     * @return string|null Номер карты
      */
-    public function getNumber() : string;
+    public function getNumber() : ?string;
 }
