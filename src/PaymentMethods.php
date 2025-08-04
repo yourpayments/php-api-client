@@ -11,10 +11,11 @@ class PaymentMethods
     public const FASTER_PAYMENTS = 'FASTER_PAYMENTS'; // СБП
     public const PAYOUT = 'PAYOUT'; // Выплата по номеру карты
     public const PAYOUT_FP = 'PAYOUT_FP'; // Выплата по номеру телефона
-    public const MIRPAY = 'MIRPAY'; // MIR PAY
     public const BNPL = 'BNPL'; // Рассрочка
-    public const SOM = 'SOM';
-    public const SBERPAY = 'SBERPAY';
-    public const TPAY = 'TPAY';
+    public const INTCARD = 'INTCARD';
+
     public const ALFAPAY = 'ALFAPAY';
+    public const SBERPAY = 'SBERPAY';
+    public const MIRPAY = 'MIRPAY'; // MIR PAY
+    public const TPAY = 'TPAY';
 }

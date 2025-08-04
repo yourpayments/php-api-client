@@ -31,13 +31,19 @@ $examples = [
     'getFasterPayment' => [
         'name'  => 'Оплата через СБП',
         'about'  => 'Пример платежа через систему быстрых платежей',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
         'link'  => '',
     ],
     'getFasterPaymentWithReceipts' => [
         'name'  => 'Оплата через СБП с регистрацией чека',
         'about'  => 'Пример платежа через систему быстрых платежей с регистрацией чека',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
+    'payQrCode' => [
+        'name'  => 'QR-код на примере TPay',
+        'about'  => 'Пример отображение QR-кода Pay-метода без платёжной формы',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
         'link'  => '',
     ],
     'getBindingFasterPayment' => [
@@ -196,12 +202,12 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1list/get',
         'link'  => '',
     ],
-    'getWidget' => [
-        'name'  => 'Получение виджета',
-        'about'  => 'В этом примере показано получение виджета.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/widget-integration',
-        'link'  => '',
-    ],
+//    'getWidget' => [
+//        'name'  => 'Получение виджета',
+//        'about'  => 'В этом примере показано получение виджета.',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/widget-integration',
+//        'link'  => '',
+//    ],
     'webhookProcessing' => [
         'name' => 'Обработка вебхука',
         'about' => 'В этом примере показана обработка вебхука IPN',

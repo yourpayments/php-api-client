@@ -51,6 +51,7 @@ if(isset($_GET['function'])){
             case 'SOMGetPaymentLink':
             case 'qstList':
             case 'webhookProcessing':
+            case 'payQrCode':
                 require './src/Examples/start.php';
                 @include './src/Examples/'.$_GET['function'] . '__prepend.php';
                 require './src/Examples/'.$_GET['function'] . '.php';
