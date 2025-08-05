@@ -100,10 +100,9 @@ docker compose up --detach
 ##### 3. Подписки
 Рекуррентные платежи
 1. [Создание подписки СБП](src/Examples/getBindingFasterPayment.php)
-1[Оплата по подписке СБП](src/Examples/paymentByFasterBinding.php)
+1. [Оплата по подписке СБП](src/Examples/paymentByFasterBinding.php)
 1. [Создание подписки SberPay, T-Pay, Картой не РФ](src/Examples/getBindingPays.php)
-1[Оплата по подписке SberPay, T-Pay, Картой не РФ](src/Examples/paymentByBindingPays.php)
-1
+1. [Оплата по подписке SberPay, T-Pay, Картой не РФ](src/Examples/paymentByBindingPays.php)
    
 ##### 4. Токенизация
 Запомнить данные клиента, чтобы не запрашивать и не вводить их повторно
