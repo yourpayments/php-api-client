@@ -20,10 +20,10 @@ interface AuthorizationInterface
 
     /**
      * Установить Использование платёжной страницы
-     * @param bool $isUsed Использовать платёжную страницу
+     * @param null|bool $isUsed Использовать платёжную страницу
      * @return AuthorizationInterface
      */
-    public function setUsePaymentPage(bool $isUsed): self;
+    public function setUsePaymentPage(?bool $isUsed): self;
 
     /**
      * Получить Данные Карты

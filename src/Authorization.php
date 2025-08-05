@@ -49,7 +49,7 @@ class Authorization implements AuthorizationInterface
         switch ($paymentMethod) {
             case PaymentMethods::CCVISAMC:
             case PaymentMethods::FASTER_PAYMENTS:
-            case PaymentMethods::SOM:
+            case PaymentMethods::INTCARD:
             case PaymentMethods::MIRPAY:
             case PaymentMethods::ALFAPAY:
             case PaymentMethods::TPAY:
@@ -70,7 +70,7 @@ class Authorization implements AuthorizationInterface
     }
 
     /** @inheritDoc */
-    public function setUsePaymentPage(bool $isUsed) : self
+    public function setUsePaymentPage(?bool $isUsed) : self
     {
         if ($isUsed === true) {
             if (is_null($this->merchantToken) && is_null($this->cardDetails)) {
