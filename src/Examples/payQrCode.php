@@ -101,8 +101,8 @@ try {
             'newpage' => true,
         ]);
 
-        // .. или сделаем редирект на форму оплаты (опционально)
-        // Std::redirect($responseData["paymentResult"]['url']);
+        // ...или просто картинка без кнопки:
+        // Std::data_img_tag($responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr']);
     }
 } catch (Exception $exception) {
     //TODO: обработка исключения
