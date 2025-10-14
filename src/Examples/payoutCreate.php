@@ -47,7 +47,7 @@ $recipient->setZipCode('121000');
 // Код страны получателя (2 буквы, на английском)
 $recipient->setCountryCode('RU');
 
-// Имя получателя из GET-запроса
+// Имя получателя из POST-запроса
 $postRecipientName = explode(' ', @$_POST['reciever-name'] ?: '');
 // Установим Имя получателя для платежа (здесь пример передачи данных из формы + стандартное значение)
 $recipient->setFirstName(@$postRecipientName[0] ?: 'Иван');
