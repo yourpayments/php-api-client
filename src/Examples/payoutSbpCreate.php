@@ -40,7 +40,7 @@ $payout->setDescription(@$_POST['description'] ?: 'Тестовое Описан
 $destination = (new PayoutMobileDestination())
     ->setPhoneNumber(@$_POST['ph-number'] ?: "79001112233") // Назначим номер телефона (здесь пример передачи данных из формы + стандартное значение)
     ->setBankInformation((int)$_POST['bank'], $_POST['bankName']); // Установим id/имя банка из списка НСПК
-// Имя получателя из GET-запроса
+// Имя получателя из POST-запроса
 $postRecipientName = explode(' ', @$_POST['reciever-name'] ?: '');
 
 // Опишем получателя
