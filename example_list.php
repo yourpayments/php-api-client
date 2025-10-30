@@ -166,12 +166,6 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1chart/get',
         'link'  => '',
     ],
-    'SOMGetPaymentLink' => [
-        'name'  => 'Оплата зарубежными картами',
-        'about'  => 'В этом примере показана простая реализация оплаты заказа зарубежной картой.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api',
-        'link'  => '',
-    ],
     'qstCreateOrg' => [
         'name'  => 'Подключение продавца-организации (отправка анкеты)',
         'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-организации на проверку в YPMN.',

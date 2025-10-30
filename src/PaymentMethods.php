@@ -17,5 +17,5 @@ class PaymentMethods
     public const ALFAPAY = 'ALFAPAY';
     public const SBERPAY = 'SBERPAY';
     public const MIRPAY = 'MIRPAY'; // MIR PAY
-    public const TPAY = 'TPAY';
+    public const TPAY = 'TPAY'; // T-Pay
 }

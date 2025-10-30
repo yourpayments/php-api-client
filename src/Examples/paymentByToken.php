@@ -69,7 +69,7 @@ $payment->setAuthorization($auth);
 // Установим номер заказа (должен быть уникальным в вашей системе)
 $payment->setMerchantPaymentReference($merchantPaymentReference);
 // Установим адрес перенаправления пользователя после оплаты
-$payment->setReturnUrl('https://test.u2go.ru/php-api-client/?function=returnPage');
+$payment->setReturnUrl('https://' . @$_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
 // Установим клиентское подключение
 $payment->setClient($client);
 

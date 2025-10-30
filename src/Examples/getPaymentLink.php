@@ -192,7 +192,7 @@ $payment->setAuthorization($authorization);
 // Установим номер заказа (должен быть уникальным в вашей системе)
 $payment->setMerchantPaymentReference('primer_nomer__' . time());
 // Установим адрес перенаправления пользователя после оплаты
-$payment->setReturnUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage');
+$payment->setReturnUrl('https://' . @$_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
 // Установим клиентское подключение
 $payment->setClient($client);
 

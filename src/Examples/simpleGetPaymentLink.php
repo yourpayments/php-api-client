@@ -8,6 +8,7 @@ use Ypmn\Client;
 use Ypmn\Billing;
 use Ypmn\ApiRequest;
 use Ypmn\PaymentException;
+use Ypmn\PaymentMethods;
 use Ypmn\Product;
 use Ypmn\Std;
 
@@ -55,11 +56,11 @@ $payment->addProduct($orderAsProduct);
 // Создадим запрос на  авторизацию платежа
 // здесь первым параметром можно передать конкретный способ оплаты из справочника
 // PaymentMethods.php
-$payment->setAuthorization(new Authorization());
+$payment->setAuthorization(new Authorization(PaymentMethods::CCVISAMC));
 // Установим номер заказа (должен быть уникальным в вашей системе)
 $payment->setMerchantPaymentReference($merchantPaymentReference);
 // Установим адрес перенаправления пользователя после оплаты
-$payment->setReturnUrl('https://test.u2go.ru/php-api-client/?function=returnPage');
+$payment->setReturnUrl('https://' . @$_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
 // Установим клиентское подключение
 $payment->setClient($client);
 
