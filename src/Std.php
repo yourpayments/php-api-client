@@ -146,7 +146,7 @@ class Std
 .payment_btn__link {
   display: inline-block;
   width: 200px;
-  height: ' . (empty($params['qr']) ? '150px' : 'auto') . ';
+  height: ' . (empty($params['qr']) ? '90px' : 'auto') . ';
   line-height: 20px;
   justify-content: center;
   background: #ffffff;
