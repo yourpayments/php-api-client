@@ -367,17 +367,21 @@ class ApiRequest implements ApiRequestInterface
             throw new PaymentException('Incorrect request body JSON');
         }
 
-
         $encodedJsonDataHash = md5($encodedJsonData);
 
         $curl = curl_init();
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
         $requestHttpVerb = $method;
 
+        $useragent = "SDK_" . @PHP_VERSION;
+        $referer =  @$_SERVER['HTTP_HOST'] ?? @$_SERVER['SERVER_NAME'] ?? "" . @$_SERVER['REQUEST_URI'] ?? "";
+
         $setOptArray = [
             CURLOPT_URL => $this->getHost() . $api,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
+            CURLOPT_USERAGENT => strip_tags($useragent),
+            CURLOPT_REFERER => strip_tags($referer),
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 60,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
