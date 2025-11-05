@@ -50,7 +50,6 @@ class Authorization implements AuthorizationInterface
             case PaymentMethods::CCVISAMC:
             case PaymentMethods::FASTER_PAYMENTS:
             case PaymentMethods::INTCARD:
-            case PaymentMethods::MIRPAY:
             case PaymentMethods::ALFAPAY:
             case PaymentMethods::TPAY:
             case PaymentMethods::SBERPAY:
