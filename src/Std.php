@@ -78,6 +78,7 @@ class Std
             'qr',
             'url',
             'shadow',
+            'payment_method',
             'currency',
             'sum',
             'order_id',
@@ -91,7 +92,7 @@ class Std
         }
 
         if (!empty($params['qr'])) {
-            $inner_block = self::data_img_tag($params['qr']);
+            $inner_block = self::data_img_tag($params['qr'], $params['sum'], $params['payment_method'], @$params['currency']);
         } else {
             $inner_block = '
                 <div class="payment_btn__logo">
@@ -189,6 +190,10 @@ class Std
   display:inline-block;
   margin-top:4px;
   max-width: 190px;
+}
+
+.ypmn-qr-code {
+    margin-bottom: 10px;
 }
 </style>
         ';
@@ -316,20 +321,37 @@ class Std
     /**
      * HTML-тег, например для QR-кода
      * @param string $data_img
+     * @param int|string|float $sum
+     * @param string|null $method
+     * @param string|null $currency
      * @return string|null
      */
-    public static function data_img_tag(string $data_img) : ?string
+    public static function data_img_tag(string $data_img, $sum, string $method = null, ?string $currency = null) : ?string
     {
         if (empty($data_img)) {
             return null;
         }
 
+        switch ($method) {
+            case PaymentMethods::FASTER_PAYMENTS:
+                $data_type = 'data:image/png';
+                break;
+            case PaymentMethods::ALFAPAY:
+            case PaymentMethods::SBERPAY:
+            case PaymentMethods::TPAY:
+                $data_type = 'data:image/svg+xml';
+                break;
+            default:
+                $data_type = '';
+        }
+
         return '
             <img
-                alt="QR Code"
+                alt="QR Код для оплаты"
                 class="ypmn-qr-code w-100"
-                src="data:image/svg+xml;base64,' . $data_img . '"
-            >
+                src="' . $data_type . ';base64,' . $data_img . '"
+            ><br>
+            Оплатить <strong class="payment_btn__sum">' . number_format($sum, 2, '.', ' ') . ' '. ( isset($currency) ? htmlspecialchars($currency) : '&#8381;' ) . '</strong>
         ';
     }
 }

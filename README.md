@@ -65,10 +65,10 @@ composer require yourpayments/php-api-client
 
 ### Запуск встроенного сервера
 ```shell
-php -S localhost:8081 index.php
+php -S localhost:8080 index.php
 ```
 
-После запуска по адресу http://localhost:8081 будут доступны интерактивные примеры в следующем виде:
+После запуска по адресу http://localhost:8080 будут доступны интерактивные примеры в следующем виде:
 ![скриншот встроенного сервера с примерами](/screenshot2.jpg)
 
 
@@ -94,8 +94,7 @@ docker compose up --detach
 1. [Подробный платёж](src/Examples/getPaymentLink.php)
 1. [Платёж со сплитом (разделением платежа для нескольких получателей)](src/Examples/getPaymentLinkMarketplace.php)
 1. [Платёж через СБП (Систему Быстрых Платежей)](src/Examples/getFasterPayment.php)
-1. [Списание средств (только для двустадийной оплаты)](src/Examples/paymentCapture.php)
-1. [Встраивание QR-кода без страницы оплаты](/src/Examples/payQrCode.php) 
+1. [Списание средств (только для двустадийной оплаты)](src/Examples/paymentCapture.php) 
 
 ##### 3. Подписки
 Рекуррентные платежи

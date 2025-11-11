@@ -2,20 +2,16 @@
 <html class="h-100" lang=ru>
 <head>
     <meta charset="UTF-8">
-    <title>Твои Платежи | Сервис для работы с электронными платежами</title>
+    <title><?=strip_tags($_GET['function'] ?? 'Старт')?> ⚙️ Интеграция Твои Платежи</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/1c-light.min.css" integrity="sha512-kM8PiTB2J9j9MJxP4pg5Morv1nvatwpY0xsNsHDpHobti6+sdvObgLPhJ7lOIHYUqQmTAUAE+CaTcQXR47XO2w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    -->
 
     <link rel="prerender" href="https://ypnm.ru/ru/">
-    <script async src="https://lib.usedesk.ru/secure.usedesk.ru/widget_163235_46456.js"></script>
 
-    <link rel="icon" type="image/png" sizes="32x32" href="https://ypmn.ru/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="194x194" href="https://ypmn.ru/favicon-194x194.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://ypmn.ru/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://ypmn.ru/favicon-16x16.png">
+    <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
+    <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
+    <link rel='icon' type='image/png' sizes='194x194' href='/favicon-194x194.png'>
+    <link rel='icon' type='image/png' sizes='192x192' href='/android-chrome-192x192.png'>
+    <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
 
     <style>
         body, html {
@@ -58,7 +54,6 @@
             },
             "sameAs": [
                 "https://ypmn.ru/",
-                "https://nco-payu.com/",
                 "https://твоиплатежи.рф/"
             ]
         }
