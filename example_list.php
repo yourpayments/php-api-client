@@ -2,47 +2,70 @@
 
 declare(strict_types=1);
 
+function methodsParamsList(string $url, array $methodsToSkip) : string
+{
+    $html_list = '';
+    foreach (\Ypmn\PaymentMethods::NAMES as $method=>$name) {
+        if (in_array($method, $methodsToSkip)) {
+            continue;
+        }
+
+        $html_list .= '
+            <li>
+                <a href="' . $url . '&method=' . $method . '"'
+                    . ( !empty($_GET['method']) && $_GET['method'] === $method ? ' style="color:orange"' : '' )
+                    . '>' . $name . '</a>
+            </li>
+        ';
+    }
+
+    return $html_list;
+}
+
 $examples = [
     'start' => [
         'name'  => 'Начало работы',
         'about'  => '
-                Первый шаг интеграции с YPMN API &ndash; это получение кода мерчанта и секретного ключа после <a href="https://ypmn.ru/ru/connect/?utm_source=header_btn_1">подключения</a> (спросите у Вашего менеджера). 
-                <br>
-                <br>Они нужны для отправки всех запросов к API.
-                <br>
-                <br>На стороне клиента они используются для создания объекта Merchant (смотрите <a href="https://github.com/yourpayments/php-api-client/blob/main/src/Examples/start.php">файл с примером</a>).
-                
+            Первый шаг интеграции с YPMN API &ndash; это получение кода мерчанта и секретного ключа после <a href="https://ypmn.ru/ru/connect/?utm_source=header_btn_1">подключения</a> (спросите у Вашего менеджера). 
+            <br>
+            <br>Они нужны для отправки всех запросов к API.
+            <br>
+            <br>На стороне клиента они используются для создания объекта Merchant (смотрите <a href="https://github.com/yourpayments/php-api-client/blob/main/src/Examples/start.php">файл с примером</a>).
         ',
         'docLink'  => '',
         'link'  => '',
     ],
     'simpleGetPaymentLink' => [
-        'name'  => 'Самая простая кнопка оплаты',
-        'about'  => 'В этом примере показана самая простая реализация. С минимальным набором полей без детализации, просто оплата заказа c определённой суммой.',
+        'name'  => 'Самая простая оплата',
+        'about'  => '
+            В этом примере показана самая простая реализация.
+            С минимальным набором полей без детализации, только оплата заказа c определённой суммой.
+            <br>
+            <br>
+            <ol>' . methodsParamsList('./?function=simpleGetPaymentLink', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
+        ',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
         'link'  => '',
     ],
     'getPaymentLink' => [
-        'name'  => 'Подробный платёж',
-        'about'  => 'Это пример платежа с максимальным набором полей.',
+        'name'  => 'Подробная оплата',
+        'about'  => '
+            Это пример платежа с максимальным набором полей.
+            <br>
+            <br>
+            <ol>' . methodsParamsList('./?function=getPaymentLink', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
+        ',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
         'link'  => '',
     ],
-    'getFasterPayment' => [
-        'name'  => 'Оплата через СБП',
-        'about'  => 'Пример платежа через систему быстрых платежей',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'getFasterPaymentWithReceipts' => [
-        'name'  => 'Оплата через СБП с регистрацией чека',
-        'about'  => 'Пример платежа через систему быстрых платежей с регистрацией чека',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'payQrCode' => [
-        'name'  => 'QR-код на примере TPay',
-        'about'  => 'Пример отображение QR-кода Pay-метода без платёжной формы',
+    'getPaymentLinkWithReceipt' => [
+        'name'  => 'Оплата с чеком',
+        'about'  => '
+            Пример платежа с регистрацией чека
+            <br>
+            <br>
+            <ol>' . methodsParamsList('./?function=getPaymentLinkWithReceipt', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
+        ',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
         'link'  => '',
     ],
@@ -77,7 +100,7 @@ $examples = [
         'link'  => '',
     ],
     'getPaymentLinkMarketplaceWithReceipts' => [
-        'name'  => 'Платёж со сплитом и регистрацией чеков',
+        'name'  => 'Платёж со сплитом и чеком',
         'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков) и регистрацией чеков.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-split-api',
         'link'  => '',
