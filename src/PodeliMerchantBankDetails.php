@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 class PodeliMerchantBankDetails
 {
@@ -15,6 +19,9 @@ class PodeliMerchantBankDetails
 
     /** @notBlank */
     private string $paymentAccount;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     public function getBankName(): string
     {

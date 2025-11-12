@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
 
 use \JsonSerializable;
+use Ypmn\Traits\ProtobufSerializable;
 
 class PodeliMerchant implements JsonSerializable
 {
@@ -42,6 +45,9 @@ class PodeliMerchant implements JsonSerializable
      * @isLinkType
      */
     private PodeliMerchantAddress $address;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     public function getLogin(): string
     {

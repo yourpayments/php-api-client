@@ -2,6 +2,8 @@
 
 namespace Ypmn;
 
+use Ypmn\Traits\ProtobufSerializable;
+
 /**
  * Авторизация платежа
  */
@@ -12,9 +14,16 @@ class Authorization implements AuthorizationInterface
      * @var bool страница оплаты Ypmn включена?
      */
     private bool $usePaymentPage = true;
+
+    /**
+     * Платёжный метод
+     * @var string|null
+     */
     private ?string $paymentMethod = PaymentMethods::CCVISAMC;
 
-    /** @var CardDetailsInterface|null Данные карты */
+    /**
+     * @var CardDetailsInterface|null Данные карты
+     */
     private ?CardDetailsInterface $cardDetails = null;
 
     /** @var MerchantTokenInterface|null Данные карты (в виде объекта токена) */
@@ -25,6 +34,9 @@ class Authorization implements AuthorizationInterface
 
     /** @var PaymentPageOptions|null */
     private ?PaymentPageOptions $paymentPageOptions = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /**
      * Создать Платёжную Авторизацию
@@ -38,6 +50,8 @@ class Authorization implements AuthorizationInterface
         $this->setPaymentMethod($paymentMethodType);
         $this->setUsePaymentPage($isPaymentPageUsed);
     }
+
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function setPaymentMethod(?string $paymentMethod = null) : self

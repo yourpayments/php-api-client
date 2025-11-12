@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Мерчант (продавец, юридическое лицо)
@@ -9,7 +13,7 @@ class Merchant implements MerchantInterface
 {
     /**
      * Код Продавца (Идентификатор Мерчанта)
-     * можно получить в https://ypmn.ru/cpanel/account_settings.php
+     * можно получить в https://secure.ypmn.ru/cpanel/account_settings.php
      * Или в https://sandbox.ypmn.ru/cpanel/account_settings.php для тестов
      * @var string Код Продавца (Идентификатор Мерчанта)
      */
@@ -18,11 +22,14 @@ class Merchant implements MerchantInterface
     /**
      * Секретный Ключ
      * !НЕ передавать в открытом виде
-     * получить в https://ypmn.ru/cpanel/account_settings.php
+     * получить в https://secure.ypmn.ru/cpanel/account_settings.php
      * Или в https://sandbox.ypmn.ru/cpanel/account_settings.php для тестов
      @var string Секретный Ключ (!НЕ передавать в открытом виде)
      */
     private string $merchantSecret;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /**
      * @param string $merchantCode Код Продавца (Идентификатор Мерчанта)

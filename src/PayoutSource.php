@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Это класс для описания источника платежа
@@ -10,6 +14,9 @@ class PayoutSource implements PayoutSourceInterface
     /** @var string Тип источника, обычно это баланс для выплат */
     private string $type = 'merchantBalance';
     private Billing $sender;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritdoc */
     public function getType(): string

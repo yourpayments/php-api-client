@@ -23,6 +23,7 @@ class SessionRequest implements \JsonSerializable
     }
 
 
+    #[\ReturnTypeWillChange]
     /**
      * @inheritDoc
      */

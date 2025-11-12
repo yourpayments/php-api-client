@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Это класс-справочник платёжных методов
@@ -17,4 +21,7 @@ class PaymentMethods
     public const ALFAPAY = 'ALFAPAY';
     public const SBERPAY = 'SBERPAY';
     public const TPAY = 'TPAY'; // T-Pay
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 }

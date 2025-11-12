@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Документ, подтверждающий личность
@@ -12,6 +16,9 @@ class IdentityDocument implements IdentityDocumentInterface
 
     /** @var string Вид документа */
     private string $type;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function __construct(int $number, string $type) {

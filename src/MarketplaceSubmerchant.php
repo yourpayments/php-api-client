@@ -1,9 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
 
 use JsonSerializable;
 use stdClass;
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Это объект Сабмерчанта
@@ -16,6 +19,9 @@ class MarketplaceSubmerchant implements MarketplaceSubmerchantInterface
 
     /** @var float|null Сумма этого Сабмерчанта в заказе */
     private ?float $amount = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @throws PaymentException */
     public function __construct(string $merchantCode, float $amount = null)

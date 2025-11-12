@@ -3,7 +3,7 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-// Эта фукнция подключает классы
+// Эта функция подключает классы
 spl_autoload_register(function ($className) {
     $className = explode('\\', $className);
     $className =  end($className);
@@ -14,6 +14,7 @@ spl_autoload_register(function ($className) {
         require_once($filename);
     }
 });
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'src' .DIRECTORY_SEPARATOR . 'Traits/ProtobufSerializable.php';
 
 // обработка json запросов
 $jsonMode = $_REQUEST['json'] ?? false;

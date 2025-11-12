@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Это класс для одноразовых токенов
@@ -12,6 +16,9 @@ class OneTimeUseToken
 
     /** @var string Id сеси */
     private string $sessionId;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /**
      * @param string $token

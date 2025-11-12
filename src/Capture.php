@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
 
 use JsonSerializable;
+use Ypmn\Traits\ProtobufSerializable;
 
 class Capture implements CaptureInterface, JsonSerializable, TransactionInterface, PaymentDetailsInterface
 {
@@ -20,6 +23,9 @@ class Capture implements CaptureInterface, JsonSerializable, TransactionInterfac
 
     /** @var Details|null Данные с расширенными сведениями в парах ключ/значение */
     private ?Details $details = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function setYpmnPaymentReference(string $paymentIdString): CaptureInterface

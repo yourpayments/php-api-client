@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 class CardDetails implements CardDetailsInterface
 {
@@ -36,6 +40,9 @@ class CardDetails implements CardDetailsInterface
 
     /** @var string Банк, выпустивший карту */
     private string $cardIssuerBank;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function getNumber(): ?string

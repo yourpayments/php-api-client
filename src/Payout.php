@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Это класс для выплат физ. лицам на банковские карты
@@ -12,6 +16,9 @@ class Payout implements PayoutInterface, \JsonSerializable
     private ?string $description;
     private ?DestinationInterface $destination;
     private ?PayoutSource $source;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     public function __construct(string $merchantPayoutReference = null)
     {

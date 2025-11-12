@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 class Client implements ClientInterface
 {
@@ -18,6 +22,9 @@ class Client implements ClientInterface
 
     /** @var DeliveryInterface Информация о доставке */
     private DeliveryInterface $delivery;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     function __construct() {
         if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {

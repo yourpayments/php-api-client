@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ypmn;
 
 use Exception;
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Расширенные данные по транзакции
@@ -16,6 +17,9 @@ class Details
 
     /** @var array динамические свойства */
     private array $valuesContainer = [];
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /**
      * Установка динамических свойств по ключу

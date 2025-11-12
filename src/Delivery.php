@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Доставка
@@ -46,6 +50,9 @@ class Delivery implements DeliveryInterface
 
     /** @var ?IdentityDocumentInterface Удостоверение Личности */
     private ?IdentityDocumentInterface $identityDocument = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function getFirstName(): ?string

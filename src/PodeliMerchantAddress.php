@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 class PodeliMerchantAddress
 {
@@ -9,6 +13,9 @@ class PodeliMerchantAddress
 
     /** @notBlank */
     private string $city;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     public function getIndex(): string
     {

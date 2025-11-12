@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Это класс для описания направления платежа по сбп
@@ -14,6 +18,9 @@ class PayoutMobileDestination implements DestinationInterface
     private string $type;
     private ?DetailsInterface $details = null;
     private ?Billing $recipient = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /**
      * @throws PaymentException
