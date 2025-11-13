@@ -53,10 +53,12 @@ $client->setBilling($billing);
 $payment = new Payment;
 // Присвоим товарные позиции
 $payment->addProduct($orderAsProduct);
-// Создадим запрос на  авторизацию платежа
-// здесь первым параметром можно передать конкретный способ оплаты из справочника
-// PaymentMethods.php
-$payment->setAuthorization(new Authorization(PaymentMethods::CCVISAMC));
+// Определим платёжный метод
+$payment_method = $_GET['method'] ?? PaymentMethods::CCVISAMC;
+// Создадим объект для запроса авторизации платежа
+$authorization = new Authorization($payment_method,true);
+// Назначим авторизацию для нашего платежа
+$payment->setAuthorization($authorization);
 // Установим номер заказа (должен быть уникальным в вашей системе)
 $payment->setMerchantPaymentReference($merchantPaymentReference);
 // Установим адрес перенаправления пользователя после оплаты
@@ -85,11 +87,16 @@ try {
     }
 
     if (isset($responseData["paymentResult"])) {
+        if (!empty($responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'])) {
+            $qr = $responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'];
+        }
+
         // Выведем кнопку оплаты
         echo Std::drawYpmnButton([
-            'url' => $responseData["paymentResult"]['url'],
-            'sum' => $payment->sumProductsAmount(),
-            'newpage' => true,
+            'qr' => ($qr ?? null),
+            'url' => $responseData['paymentResult']['url'] ?? '',
+            'sum' => $payment->sumProductsAmount() ?? 0,
+            'payment_method' => $payment_method ?? null,
         ]);
 
         // .. или сделаем редирект на форму оплаты (опционально)
