@@ -162,7 +162,7 @@ class ApiRequest implements ApiRequestInterface
                 'Accept: application/json',
                 'Content-Type: application/json',
                 'X-Header-Date: ' . $date,
-//                'X-Header-Merchant: ' . $this->merchant->getCode()
+                'X-Header-Merchant: ' . $this->merchant->getCode()
             ]
         ];
 
