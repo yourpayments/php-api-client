@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Результат Платежа
@@ -39,6 +43,9 @@ class PaymentResult implements PaymentResultInterface
 
     /** @var CardDetailsInterface Информация о Карте */
     private CardDetailsInterface $cardDetails;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function getPaymentMethod(): ?string

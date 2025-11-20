@@ -1,12 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 class PhoneDetails implements DetailsInterface
 {
     private string $number;
     private int $bankId;
     private string $bankName;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     public  function getNumber(): string
     {

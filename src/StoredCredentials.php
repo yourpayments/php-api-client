@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 class StoredCredentials implements StoredCredentialsInterface
 {
@@ -23,6 +27,9 @@ class StoredCredentials implements StoredCredentialsInterface
      * @var string $subscriptionPurpose
      */
     private string $subscriptionPurpose;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function getUseType(): string

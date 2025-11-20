@@ -1,9 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
 
 
 use JsonSerializable;
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Платеж
@@ -33,6 +36,9 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
 
     /** @var Details|null Данные с расширенными сведениями в парах ключ/значение */
     private ?Details $details = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function setMerchantPaymentReference(string $paymentIdString) : self

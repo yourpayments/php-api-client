@@ -2,13 +2,27 @@
 
 namespace Ypmn;
 
+use Ypmn\Traits\ProtobufSerializable;
+
 /**
- * Это класс Баланса (сколько + валюта)
+ * Количество денежных средств (сколько + валюта)
  **/
 class Amount implements AmountInterface
 {
+    /**
+     * Value
+     * @var float
+     */
     private float $value;
+
+    /**
+     * The ISO 4217 currency code (e.g., 'RUB', 'USD', 'EUR')
+     * @var string
+     */
     private string $currency = 'RUB';
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @throws PaymentException */
     public function __construct(float $value, $currency='RUB')

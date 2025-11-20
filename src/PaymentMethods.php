@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ypmn;
 
+use Ypmn\Traits\ProtobufSerializable;
+
 /**
  * Это класс-справочник платёжных методов
  **/

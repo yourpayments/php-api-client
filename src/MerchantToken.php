@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 class MerchantToken implements MerchantTokenInterface, \JsonSerializable
 {
@@ -18,6 +22,9 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
 
     /** @var string Имя Владельца Карты */
     private string $owner;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function getTokenHash(): string

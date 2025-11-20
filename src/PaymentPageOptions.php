@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Это файл класса для настройки платёжной страницы
@@ -12,6 +16,9 @@ class PaymentPageOptions implements PaymentPageOptionsInterface
 
     /** @var int|null максимальное время оплаты товара (в сек) */
     protected ?int $timeoutSeconds = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @throws PaymentException */
     public function __construct($timeoutSeconds)

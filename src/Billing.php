@@ -2,6 +2,8 @@
 
 namespace Ypmn;
 
+use Ypmn\Traits\ProtobufSerializable;
+
 class Billing implements BillingInterface
 {
     /** @var string Тип */
@@ -45,6 +47,9 @@ class Billing implements BillingInterface
 
     /** @var ?IdentityDocumentInterface удостоверение личности */
     private ?IdentityDocumentInterface $identityDocument = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function getFirstName(): ?string

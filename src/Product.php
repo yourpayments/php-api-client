@@ -1,6 +1,10 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Продукт или Услуга
@@ -45,6 +49,9 @@ class Product implements ProductInterface
 
     /** @var MarketplaceSubmerchantInterface|null Сабмерчант (для маркетплейса) */
     private ?MarketplaceSubmerchantInterface $marketplaceSubmerchant = null;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function __construct(array $params=[])

@@ -1,7 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
 
+use Ypmn\Traits\ProtobufSerializable;
+
+/**
+ * Данные заказа
+ */
 class OrderData implements OrderDataInterface
 {
     /** @var string Дата Заказа */
@@ -33,6 +40,9 @@ class OrderData implements OrderDataInterface
 
     /** @var array Детализация баллов лояльности */
     private array $loyaltyPointsDetails;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /** @inheritDoc */
     public function getOrderDate(): ?string

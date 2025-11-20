@@ -1,6 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ypmn;
+
+use Ypmn\Traits\ProtobufSerializable;
 
 /**
  * Класс для хранения номера транзакции на стороне YPMN
@@ -9,6 +13,9 @@ class PaymentReference implements \JsonSerializable
 {
     private ?string $paymentReference = null;
     private bool $autoGenerate = true;
+
+    /** Protobuf generation Trait */
+    use ProtobufSerializable;
 
     /**
      * @param null $paymentReference номер транзакции
