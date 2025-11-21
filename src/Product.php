@@ -43,6 +43,11 @@ class Product implements ProductInterface
     private float $amount;
 
     /**
+     * @var string Единица измерения (для чеков)
+     */
+    private string $measurementUnit;
+
+    /**
      * @var string Любые доп. сведения
      */
     private string $additionalDetails;
@@ -164,6 +169,20 @@ class Product implements ProductInterface
     {
         //TODO: ВАЖНО: не должно превышать оригинальную стоимость (unitPrice * quantity) продукта при авторизации
         $this->amount = round($amount, 2, PHP_ROUND_HALF_UP);
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function getMeasurementUnit(): string
+    {
+        return $this->measurementUnit;
+    }
+
+    /** @inheritDoc */
+    public function setMeasurementUnit(string $measurementUnit): Product
+    {
+        $this->measurementUnit = $measurementUnit;
+
         return $this;
     }
 

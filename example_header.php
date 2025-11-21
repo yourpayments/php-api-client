@@ -22,12 +22,15 @@
             min-height: 100%;
         }
 
-        .footer {
-            clear: both;
-        }
-
         code {
             color: darkgreen;
+        }
+
+        a:hover,
+        a:focus,
+        a:active {
+            color: darkorange;
+            transition: 0.3s ease-in-out;
         }
     </style>
 
@@ -97,13 +100,12 @@
                 </ol>
 
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a target="_blank" href="https://YPMN.ru/ru/">Наш сайт</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://YPMN.ru/?utm_source=SDK_PHP">Наш сайт</a></li>
                     <li class="list-group-item"><a target="_blank" href="https://github.com/yourpayments/">Github</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://dev.payu.ru/ru/documents/rest-api/testing/">Тестовые карты</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/documentation/#tag/testing">Тестовые карты</a></li>
                     <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/documentation/">Документация</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://dev.ypmn.ru/ru/faq/">Частые вопросы</a></li>
-                    <li class="list-group-item"><a target="_blank" href="mailto:itsupport@ypmn.ru?subject=YPMN_Integration">itsupport@ypmn.ru</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://t.me/YPMN_bot">@YPMN_bot</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/support/">Частые вопросы</a></li>
+                    <li class="list-group-item"><a target="_blank" href="mailto:itsupport@ypmn.ru?subject=PHP_SDK_Integration">itsupport@ypmn.ru</a></li>
                 </ul>
 
             </div>

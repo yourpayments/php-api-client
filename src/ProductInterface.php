@@ -91,6 +91,18 @@ interface ProductInterface
      */
     public function getAmount() : ?float;
 
+    /**
+     * Получить Единицу измерения (для чеков, например: "кг", "шт", "упаковка 10 шт")
+     * @return string Единица измерения
+     */
+    public function getMeasurementUnit(): string;
+
+    /**
+     * Установить Единицу измерения (для чеков, например: 'кг', 'шт', 'упаковка 10 шт')
+     * @param string $measurementUnit
+     * @return $this
+     */
+    public function setMeasurementUnit(string $measurementUnit): Product;
 
     /**
      * Установить Любые доп. сведения

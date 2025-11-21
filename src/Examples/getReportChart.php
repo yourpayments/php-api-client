@@ -29,3 +29,5 @@ $responseData = $apiRequest->sendReportChartRequest([
     'endDate' => $endDate,
     'periodLength' => 'day'
 ]);
+
+echo $responseData['response'];

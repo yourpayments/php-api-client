@@ -1,7 +1,16 @@
+#!/usr/bin/env php
 <?php
 
 declare(strict_types=1);
 
+/**
+ * Это прототип, генерация DTO объектов
+ * по стандарту JSON Schema
+ * https://json-schema.org/
+ *
+ *  Как запускать:
+ *  php ./bin/generate-scheme.php --debug
+ */
 class SchemaGenerator
 {
     private array $definitions = [];

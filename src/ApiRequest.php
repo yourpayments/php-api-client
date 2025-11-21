@@ -191,11 +191,6 @@ class ApiRequest implements ApiRequestInterface
         $hashString = '';
 
         foreach ($parameters as $currentData) {
-//            if (is_array($currentData)) {
-//                //TODO
-//                $currentData = '';
-//            }
-
             if (strlen($currentData) > 0) {
                 $hashString .= strlen($currentData);
                 $hashString .= $currentData;
@@ -726,7 +721,8 @@ class ApiRequest implements ApiRequestInterface
                     style="
                         background: aliceblue;
                         color: black;
-                        padding: 2px;
+                        padding: 4px;
+                        border-radius: 4px;
                         border: 1px solid green;
                         white-space: pre-wrap;
                     "

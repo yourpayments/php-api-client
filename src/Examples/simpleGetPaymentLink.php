@@ -93,9 +93,9 @@ try {
 
         // Выведем кнопку оплаты
         echo Std::drawYpmnButton([
-            'qr' => ($qr ?? null),
             'url' => $responseData['paymentResult']['url'] ?? '',
             'sum' => $payment->sumProductsAmount() ?? 0,
+            'qr' => ($qr ?? null),
             'payment_method' => $payment_method ?? null,
         ]);
 

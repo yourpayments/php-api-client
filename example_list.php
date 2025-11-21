@@ -35,6 +35,12 @@ $examples = [
         'docLink'  => '',
         'link'  => '',
     ],
+    'payment' => [
+        'name'  => 'Оплата',
+        'about'  => '...',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
     'simpleGetPaymentLink' => [
         'name'  => 'Самая простая оплата',
         'about'  => '
@@ -70,14 +76,14 @@ $examples = [
         'link'  => '',
     ],
     'getBindingFasterPayment' => [
-        'name'  => 'Создание подписки СБП',
-        'about'  => 'В этом примере отправляется запрос на создание подписки СБП с одновременной оплатой',
+        'name'  => 'Токенизация СБП',
+        'about'  => 'В этом примере после оплаты СБП в вебхуке придёт токен, который можно использовать для дальнейших оплат',
         'docLink'  => 'https://ypmn.ru/ru/documentation/',
         'link'  => '',
     ],
     'paymentByFasterBinding' => [
-        'name'  => 'Оплата по подписке СБП',
-        'about'  => 'Это пример демонстрирует оплату через СБП по средством ранее созщданной подписки',
+        'name'  => 'Оплата токеном СБП',
+        'about'  => 'Это пример оплаты СБП с помощью ранее созданного токена',
         'docLink'  => 'https://ypmn.ru/ru/documentation/',
         'link'  => '',
     ],
@@ -183,12 +189,15 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1general/get',
         'link'  => '',
     ],
-    'getReportChart' => [
-        'name'  => 'Запрос отчёта в виде графика',
-        'about'  => 'Это пример получения отчета в виде графика.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1chart/get',
-        'link'  => '',
-    ],
+
+// TODO: оформить, актуализировать
+//    'getReportChart' => [
+//        'name'  => 'Запрос отчёта в виде графика',
+//        'about'  => 'Это пример получения отчета в виде графика.',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1chart/get',
+//        'link'  => '',
+//    ],
+
     'qstCreateOrg' => [
         'name'  => 'Подключение продавца-организации (отправка анкеты)',
         'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-организации на проверку в YPMN.',
@@ -202,7 +211,7 @@ $examples = [
         'link'  => '',
     ],
     'qstStatus' => [
-        'name'  => 'Получение статуса анкеты',
+        'name'  => 'Статус анкеты',
         'about'  => 'В этом примере показано получение статуса анкеты по её ID.<br/><br/>ID анкеты возвращается при отправке анкеты на проверку.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1status~1%7Bid%7D/get',
         'link'  => '',

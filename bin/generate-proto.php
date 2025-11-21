@@ -4,6 +4,10 @@
 declare(strict_types=1);
 
 /**
+ * Это прототип, генерация описания пакетов
+ * по стандарту Google ProtoBuf
+ * https://protobuf.dev/
+ *
  * Как запускать:
  * php ./bin/generate-proto.php --debug
  */
