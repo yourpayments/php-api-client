@@ -20,13 +20,13 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     private string $currency = 'RUB';
 
     /** @var string URL страницы после успешной оплаты */
-    private string $successUrl;
+    private ?string $successUrl = null;
 
     /** @var string URL страницы после НЕуспешной оплаты */
-    private string $failUrl;
+    private ?string $failUrl = null;
 
-    /** @var string Универсальный URL страницы после оплаты */
-    private string $returnUrl;
+    /** @var ?string Универсальный URL страницы после оплаты */
+    private ?string $returnUrl = null;
 
     /** @var AuthorizationInterface Авторизация */
     private AuthorizationInterface $authorization;
@@ -80,13 +80,13 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function getSuccessUrl(): string
+    public function getSuccessUrl(): ?string
     {
         return $this->successUrl;
     }
 
     /** @inheritDoc */
-    public function setSuccessUrl(string $successUrl): self
+    public function setSuccessUrl(?string $successUrl): self
     {
         $this->successUrl = $successUrl;
 
@@ -94,13 +94,13 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function getFailUrl(): string
+    public function getFailUrl(): ?string
     {
         return $this->failUrl;
     }
 
     /** @inheritDoc */
-    public function setFailUrl(string $failUrl): self
+    public function setFailUrl(?string $failUrl): self
     {
         $this->failUrl = $failUrl;
 
@@ -108,7 +108,7 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function setReturnUrl(string $returnUrl) : self
+    public function setReturnUrl(?string $returnUrl) : self
     {
         $this->returnUrl = $returnUrl;
 
@@ -116,7 +116,7 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function getReturnUrl(): string
+    public function getReturnUrl(): ?string
     {
         return  $this->returnUrl;
     }

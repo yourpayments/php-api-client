@@ -42,43 +42,43 @@ interface PaymentInterface
      * Получить URL страницы для перенаправления мерчанта
      * после успешной оплаты (имеет приоритет над универсальным URL)
      *
-     * @return string successURL
+     * @return null|string successURL
      */
-    public function getSuccessUrl(): string;
+    public function getSuccessUrl(): ?string;
 
     /**
      * Установить URL страницы для перенаправления мерчанта
      * после успешной оплаты (имеет приоритет над универсальным URL)
      *
-     * @param string $successUrl
+     * @param null|string $successUrl
      * @return Payment
      */
-    public function setSuccessUrl(string $successUrl): self;
+    public function setSuccessUrl(?string $successUrl): self;
 
     /**
      *  Получить URL страницы для перенаправления мерчанта
      *  после НЕ успешной оплаты (имеет приоритет над универсальным URL)
      *
-     * @return string failUrl
+     * @return null|string failUrl
      */
-    public function getFailUrl(): string;
+    public function getFailUrl(): ?string;
 
     /**
      * Установить URL страницы для перенаправления мерчанта
      * после НЕуспешной оплаты (имеет приоритет над универсальным URL)
      *
-     * @param string $failUrl
+     * @param null|string $failUrl
      * @return Payment
      */
-    public function setFailUrl(string $failUrl): self;
+    public function setFailUrl(?string $failUrl): self;
 
     /**
      * Универсальный URL возврата Клиента после оплаты
      *
-     * @param string $returnUrl URL возврата Клиента после оплаты
+     * @param null|string $returnUrl URL возврата Клиента после оплаты
      * @return $this
      */
-    public function setReturnUrl(string $returnUrl) : self;
+    public function setReturnUrl(?string $returnUrl) : self;
 
     /**
      * Получить Универсальный URL возврата Клиента после оплаты
@@ -92,9 +92,9 @@ interface PaymentInterface
      *    ?result=0&3dsecure=YES&date=2018-11-01%2018%3A30%3A31&payrefno=51448952&ctrl=b9dd647b1f532c2de00a574a662798f0
      *    GET-запрос неудачный:
      *    ?result=1&3dsecure=YES&date=2018-10-15%2017%3A08%3A16&payrefno=50605885&ctrl=c4ac00d5f30129c9596721f70f4d58f7
-     * @return string URL возврата Клиента после оплаты
+     * @return null|string URL возврата Клиента после оплаты
      */
-    public function getReturnUrl() : string;
+    public function getReturnUrl() : ?string;
 
     /**
      * Установить Авторизацию
