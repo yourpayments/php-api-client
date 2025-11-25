@@ -92,8 +92,13 @@ if (!empty($_POST)) {
     $payment->setAuthorization($authorization);
     // Установим номер заказа (должен быть уникальным в вашей системе)
     $payment->setMerchantPaymentReference('primer_nomer__' . time());
-    // Установим адрес перенаправления пользователя после оплаты
-    $payment->setReturnUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage');
+
+    // Установим адреса перенаправления пользователя после удачной и неудачной оплаты
+    $payment->setSuccessUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage&status=success');
+    $payment->setFailUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage&status=fail');
+    /* @deprecated старый вариант с одним URL */
+    // $payment->setReturnUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage');
+
     // Подготовим клиентское подключение
     $payment->setClient($client);
 

@@ -19,7 +19,13 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     /** @var string код валюты */
     private string $currency = 'RUB';
 
-    /** @var string URL страницы после оплаты */
+    /** @var string URL страницы после успешной оплаты */
+    private string $successUrl;
+
+    /** @var string URL страницы после НЕуспешной оплаты */
+    private string $failUrl;
+
+    /** @var string Универсальный URL страницы после оплаты */
     private string $returnUrl;
 
     /** @var AuthorizationInterface Авторизация */
@@ -71,6 +77,34 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     public function getCurrency(): string
     {
         return $this->currency;
+    }
+
+    /** @inheritDoc */
+    public function getSuccessUrl(): string
+    {
+        return $this->successUrl;
+    }
+
+    /** @inheritDoc */
+    public function setSuccessUrl(string $successUrl): self
+    {
+        $this->successUrl = $successUrl;
+
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function getFailUrl(): string
+    {
+        return $this->failUrl;
+    }
+
+    /** @inheritDoc */
+    public function setFailUrl(string $failUrl): self
+    {
+        $this->failUrl = $failUrl;
+
+        return $this;
     }
 
     /** @inheritDoc */

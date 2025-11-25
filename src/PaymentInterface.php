@@ -7,6 +7,7 @@ interface PaymentInterface
     /**
      * Установить Номер Заказа
      * Используйте удобный вам номер заказа или счёта, уникальный в вашей системе
+     *
      * @param string $paymentIdString Номер Заказа
      * @return $this
      */
@@ -14,6 +15,7 @@ interface PaymentInterface
 
     /**
      * Получить Номер платежа
+     *
      * @return string Номер платежа
      */
     public function getMerchantPaymentReference() : string;
@@ -22,6 +24,7 @@ interface PaymentInterface
      * Установить Код валюты (например, RUB)
      * формат кодов валюты ISO 4217
      * (https://en.wikipedia.org/wiki/ISO_4217)
+     *
      * @param string|null $currency Код валюты
      * @return $this
      */
@@ -29,19 +32,57 @@ interface PaymentInterface
 
     /**
      * Получить Код валюты
+     *
      * @return string Код валюты
      */
     public function getCurrency() : string;
 
+
     /**
-     * URL возврата Клиента после оплаты
+     * Получить URL страницы для перенаправления мерчанта
+     * после успешной оплаты (имеет приоритет над универсальным URL)
+     *
+     * @return string successURL
+     */
+    public function getSuccessUrl(): string;
+
+    /**
+     * Установить URL страницы для перенаправления мерчанта
+     * после успешной оплаты (имеет приоритет над универсальным URL)
+     *
+     * @param string $successUrl
+     * @return Payment
+     */
+    public function setSuccessUrl(string $successUrl): self;
+
+    /**
+     *  Получить URL страницы для перенаправления мерчанта
+     *  после НЕ успешной оплаты (имеет приоритет над универсальным URL)
+     *
+     * @return string failUrl
+     */
+    public function getFailUrl(): string;
+
+    /**
+     * Установить URL страницы для перенаправления мерчанта
+     * после НЕуспешной оплаты (имеет приоритет над универсальным URL)
+     *
+     * @param string $failUrl
+     * @return Payment
+     */
+    public function setFailUrl(string $failUrl): self;
+
+    /**
+     * Универсальный URL возврата Клиента после оплаты
+     *
      * @param string $returnUrl URL возврата Клиента после оплаты
      * @return $this
      */
     public function setReturnUrl(string $returnUrl) : self;
 
     /**
-     * Получить URL возврата Клиента после оплаты
+     * Получить Универсальный URL возврата Клиента после оплаты
+     *
      * Это страница, которую ваш Клиент должен увидеть по завершению платежа
      * На эту страницу будут переданы GET-праметры о статусе платежа
      * Например,
@@ -58,6 +99,7 @@ interface PaymentInterface
     /**
      * Установить Авторизацию
      * Должен содерждать paymentMethod и usePaymentPage
+     *
      * @param AuthorizationInterface $authorization Авторизация
      * @return $this
      */
@@ -87,6 +129,7 @@ interface PaymentInterface
 
     /**
      * Установить Клиента
+     *
      * @param ClientInterface $client Клиент
      * @return $this
      */
@@ -94,12 +137,14 @@ interface PaymentInterface
 
     /**
      * Получить Клиента
+     *
      * @return ClientInterface
      */
     public function getClient() : ClientInterface;
 
     /**
      * Добавить Продукт
+     *
      * @param ProductInterface $product Продукт
      * @return $this
      */
@@ -107,18 +152,21 @@ interface PaymentInterface
 
     /**
      * Получить Продукты как массив объектов
+     *
      * @return Product[] Продукты
      */
     public function getProducts() : array;
 
     /**
      * Получить Продукты как ассоциативный массив
+     *
      * @return array Продукты
      */
     public function getProductsArray() : array;
 
     /**
      * Итоговая сумма товарных позиций
+     *
      * @return int Итог
      * @throws PaymentException Ошибка оплаты
      */
