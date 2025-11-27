@@ -83,4 +83,29 @@ interface AuthorizationInterface
      * @return PaymentPageOptionsInterface
      */
     public function getPaymentPageOptions(): PaymentPageOptionsInterface;
+
+    /**
+     * Установить значения для 3DS
+     * (только для h2h, при наличии PCI-DSS)
+     *
+     * Данные по-умолчанию могут быть использованы только для тестов
+     *
+     * @param int|null $screenHeight высота экрана в пискселях
+     * @param int|null $screenWidth ширина экрана в пискселях
+     * @param int|null $timezone временная зона в минутах (напр. -180)
+     * @param string|null $userAgent строка, описывающая клиента
+     * @param string|null $colorDepth цветопередача экрана
+     * @param string|null $language язык, напр. 'ru-RU'
+     * @param string|null $requestIp IP-адрес клиента
+     * @return self
+     */
+    public function setThreeDSecure(
+        int $screenHeight = null,
+        int $screenWidth = null,
+        int $timezone = null,
+        string $userAgent = null,
+        string $colorDepth = null,
+        string $language = null,
+        string $requestIp = null
+    ): self;
 }

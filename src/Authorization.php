@@ -12,7 +12,7 @@ use Ypmn\Traits\ProtobufSerializable;
 class Authorization implements AuthorizationInterface
 {
     /**
-     * включить страницу оплаты Ypmn
+     * Включить страницу оплаты Ypmn
      * @var bool страница оплаты Ypmn включена?
      */
     private bool $usePaymentPage = true;
@@ -22,6 +22,11 @@ class Authorization implements AuthorizationInterface
      * @var string|null
      */
     private ?string $paymentMethod = PaymentMethods::CCVISAMC;
+
+    /**
+     * @var array|null
+     */
+    private ?array $threeDSecure = null;
 
     /**
      * @var CardDetailsInterface|null Данные карты
@@ -41,14 +46,18 @@ class Authorization implements AuthorizationInterface
     use ProtobufSerializable;
 
     /**
-     * Создать Платёжную Авторизацию
+     * Создать Авторизацию платежа
      * (можно указать метод из справочника PaymentMethods.php,
      * или передать null, чтобы плательщик выбрал метод сам)
      * @param string|null $paymentMethodType Метод оплаты (из справочника)
      * @param bool $isPaymentPageUsed страница оплаты Ypmn включена?
      * @throws PaymentException Ошибка оплаты
      */
-    public function __construct(?string $paymentMethodType = null, bool $isPaymentPageUsed = true) {
+    public function __construct(
+        ?string $paymentMethodType = null,
+        bool $isPaymentPageUsed = true,
+        ?array $threeDSecure = null
+    ) {
         $this->setPaymentMethod($paymentMethodType);
         $this->setUsePaymentPage($isPaymentPageUsed);
     }
@@ -178,9 +187,47 @@ class Authorization implements AuthorizationInterface
         return $this->paymentPageOptions;
     }
 
-    /**
-     * @return array
-     */
+    /** @inheritDoc */
+    public function setThreeDSecure(
+        int $screenHeight = null,
+        int $screenWidth = null,
+        int $timezone = null,
+        string $userAgent = null,
+        string $colorDepth = null,
+        string $language = null,
+        string $requestIp = null
+    ): self
+    {
+        if (empty($userAgent)) {
+            if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+                $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            } else {
+                $userAgent = 'Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/140.0.0.0 Safari\/537.36';
+            }
+        }
+
+        $this->threeDSecure = [
+            'strongCustomerAuthentication' => [
+                'clientEnvironment' => [
+                    'browser' => [
+                        'screenHeight' => (!empty($screenHeight) ? $screenHeight : '1440'),
+                        'screenWidth' => (!empty($screenWidth) ? $screenWidth : '2561'),
+                        'timezone' => (!empty($timezone) ? $timezone : '-180'),
+                        'userAgent' => (!empty($userAgent) ? $userAgent : 'Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/140.0.0.0 Safari\/537.36'),
+                        'colorDepth' => (!empty($colorDepth) ? $colorDepth : '24'),
+                        'language' => (!empty($language) ? $language : 'ru-RU'),
+                        'requestIp' => (filter_var($requestIp, FILTER_VALIDATE_IP) ? $requestIp : Std::get_client_ip()),
+                        'acceptHeader' => '*\/*',
+                        'javaEnabled' => 'NO',
+                    ]
+                ]
+            ]
+        ];
+
+        return $this;
+    }
+
+    /** @return array */
     public function arraySerialize(): array
     {
         $resultArray = [
@@ -198,6 +245,10 @@ class Authorization implements AuthorizationInterface
 
         if (!is_null($this->merchantToken)) {
             $resultArray['merchantToken'] = $this->merchantToken->toArray();
+        }
+
+        if (!is_null($this->threeDSecure)) {
+            $resultArray['threeDSecure'] = $this->threeDSecure;
         }
 
         if (!is_null($this->paymentPageOptions) && $this->paymentPageOptions->getOrderTimeout() > 0) {

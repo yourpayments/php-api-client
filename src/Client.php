@@ -27,22 +27,7 @@ class Client implements ClientInterface
     use ProtobufSerializable;
 
     function __construct() {
-        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            $ip = trim($ips[0]); // take the first IP in the list
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (filter_var($ip, FILTER_VALIDATE_IP) === false) {
-            $ip = '127.0.0.1';
-        }
-
-        $this->setClientIp($ip);
+        $this->setClientIp(Std::get_client_ip());
     }
 
     /** @inheritDoc */

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Ypmn\CardDetails;
 use Ypmn\PaymentMethods;
 use Ypmn\Product;
 use Ypmn\ApiRequest;
@@ -53,7 +54,7 @@ if (!empty($_POST)) {
     $billing->setPhone('9670660742'); // Установим Телефон Плательщика
     $billing->setEmail('develop@ypmn.ru'); // Установим Email Плательщика
 
-    // Опишем Доствку и принимающее лицо (необязательно)
+    // Опишем Доставку и принимающее лицо (необязательно)
     $delivery = new Delivery;
 
     // Установим документ, подтверждающий право приёма доставки (необязательно)
@@ -88,6 +89,24 @@ if (!empty($_POST)) {
     // Создадим авторизацию по типу платежа
     $payment_method = @$_REQUEST['payment_method'] ?? PaymentMethods::CCVISAMC;
     $authorization = new Authorization($_REQUEST['payment_method']);
+
+    /**
+     * Пример для h2h оплаты картой
+     * (для ТСП, сертифицированных по PCI-DSS)
+     *
+     * Пример включает в себя тестовую карту из
+     * https://ypmn.ru/docs/#tag/testing
+     *     $authorization->setUsePaymentPage(false)
+     *     $authorization->setCardDetails(
+     *         (new CardDetails())
+     *         ->setNumber('4652035440667037')
+     *         ->setExpiryYear((int) date('Y', strtotime('+1 year')))
+     *         ->setExpiryMonth(8)
+     *         ->setCvv('971')
+     *         ->setOwner('CARD OWNER')
+     *     );
+     */
+
     // Назначим авторизацию для нашего платежа
     $payment->setAuthorization($authorization);
     // Установим номер заказа (должен быть уникальным в вашей системе)
@@ -96,8 +115,10 @@ if (!empty($_POST)) {
     // Установим адреса перенаправления пользователя после удачной и неудачной оплаты
     $payment->setSuccessUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage&status=success');
     $payment->setFailUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage&status=fail');
-    /* @deprecated старый вариант с одним URL */
-    // $payment->setReturnUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage');
+    /*
+     * @deprecated старый вариант с одним URL
+     * $payment->setReturnUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage');
+     */
 
     // Подготовим клиентское подключение
     $payment->setClient($client);
@@ -112,8 +133,9 @@ if (!empty($_POST)) {
 
     // Сплитование (разделение платежа между получателями)
     if (isset($_REQUEST['split'])) {
+        // Коды сабмерчантов можно получить у менеджера после их подключения
         $product1->setMarketplaceSubmerchantByCode('SUBMERCHANT_1_CODE');
-        $product2->setMarketplaceSubmerchantByCode('SUBMERCHANT_1_CODE');
+        $product2->setMarketplaceSubmerchantByCode('SUBMERCHANT_2_CODE');
     }
 
     // Чек внешней кассы

@@ -354,4 +354,26 @@ class Std
             Оплатить <strong class="payment_btn__sum">' . number_format($sum, 2, '.', ' ') . ' '. ( isset($currency) ? htmlspecialchars($currency) : '&#8381;' ) . '</strong>
         ';
     }
+
+    /** @return string IP */
+    public static function get_client_ip() : string {
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ip = trim($ips[0]); // take the first IP in the list
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        } elseif (!empty($_SERVER['SERVER_ADDR'])) {
+            $ip = $_SERVER['SERVER_ADDR'];
+        }
+
+        if (filter_var($ip, FILTER_VALIDATE_IP) === false) {
+            $ip = '127.0.0.1';
+        }
+
+        return $ip;
+    }
 }
