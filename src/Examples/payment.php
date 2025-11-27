@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Ypmn\CardDetails;
+use Ypmn\Details;
 use Ypmn\PaymentMethods;
 use Ypmn\Product;
 use Ypmn\ApiRequest;
@@ -15,6 +16,7 @@ use Ypmn\Authorization;
 use Ypmn\PaymentException;
 use Ypmn\Std;
 use Ypmn\StoredCredentials;
+use Ypmn\UtmDto;
 
 // Подключим файл, в котором заданы параметры мерчанта
 require_once 'start.php';
@@ -123,6 +125,17 @@ if (!empty($_POST)) {
     // Подготовим клиентское подключение
     $payment->setClient($client);
 
+    // Создадим объект расширенных данных по транзакции
+    $details = new Details();
+    //Пример хранения маркетинговых меток
+    $details->set('utm', (new UtmDto())->fromArray([
+        'utm_source'   => 'Источник трафика',
+        'utm_medium'   => 'Тип трафика или рекламный канал',
+        'utm_campaign' => 'Название рекламной кампании',
+        'utm_term'     => 'Ключевое слово или дополнительный сегментный признак',
+        'utm_content'  => 'Идентификатор конкретного рекламного экземпляра',
+    ]));
+
     // Токенизация (сохранение платёжной информации для повторных оплат)
     if (isset($_REQUEST['tokenization'])) {
         $storedCredentials = new StoredCredentials();
@@ -140,9 +153,6 @@ if (!empty($_POST)) {
 
     // Чек внешней кассы
     if (isset($_REQUEST['receipt'])) {
-        // Создадим объект расширенных данных по транзакции
-        $details = new Details();
-
         // Ниже пример данных для регистрации чека в онлайн кассе АТОЛ
         // Подробнее см. в документации АТОЛ
         $receiptCommonArr = [
@@ -218,9 +228,10 @@ if (!empty($_POST)) {
 
         // Установим данные для передачи в АТОЛ для регистрации чеков
         $details->setReceipts($receipts);
-        // Добавим расширенные данные по транзакции в запрос на авторизацию платежа
-        $payment->setDetails($details);
     }
+
+    // Добавим расширенные данные по транзакции в запрос на авторизацию платежа
+    $payment->setDetails($details);
 
     // Создадим HTTP-запрос к API
     $apiRequest = new ApiRequest($merchant);
