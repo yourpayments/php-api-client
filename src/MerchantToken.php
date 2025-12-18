@@ -8,14 +8,15 @@ use Ypmn\Traits\ProtobufSerializable;
 
 class MerchantToken implements MerchantTokenInterface, \JsonSerializable
 {
+
     /** @var string Токен подписки СБП */
     private string $bindingId;
 
-    /** @var string Токен подписки SberPay */
+    /** @var string Токен подписки Pay-методов */
     private string $ypmnBindingId;
 
-    /** @var string Хэш Токен карты */
-    private string $tokenHash;
+    /** @var null|string Хэш Токен карты */
+    private ?string $tokenHash = null;
 
     /** @var string CVV Карты */
     private string $cvv;
@@ -25,6 +26,14 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
 
     /** Protobuf generation Trait */
     use ProtobufSerializable;
+
+    /** @param string|null $tokenHash */
+    public function __construct(?string $tokenHash = null)
+    {
+        if (!empty($tokenHash)){
+            $this->setTokenHash($tokenHash);
+        }
+    }
 
     /** @inheritDoc */
     public function getTokenHash(): string
@@ -75,6 +84,7 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
     public function setBindingId(string $bindingId): self
     {
         $this->bindingId = $bindingId;
+
         return $this;
     }
 
@@ -82,12 +92,14 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
     public function getYpmnBindingId(): string
     {
         return $this->ypmnBindingId;
+
     }
 
     /** @inheritDoc */
     public function setYpmnBindingId(string $ypmnBindingId): self
     {
         $this->ypmnBindingId = $ypmnBindingId;
+
         return $this;
     }
 
@@ -99,14 +111,11 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
 
         foreach ($resultArray as &$value) {
             if (is_object($value) && method_exists($value, 'toArray')) {
-
                 $value = $value->toArray();
-
             } else {
                 if (is_array($value)) {
                     foreach ($value as &$arrayValue) {
                         if (is_object($arrayValue) && method_exists($arrayValue, 'toArray')) {
-
                             $arrayValue = $arrayValue->toArray();
                         }
                     }
@@ -124,20 +133,6 @@ class MerchantToken implements MerchantTokenInterface, \JsonSerializable
      */
     public function jsonSerialize()
     {
-        if(empty($this->tokenHash) && empty($this->bindingId)){
-            throw new PaymentException("Не хватает токена");
-        }
-
-        if (!empty($this->bindingId)) {
-            $resultArray = [
-                'bindingId' => $this->bindingId,
-            ];
-        } else {
-            $resultArray = [
-                'tokenHash' => $this->tokenHash,
-            ];
-        }
-
-        return json_encode($resultArray, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_LINE_TERMINATORS);
+        return json_encode($this->toArray(), JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_LINE_TERMINATORS);
     }
 }

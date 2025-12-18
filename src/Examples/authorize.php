@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Ypmn\CardDetails;
 use Ypmn\Details;
+use Ypmn\MerchantToken;
 use Ypmn\PaymentMethods;
 use Ypmn\Product;
 use Ypmn\ApiRequest;
@@ -16,29 +17,31 @@ use Ypmn\Authorization;
 use Ypmn\PaymentException;
 use Ypmn\Std;
 use Ypmn\StoredCredentials;
+use Ypmn\SubmerchantReceipt;
 use Ypmn\UtmDto;
 
 // Подключим файл, в котором заданы параметры мерчанта
 require_once 'start.php';
 
 // Это файл с формой для тестирования
-require_once 'payment_form.php';
+require_once 'authorize_form.php';
 
 if (!empty($_POST)) {
-    // Опишем первую товарную позицию
+    // Сумма заказа вычисляется путём сложения стоимости "продуктов" (товаров или услуг в заказе)
+    // Опишем первую позицию
     $product1 = new Product();
     $product1->setName('Первый тестовый товар'); // Установим Наименование товара или услуги
     $product1->setSku('toy-01'); // Установим Артикул
-    $product1->setVat(20); // Установим НДС
+    $product1->setVat(15); // Установим НДС
     $product1->setUnitPrice(1); // Установим Стоимость за единицу
     $product1->setQuantity(2); // Установим Количество
     $product1->setMeasurementUnit('шт'); // Установим единицы измерения (для чеков)
 
-    // Опишем вторую товарную позицию
+    // Опишем вторую позицию
     $product2 = new Product();
     $product2->setName('Второй тестовый товар'); // Установим Наименование товара или услуги
     $product2->setSku('toy-02'); // Установим Артикул
-    $product2->setVat(15); // Установим НДС
+    $product2->setVat(22); // Установим НДС
     $product2->setUnitPrice(3); // Установим Стоимость за единицу
     $product2->setQuantity(1); // Установим Количество
     $product1->setMeasurementUnit('кг'); // Установим единицы измерения (для чеков)
@@ -93,11 +96,11 @@ if (!empty($_POST)) {
     $authorization = new Authorization($_REQUEST['payment_method']);
 
     /**
-     * Пример для h2h оплаты картой
-     * (для ТСП, сертифицированных по PCI-DSS)
+     * // Пример для h2h оплаты картой
+     * // (для ТСП, сертифицированных по PCI-DSS)
      *
-     * Пример включает в себя тестовую карту из
-     * https://ypmn.ru/docs/#tag/testing
+     * // Пример включает в себя тестовую карту из
+     * // https://ypmn.ru/docs/#tag/testing
      *     $authorization->setUsePaymentPage(false)
      *     $authorization->setCardDetails(
      *         (new CardDetails())
@@ -107,19 +110,23 @@ if (!empty($_POST)) {
      *         ->setCvv('971')
      *         ->setOwner('CARD OWNER')
      *     );
+     *
+     * // Также для ускорения платежа
+     * // см. метод $authorization->setThreeDSecure()
      */
 
     // Назначим авторизацию для нашего платежа
     $payment->setAuthorization($authorization);
     // Установим номер заказа (должен быть уникальным в вашей системе)
-    $payment->setMerchantPaymentReference('primer_nomer__' . time());
+    $merchantPaymentReference = 'primer_nomer__' . time();
+    $payment->setMerchantPaymentReference($merchantPaymentReference);
 
     // Установим адреса перенаправления пользователя после удачной и неудачной оплаты
-    $payment->setSuccessUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage&status=success');
-    $payment->setFailUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage&status=fail');
+    $payment->setSuccessUrl('http://' . $_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage&status=success');
+    $payment->setFailUrl('http://' . $_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage&status=fail');
     /*
      * @deprecated старый вариант с одним URL
-     * $payment->setReturnUrl('http://' . $_SERVER['SERVER_NAME'] . '/php-api-client/?function=returnPage');
+     * $payment->setReturnUrl('http://' . $_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
      */
 
     // Подготовим клиентское подключение
@@ -128,20 +135,53 @@ if (!empty($_POST)) {
     // Создадим объект расширенных данных по транзакции
     $details = new Details();
     //Пример хранения маркетинговых меток
-    $details->set('utm', (new UtmDto())->fromArray([
-        'utm_source'   => 'Источник трафика',
-        'utm_medium'   => 'Тип трафика или рекламный канал',
-        'utm_campaign' => 'Название рекламной кампании',
-        'utm_term'     => 'Ключевое слово или дополнительный сегментный признак',
-        'utm_content'  => 'Идентификатор конкретного рекламного экземпляра',
-    ]));
+    if (!empty(@$_REQUEST['utm_source'])) {
+        $details->set('utm', (new UtmDto())->fromArray([
+            'utm_source'   => @$_REQUEST['utm_source'],   //'Источник трафика'
+            'utm_medium'   => @$_REQUEST['utm_medium'],   //'Тип трафика или рекламный канал'
+            'utm_campaign' => @$_REQUEST['utm_campaign'], //'Название рекламной кампании'
+            'utm_term'     => @$_REQUEST['utm_term'],     //'Ключевое слово или дополнительный сегментный признак'
+            'utm_content'  => @$_REQUEST['utm_content'],  //'Идентификатор конкретного рекламного экземпляра'
+        ]));
+    }
 
-    // Токенизация (сохранение платёжной информации для повторных оплат)
-    if (isset($_REQUEST['tokenization'])) {
-        $storedCredentials = new StoredCredentials();
-        $storedCredentials->setConsentType('recurring');
-        $storedCredentials->setSubscriptionPurpose('Обоснование или тема подписки');
-        $payment->setStoredCredentials($storedCredentials);
+    // Новая оплата с токенизацией (необязательно), или оплата токеном
+    if (@$_REQUEST['section'] === 'new_payment_and_tokenization') {
+        // Оплата, токенизация
+        // Токенизация (сохранение платёжной информации для повторных оплат)
+        if (isset($_REQUEST['tokenization'])) {
+            $storedCredentials = new StoredCredentials();
+            $storedCredentials->setConsentType(
+                @$_REQUEST['consentType']
+                    ?? ($payment_method == PaymentMethods::FASTER_PAYMENTS ? 'recurring' : '')
+            );
+            $storedCredentials->setSubscriptionPurpose(@$_REQUEST['subscriptionPurpose']);
+            $payment->setStoredCredentials($storedCredentials);
+        }
+    } elseif (@$_REQUEST['section'] === 'pay_with_token') {
+        // Оплата токеном
+        switch ($payment_method) {
+            case PaymentMethods::CCVISAMC:
+                $storedCredentials = new StoredCredentials();
+                $storedCredentials->setUseType('cardholder');
+                $authorization->setMerchantToken(new MerchantToken(@$_REQUEST['token_string']));
+                $payment->setStoredCredentials($storedCredentials);
+                break;
+            case PaymentMethods::FASTER_PAYMENTS:
+            case PaymentMethods::INTCARD:
+            case PaymentMethods::SBERPAY:
+            case PaymentMethods::TPAY:
+                $storedCredentials = new StoredCredentials();
+                $storedCredentials->setUseType('merchant');
+                $authorization->setMerchantToken(
+                    (new MerchantToken())
+                        ->setYpmnBindingId(@$_REQUEST['token_string'])
+                );
+                $payment->setStoredCredentials($storedCredentials);
+                break;
+            default:
+                throw new PaymentException('Метод пока не поддерживает оплату токеном');
+        }
     }
 
     // Сплитование (разделение платежа между получателями)
@@ -236,9 +276,10 @@ if (!empty($_POST)) {
     // Создадим HTTP-запрос к API
     $apiRequest = new ApiRequest($merchant);
     // Режим отладки (закомментируйте или удалите в рабочей программе!)
-    $apiRequest->setDebugMode(isset($_REQUEST['debug']));
+    $apiRequest->setDebugMode(@$_POST['debug'] === 'yes');
     // Режим тестового сервер (закомментируйте или удалите в рабочей программе!)
-    $apiRequest->setSandboxMode(isset($_REQUEST['sandbox']));
+    $apiRequest->setSandboxMode(@$_POST['sandbox'] === 'yes');
+
     // Отправим запрос
     $responseData = $apiRequest->sendAuthRequest($payment, $merchant);
 

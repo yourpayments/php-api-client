@@ -80,11 +80,12 @@ class Authorization implements AuthorizationInterface
             case PaymentMethods::SBERPAY:
             case PaymentMethods::PAYOUT:
             case PaymentMethods::PAYOUT_FP:
+            case PaymentMethods::BNPL:
             case null:
                 $this->paymentMethod = $paymentMethod;
                 break;
             case '':
-                $this->paymentMethod = null;
+                $this->paymentMethod = PaymentMethods::CCVISAMC;
                 break;
             default:
                 throw new PaymentException('Неверный тип оплаты в авторизации');
@@ -164,12 +165,12 @@ class Authorization implements AuthorizationInterface
     /** @inheritDoc */
     public function setMerchantToken(?MerchantTokenInterface $merchantToken): self
     {
-        if (is_null($this->getCardDetails()) && $this->getUsePaymentPage() === false) {
+        if (is_null($this->getCardDetails())) {
             $this->merchantToken = $merchantToken;
 
             return $this;
         } else {
-            throw new PaymentException('For using MerchantToken need to make CardDetails = NULL and usePaymentPage = false');
+            throw new PaymentException('For using MerchantToken, make sure CardDetails = NULL');
         }
     }
 

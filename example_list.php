@@ -13,8 +13,8 @@ function methodsParamsList(string $url, array $methodsToSkip) : string
         $html_list .= '
             <li>
                 <a href="' . $url . '&method=' . $method . '"'
-                    . ( !empty($_GET['method']) && $_GET['method'] === $method ? ' style="color:orange"' : '' )
-                    . '>' . $name . '</a>
+            . ( !empty($_GET['method']) && $_GET['method'] === $method ? ' style="color:orange"' : '' )
+            . '>' . $name . '</a>
             </li>
         ';
     }
@@ -26,128 +26,140 @@ $examples = [
     'start' => [
         'name'  => 'Начало работы',
         'about'  => '
-            Первый шаг интеграции с YPMN API &ndash; это получение кода мерчанта и секретного ключа после <a href="https://ypmn.ru/ru/connect/?utm_source=header_btn_1">подключения</a> (спросите у Вашего менеджера). 
+            Первый шаг интеграции с YPMN API &ndash;получение кода мерчанта и секретного ключа после <a href="https://ypmn.ru/ru/connect/?utm_source=header_btn_1">подключения</a>
             <br>
-            <br>Они нужны для отправки всех запросов к API.
             <br>
-            <br>На стороне клиента они используются для создания объекта Merchant (смотрите <a href="https://github.com/yourpayments/php-api-client/blob/main/src/Examples/start.php">файл с примером</a>).
+            Получить их можно в <a href="https://secure.payu.ru/cpanel/?from=PHP_SDK" rel="noopener" target="_blank">личном кабинете</a>
+            <br>
+            <br>На стороне клиента они используются для создания объекта Merchant (см. <a href="https://github.com/yourpayments/php-api-client/blob/main/src/Examples/start.php">файл с примером</a>).
         ',
         'docLink'  => '',
         'link'  => '',
     ],
-    'payment' => [
-        'name'  => 'Оплата',
+
+    'title1' => 'Платежи',
+    'authorize' => [
+        'name'  => 'Авторизация и токенизация',
+        'about'  => '
+            При одностадийной (SMS) схеме этого достаточно для автоматического списания средств Плательщика в пользу ТСП.
+            <br>
+            <br>При двустадийной (DMS) схеме, или для досрочного списания, необходимо сделать <a href="/?function=capture">запрос на списание</a>
+        ',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
+    'capture' => [
+        'name'  => 'Списание',
         'about'  => '...',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'simpleGetPaymentLink' => [
-        'name'  => 'Самая простая оплата',
-        'about'  => '
-            В этом примере показана самая простая реализация.
-            С минимальным набором полей без детализации, только оплата заказа c определённой суммой.
-            <br>
-            <br>
-            <ol>' . methodsParamsList('./?function=simpleGetPaymentLink', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
-        ',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'getPaymentLink' => [
-        'name'  => 'Подробная оплата',
-        'about'  => '
-            Это пример платежа с максимальным набором полей.
-            <br>
-            <br>
-            <ol>' . methodsParamsList('./?function=getPaymentLink', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
-        ',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'getPaymentLinkWithReceipt' => [
-        'name'  => 'Оплата с чеком',
-        'about'  => '
-            Пример платежа с регистрацией чека
-            <br>
-            <br>
-            <ol>' . methodsParamsList('./?function=getPaymentLinkWithReceipt', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
-        ',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'getBindingFasterPayment' => [
-        'name'  => 'Токенизация СБП',
-        'about'  => 'В этом примере после оплаты СБП в вебхуке придёт токен, который можно использовать для дальнейших оплат',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/',
-        'link'  => '',
-    ],
-    'paymentByFasterBinding' => [
-        'name'  => 'Оплата токеном СБП',
-        'about'  => 'Это пример оплаты СБП с помощью ранее созданного токена',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/',
-        'link'  => '',
-    ],
-    'getBindingPays' => [
-        'name'  => 'Создание токена SberPay',
-        'about'  => 'В этом примере отправляется запрос на создание токена SberPay с одновременной оплатой',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'paymentByBindingPays' => [
-        'name'  => 'Оплата по токену SberPay',
-        'about'  => 'Это пример демонстрирует оплату через SberPay по средством ранее созданного токена',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'getPaymentLinkMarketplace' => [
-        'name'  => 'Платёж со сплитом',
-        'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков).',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-split-api',
-        'link'  => '',
-    ],
-    'getPaymentLinkMarketplaceWithReceipts' => [
-        'name'  => 'Платёж со сплитом и чеком',
-        'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков) и регистрацией чеков.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-split-api',
-        'link'  => '',
-    ],
-    'getToken' => [
-        'name'  => 'Создание токена',
-        'about'  => 'Приложение передаёт номер успешно оплаченного заказа в YPMN API, и получает в ответ платёжный токен.<br><br>Это называется "Токенизация карты" (чтобы запомнить карту клиента и не вводить повторно.<br><br>Очень полезная функция для подписок и регулярных платежей.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/token-api/paths/~1v4~1token/post',
-        'link'  => '',
-    ],
-    'paymentByToken' => [
-        'name'  => 'Оплата токеном',
-        'about'  => 'Оплата с помощью токена (теперь не нужно повторно вводить данные банковской карты)',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'paymentCapture' => [
-        'name'  => 'Списание средств',
-        'about'  => 'Списание ранее заблокированной на счету суммы. Не обязательно, если у Вас настроена оплата в 1 шаг.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1capture/post',
         'link'  => '',
     ],
-    'paymentRefund' => [
+//    'token_payment' => [
+//        'name'  => 'Оплата токеном',
+//        'about'  => '...',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1capture/post',
+//        'link'  => '',
+//    ],
+
+
+
+//    'simpleGetPaymentLink' => [
+//        'name'  => 'Самая простая оплата',
+//        'about'  => '
+//            В этом примере показана самая простая реализация.
+//            С минимальным набором полей без детализации, только оплата заказа c определённой суммой.
+//            <br>
+//            <br>
+//            <ol>' . methodsParamsList('./?function=simpleGetPaymentLink', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
+//        ',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+//        'link'  => '',
+//    ],
+//    'getPaymentLink' => [
+//        'name'  => 'Подробная оплата',
+//        'about'  => '
+//            Это пример платежа с максимальным набором полей.
+//            <br>
+//            <br>
+//            <ol>' . methodsParamsList('./?function=getPaymentLink', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
+//        ',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+//        'link'  => '',
+//    ],
+//    'getPaymentLinkWithReceipt' => [
+//        'name'  => 'Оплата с чеком',
+//        'about'  => '
+//            Пример платежа с регистрацией чека
+//            <br>
+//            <br>
+//            <ol>' . methodsParamsList('./?function=getPaymentLinkWithReceipt', ['PAYOUT', 'PAYOUT_FP']) . '</ol>
+//        ',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+//        'link'  => '',
+//    ],
+//    'getBindingFasterPayment' => [
+//        'name'  => 'Токенизация СБП',
+//        'about'  => 'В этом примере после оплаты СБП в вебхуке придёт токен, который можно использовать для дальнейших оплат',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+//        'link'  => '',
+//    ],
+//    'paymentByFasterBinding' => [
+//        'name'  => 'Оплата токеном СБП',
+//        'about'  => 'Это пример оплаты СБП с помощью ранее созданного токена',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/',
+//        'link'  => '',
+//    ],
+//    'getBindingPays' => [
+//        'name'  => 'Создание токена SberPay',
+//        'about'  => 'В этом примере отправляется запрос на создание токена SberPay с одновременной оплатой',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+//        'link'  => '',
+//    ],
+//    'paymentByBindingPays' => [
+//        'name'  => 'Оплата по токену SberPay',
+//        'about'  => 'Это пример демонстрирует оплату через SberPay по средством ранее созданного токена',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+//        'link'  => '',
+//    ],
+//    'getPaymentLinkMarketplace' => [
+//        'name'  => 'Платёж со сплитом',
+//        'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков).',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-split-api',
+//        'link'  => '',
+//    ],
+//    'getPaymentLinkMarketplaceWithReceipts' => [
+//        'name'  => 'Платёж со сплитом и чеком',
+//        'about'  => 'Это пример платежа со сплитом (разделением оплаты на несколько плательщиков) и регистрацией чеков.',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-split-api',
+//        'link'  => '',
+//    ],
+//    'getToken' => [
+//        'name'  => 'Создание токена',
+//        'about'  => 'Приложение передаёт номер успешно оплаченного заказа в YPMN API, и получает в ответ платёжный токен.<br><br>Это называется "Токенизация карты" (чтобы запомнить карту клиента и не вводить повторно.<br><br>Очень полезная функция для подписок и регулярных платежей.',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/token-api/paths/~1v4~1token/post',
+//        'link'  => '',
+//    ],
+//    'paymentByToken' => [
+//        'name'  => 'Оплата токеном',
+//        'about'  => 'Оплата с помощью токена (теперь не нужно повторно вводить данные банковской карты)',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+//        'link'  => '',
+//    ],
+//    'paymentCapture' => [
+//        'name'  => 'Списание средств',
+//        'about'  => 'Списание ранее заблокированной на счету суммы. Не обязательно, если у Вас настроена оплата в 1 шаг.',
+//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1capture/post',
+//        'link'  => '',
+//    ],
+    'refund' => [
         'name'  => 'Возврат средств',
         'about'  => 'Запрос на полный или частичный возврат средств.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1refund/post',
         'link'  => '',
     ],
-    'paymentRefundMarketplace' => [
-        'name'  => 'Возврат средств со сплитом',
-        'about'  => 'Запрос на полный или частичный возврат средств с разделением на несколько получателей.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1refund/post',
-        'link'  => '',
-    ],
-    'paymentGetStatus' => [
-        'name'  => 'Проверка статуса платежа',
-        'about'  => 'Запрос к YPMN API о состоянии платежа.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1status~1%7BmerchantPaymentReference%7D/get',
-        'link'  => '',
-    ],
-    'payoutCreate' => [
+
+    'title2' => 'Выплаты',
+    'payout' => [
         'name'  => 'Создание выплаты',
         'about'  => 'Запрос к YPMN для совершения выплаты на карту (для компаний, сертифицированных по PCI-DSS). У вас должно быть достаточно средств на специальном счету для выплат.<br><br>Тестовая карта (для выплат на тестовом контуре): 4149605380309302',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api',
@@ -159,53 +171,16 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api/paths/~1v4~1payout~1balance/get',
         'link'  => '',
     ],
-    'getSession' => [
-        'name'  => 'Создание сессии',
-        'about'  => 'Создание уникальной сессии YPMN',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/sessions/paths/~1v4~1payments~1sessions/post',
-        'link'  => '',
-    ],
-    'oneTimeTokenPayment' => [
-        'name'  => 'Оплата одноразовым токеном',
-        'about'  => 'Оплата одноразовым токеном',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-    'returnPage' => [
-        'name'  => 'Страница после оплаты',
-        'about'  => 'Это пример страницы, на которую плательщик возвращается после совершения платежа.',
-        'docLink'  => '',
-        'link'  => '',
-    ],
-    'secureFields' => [
-        'name'  => 'Безопасные поля (Secure fields)',
-        'about'  => 'Это пример формы оплаты с использованием Secure Fields.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/secure-fields',
-        'link'  => '',
-    ],
-    'getReportGeneral' => [
-        'name'  => 'Запрос отчёта в формате JSON',
-        'about'  => 'Это пример получения отчета в формате JSON.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1general/get',
-        'link'  => '',
-    ],
 
-// TODO: оформить, актуализировать
-//    'getReportChart' => [
-//        'name'  => 'Запрос отчёта в виде графика',
-//        'about'  => 'Это пример получения отчета в виде графика.',
-//        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1chart/get',
-//        'link'  => '',
-//    ],
-
+    'title4' => 'Подключение сабмерчантов',
     'qstCreateOrg' => [
-        'name'  => 'Подключение продавца-организации (отправка анкеты)',
+        'name'  => 'Анкета Юридического лица',
         'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-организации на проверку в YPMN.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
         'link'  => '',
     ],
     'qstCreateIp' => [
-        'name'  => 'Подключение продавца-ИП (отправка анкеты)',
+        'name'  => 'Анкета ИП',
         'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-ИП на проверку в YPMN.',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
         'link'  => '',
@@ -228,10 +203,44 @@ $examples = [
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1list/get',
         'link'  => '',
     ],
+
+    'title5' => 'Безопасные поля',
+    'secureFields' => [
+        'name'  => 'Пример формы',
+        'about'  => 'Это пример формы оплаты с использованием Secure Fields.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/secure-fields',
+        'link'  => '',
+    ],
+    'getSession' => [
+        'name'  => 'Создание сессии',
+        'about'  => 'Создание уникальной сессии YPMN',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/sessions/paths/~1v4~1payments~1sessions/post',
+        'link'  => '',
+    ],
+    'oneTimeTokenPayment' => [
+        'name'  => 'Оплата одноразовым токеном',
+        'about'  => 'Оплата одноразовым токеном',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
+
+    'title3' => 'Общее',
     'webhookProcessing' => [
         'name' => 'Обработка вебхука',
-        'about' => 'В этом примере показана обработка вебхука IPN',
+        'about' => 'В этом примере показана обработка вебхука о событиях по операции',
         'docLink' => 'https://ypmn.ru/ru/documentation/#tag/webhooks',
         'link' => '',
-    ]
+    ],
+    'status' => [
+        'name'  => 'Статус операции',
+        'about'  => 'Запрос к YPMN API о состоянии операции.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1status~1%7BmerchantPaymentReference%7D/get',
+        'link'  => '',
+    ],
+    'getReportGeneral' => [
+        'name'  => 'Отчёт',
+        'about'  => 'Это пример получения отчета в формате JSON.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1general/get',
+        'link'  => '',
+    ],
 ];

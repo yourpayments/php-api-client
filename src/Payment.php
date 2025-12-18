@@ -229,6 +229,8 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
         $requestData['merchantPaymentReference'] = $this->getMerchantPaymentReference();
         $requestData['currency']      = $this->getCurrency();
         $requestData['returnUrl']     = $this->getReturnUrl();
+        $requestData['successUrl']    = $this->getSuccessUrl();
+        $requestData['failUrl']       = $this->getFailUrl();
         $requestData['authorization'] = $this->getAuthorization()->arraySerialize();
 
         /* Поле storedCredentials обязательно только при привязке карты */

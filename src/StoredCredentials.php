@@ -31,6 +31,14 @@ class StoredCredentials implements StoredCredentialsInterface
     /** Protobuf generation Trait */
     use ProtobufSerializable;
 
+    /** @param string|null $useType */
+    public function __construct(?string $useType = null)
+    {
+        if (!empty($useType)) {
+            $this->setUseType($useType);
+        }
+    }
+
     /** @inheritDoc */
     public function getUseType(): string
     {

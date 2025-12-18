@@ -34,6 +34,8 @@ class UtmDto implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
+        $data = array_filter($data);
+
         return new self(
             $data['utm_source'] ?? null,
             $data['utm_medium'] ?? null,

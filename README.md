@@ -120,7 +120,7 @@ docker compose up --detach
 2. [Возврат средств со сплитом (разделением платежа)](src/Examples/paymentRefundMarketplace.php)
 
 ##### 7. Выплаты
-1. [Выплаты на банковские карты](src/Examples/payoutCreate.php)
+1. [Выплаты на банковские карты](src/Examples/payout.php)
 2. [Запрос баланса для выплаты](src/Examples/payoutGetBalance.php)
 
 ##### 8. Подключение продавцов

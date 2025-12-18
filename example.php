@@ -16,7 +16,12 @@ if(!empty($_GET['function'])){
             case 'start':
                 include './src/Examples/'.$_GET['function'] . '.php';
                 break;
-            case 'payment':
+            case 'authorize':
+            case 'capture':
+            case 'token_payment':
+            case 'status':
+            case 'refund':
+            case 'payout':
             case 'simpleGetPaymentLink':
             case 'getPaymentLink':
             case 'getPaymentLinkMarketplace':
