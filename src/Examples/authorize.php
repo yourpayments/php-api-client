@@ -122,11 +122,11 @@ if (!empty($_POST)) {
     $payment->setMerchantPaymentReference($merchantPaymentReference);
 
     // Установим адреса перенаправления пользователя после удачной и неудачной оплаты
-    $payment->setSuccessUrl('http://' . $_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage&status=success');
-    $payment->setFailUrl('http://' . $_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage&status=fail');
+    $payment->setSuccessUrl('http://' . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'] . '/php-api-client/?function=returnPage&status=success');
+    $payment->setFailUrl('http://' . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'] . '/php-api-client/?function=returnPage&status=fail');
     /*
      * @deprecated старый вариант с одним URL
-     * $payment->setReturnUrl('http://' . $_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
+     * $payment->setReturnUrl('http://' . $_SERVER['HTTP_HOST'] . ':' . $_SERVER['SERVER_PORT'] . '/php-api-client/?function=returnPage');
      */
 
     // Подготовим клиентское подключение

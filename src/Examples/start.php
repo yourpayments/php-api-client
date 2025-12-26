@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Ypmn\Merchant;
 
@@ -13,5 +15,5 @@ use Ypmn\Merchant;
  *      https://sandbox.ypmn.ru/
  * Убедитесь, что эти адреса разрешены в Firewall вашего приложения
  */
-//$merchant = new Merchant('gitttest', 'vk0!K4(~9)1d69@0p4&N');
-$merchant = new Merchant('CLD_FUL', 'SECRET_KEY');
+$merchant = new Merchant('gitttest', 'vk0!K4(~9)1d69@0p4&N');
+//$merchant = new Merchant('CLD_FUL', 'SECRET_KEY');

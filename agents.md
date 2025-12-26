@@ -761,9 +761,8 @@ echo Std::alert([
 ## Поддержка
 
 - Email: itsupport@ypmn.ru
-- Документация API: https://ypmn.ru/ru/documentation/
-- GitHub Issues: https://github.com/yourpayments/php-api-client/issues
-- Тестовые карты: https://ypmn.ru/ru/test-cards/
+- Документация API: https://ypmn.ru/doc/
+- Тестовые карты: https://ypmn.ru/doc/#tag/testing
 
 ## Лицензия
 

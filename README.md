@@ -159,8 +159,8 @@ composer update yourpayments/php-api-client
 
 ## Ссылки, поддержка и контакты
 - [НКО «Твои Платежи»](https://YPMN.ru/?utm_source=php-api-client)
-- [Докуметация API](https://ypmn.ru/ru/documentation/?utm_source=php-api-client)
-- [Тестовые банковские карты](https://ypmn.ru/ru/documentation/?utm_source=php-api-client#tag/testing)
+- [Докуметация API](https://ypmn.ru/doc/?utm_source=php-api-client)
+- [Тестовые банковские карты](https://ypmn.ru/doc/?utm_source=php-api-client#tag/testing)
 - [FAQ, ответы на частые вопросы](https://ypmn.ru/ru/support/?utm_source=php-api-client)
 - [Задать вопрос или сообщить о проблеме](https://github.com/yourpayments/php-api-client/issues/new)
 

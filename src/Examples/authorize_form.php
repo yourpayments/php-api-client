@@ -44,7 +44,7 @@
                                 <li>SberPay</li>
                                 <li>T-Pay</li>
                             </ul>
-                            Токен придёт в вебхуке после совершении оплаты (параметр authorization.storedCredentials.ypmnBindingId)
+                            Токен PAY-методов придёт в вебхуке после совершении оплаты (параметр authorization.storedCredentials.ypmnBindingId), токены карточных операций можно получить в методе API <code>/api/v4/token</code>
                         </span>
 
                         <br>

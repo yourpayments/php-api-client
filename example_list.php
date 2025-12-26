@@ -44,25 +44,122 @@ $examples = [
             При одностадийной (SMS) схеме этого достаточно для автоматического списания средств Плательщика в пользу ТСП.
             <br>
             <br>При двустадийной (DMS) схеме, или для досрочного списания, необходимо сделать <a href="/?function=capture">запрос на списание</a>
+            <br>
+            <br>Если вам нужен самый простой пример (без формы, токенизации, чеков и т.д), посмотрите файл <a href="https://github.com/yourpayments/php-api-client/blob/main/src/Examples/minimal.php" rel="noopener" target="_blank">minimal.php</a> 
         ',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
         'link'  => '',
     ],
     'capture' => [
         'name'  => 'Списание',
-        'about'  => '...',
+        'about'  => '
+            Запрос на списание используется в двустадийной (DMS) схеме платежа, либо если надо списать деньги быстрее, чем сработает автоматическое списание.
+            <br>
+            <br>При одностадиной (DMS) схеме запрос отправлять необязательно, достаточно <a href="./?function=authorize">авторизации платежа</a>
+        ',
         'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1capture/post',
         'link'  => '',
     ],
+    'refund' => [
+        'name'  => 'Возврат средств',
+        'about'  => 'Запрос на полный или частичный возврат средств.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1refund/post',
+        'link'  => '',
+    ],
+
+    'title2' => 'Выплаты',
+    'payout' => [
+        'name'  => 'Создание выплаты',
+        'about'  => 'Запрос к YPMN для совершения выплаты на карту (для компаний, сертифицированных по PCI-DSS). У вас должно быть достаточно средств на специальном счету для выплат.<br><br>Тестовая карта (для выплат на тестовом контуре): 4149605380309302',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api',
+        'link'  => '',
+    ],
+    'payoutGetBalance' => [
+        'name'  => 'Получение баланса для выплаты',
+        'about'  => 'Запрос к YPMN для проверки баланса на выплату',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api/paths/~1v4~1payout~1balance/get',
+        'link'  => '',
+    ],
+
+    'title4' => 'Подключение сабмерчантов',
+    'qstCreateOrg' => [
+        'name'  => 'Анкета Юридического лица',
+        'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-организации на проверку в YPMN.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
+        'link'  => '',
+    ],
+    'qstCreateIp' => [
+        'name'  => 'Анкета ИП',
+        'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-ИП на проверку в YPMN.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
+        'link'  => '',
+    ],
+    'qstStatus' => [
+        'name'  => 'Статус анкеты',
+        'about'  => 'В этом примере показано получение статуса анкеты по её ID.<br/><br/>ID анкеты возвращается при отправке анкеты на проверку.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1status~1%7Bid%7D/get',
+        'link'  => '',
+    ],
+    'qstPrint' => [
+        'name'  => 'Печать анкеты',
+        'about'  => 'В этом примере показано получение заполненной pdf версии анкеты по её ID.<br/><br/>ID анкеты возвращается при отправке анкеты на проверку.<br/><br/>Распечатать можно только одобренную анкету - в статусе approved.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1print~1%7Bid%7D/get',
+        'link'  => '',
+    ],
+    'qstList' => [
+        'name'  => 'Список анкет',
+        'about'  => 'В этом примере показано получение списка анкет.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1list/get',
+        'link'  => '',
+    ],
+
+    'title5' => 'Безопасные поля',
+    'secureFields' => [
+        'name'  => 'Пример формы',
+        'about'  => 'Это пример формы оплаты с использованием Secure Fields.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/secure-fields',
+        'link'  => '',
+    ],
+    'getSession' => [
+        'name'  => 'Создание сессии',
+        'about'  => 'Создание уникальной сессии YPMN',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/sessions/paths/~1v4~1payments~1sessions/post',
+        'link'  => '',
+    ],
+    'oneTimeTokenPayment' => [
+        'name'  => 'Оплата одноразовым токеном',
+        'about'  => 'Оплата одноразовым токеном',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
+        'link'  => '',
+    ],
+
+    'title3' => 'Общее',
+    'webhookProcessing' => [
+        'name' => 'Обработка вебхука',
+        'about' => 'В этом примере показана обработка вебхука о событиях по операции',
+        'docLink' => 'https://ypmn.ru/ru/documentation/#tag/webhooks',
+        'link' => '',
+    ],
+    'status' => [
+        'name'  => 'Статус операции',
+        'about'  => 'Запрос к YPMN API о состоянии операции.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1status~1%7BmerchantPaymentReference%7D/get',
+        'link'  => '',
+    ],
+    'getReportGeneral' => [
+        'name'  => 'Отчёт',
+        'about'  => 'Это пример получения отчета в формате JSON.',
+        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1general/get',
+        'link'  => '',
+    ],
+
+// Примеры к удалению после проверки:
 //    'token_payment' => [
 //        'name'  => 'Оплата токеном',
 //        'about'  => '...',
 //        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1capture/post',
 //        'link'  => '',
 //    ],
-
-
-
 //    'simpleGetPaymentLink' => [
 //        'name'  => 'Самая простая оплата',
 //        'about'  => '
@@ -151,96 +248,4 @@ $examples = [
 //        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1capture/post',
 //        'link'  => '',
 //    ],
-    'refund' => [
-        'name'  => 'Возврат средств',
-        'about'  => 'Запрос на полный или частичный возврат средств.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1refund/post',
-        'link'  => '',
-    ],
-
-    'title2' => 'Выплаты',
-    'payout' => [
-        'name'  => 'Создание выплаты',
-        'about'  => 'Запрос к YPMN для совершения выплаты на карту (для компаний, сертифицированных по PCI-DSS). У вас должно быть достаточно средств на специальном счету для выплат.<br><br>Тестовая карта (для выплат на тестовом контуре): 4149605380309302',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api',
-        'link'  => '',
-    ],
-    'payoutGetBalance' => [
-        'name'  => 'Получение баланса для выплаты',
-        'about'  => 'Запрос к YPMN для проверки баланса на вылпату',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payouts-api/paths/~1v4~1payout~1balance/get',
-        'link'  => '',
-    ],
-
-    'title4' => 'Подключение сабмерчантов',
-    'qstCreateOrg' => [
-        'name'  => 'Анкета Юридического лица',
-        'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-организации на проверку в YPMN.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
-        'link'  => '',
-    ],
-    'qstCreateIp' => [
-        'name'  => 'Анкета ИП',
-        'about'  => 'В этом примере показана реализация отправки анкеты подключаемого продавца-ИП на проверку в YPMN.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1create/post',
-        'link'  => '',
-    ],
-    'qstStatus' => [
-        'name'  => 'Статус анкеты',
-        'about'  => 'В этом примере показано получение статуса анкеты по её ID.<br/><br/>ID анкеты возвращается при отправке анкеты на проверку.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1status~1%7Bid%7D/get',
-        'link'  => '',
-    ],
-    'qstPrint' => [
-        'name'  => 'Печать анкеты',
-        'about'  => 'В этом примере показано получение заполненной pdf версии анкеты по её ID.<br/><br/>ID анкеты возвращается при отправке анкеты на проверку.<br/><br/>Распечатать можно только одобренную анкету - в статусе approved.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1print~1%7Bid%7D/get',
-        'link'  => '',
-    ],
-    'qstList' => [
-        'name'  => 'Список анкет',
-        'about'  => 'В этом примере показано получение списка анкет.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/qst-api/paths/~1v4~1qst~1list/get',
-        'link'  => '',
-    ],
-
-    'title5' => 'Безопасные поля',
-    'secureFields' => [
-        'name'  => 'Пример формы',
-        'about'  => 'Это пример формы оплаты с использованием Secure Fields.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/secure-fields',
-        'link'  => '',
-    ],
-    'getSession' => [
-        'name'  => 'Создание сессии',
-        'about'  => 'Создание уникальной сессии YPMN',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/sessions/paths/~1v4~1payments~1sessions/post',
-        'link'  => '',
-    ],
-    'oneTimeTokenPayment' => [
-        'name'  => 'Оплата одноразовым токеном',
-        'about'  => 'Оплата одноразовым токеном',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1authorize/post',
-        'link'  => '',
-    ],
-
-    'title3' => 'Общее',
-    'webhookProcessing' => [
-        'name' => 'Обработка вебхука',
-        'about' => 'В этом примере показана обработка вебхука о событиях по операции',
-        'docLink' => 'https://ypmn.ru/ru/documentation/#tag/webhooks',
-        'link' => '',
-    ],
-    'status' => [
-        'name'  => 'Статус операции',
-        'about'  => 'Запрос к YPMN API о состоянии операции.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/payment-api/paths/~1v4~1payments~1status~1%7BmerchantPaymentReference%7D/get',
-        'link'  => '',
-    ],
-    'getReportGeneral' => [
-        'name'  => 'Отчёт',
-        'about'  => 'Это пример получения отчета в формате JSON.',
-        'docLink'  => 'https://ypmn.ru/ru/documentation/#tag/reports/paths/~1v4~1reports~1general/get',
-        'link'  => '',
-    ],
 ];

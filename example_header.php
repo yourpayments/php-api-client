@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title><?=strip_tags($_GET['function'] ?? 'Старт')?> ⚙️ Интеграция Твои Платежи</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css' rel='stylesheet'
+          integrity='sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB' crossorigin='anonymous'>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js'
+            integrity='sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI'
+            crossorigin='anonymous'></script>
 
     <link rel="prerender" href="https://ypnm.ru/ru/">
 
@@ -102,8 +106,8 @@
                     </li>
                     <li class="list-group-item"><a target="_blank" href="https://YPMN.ru/?utm_source=SDK_PHP">Наш сайт</a></li>
                     <li class="list-group-item"><a target="_blank" href="https://github.com/yourpayments/">Github</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/documentation/#tag/testing">Тестовые карты</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/documentation/">Документация</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/doc/#tag/testing">Тестовые карты</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/doc/">Документация</a></li>
                     <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/support/">Частые вопросы</a></li>
                     <li class="list-group-item"><a target="_blank" href="mailto:itsupport@ypmn.ru?subject=PHP_SDK_Integration">itsupport@ypmn.ru</a></li>
                 </ul>

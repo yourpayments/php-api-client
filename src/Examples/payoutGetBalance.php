@@ -34,7 +34,7 @@ if ($responseData['code'] === 200) {
     foreach($responseData['items'] as $item) {
         echo Std::alert([
             'type'  =>  'info',
-            'text'  =>  $item['merchantCode'] . ': ' . $item['value'] . ' ' . $item['currency'],
+            'text'  =>  'Баланс выплат ' . $item['merchantCode'] . ': ' . $item['value'] . ' ' . $item['currency'],
         ]);
     }
 } else {
