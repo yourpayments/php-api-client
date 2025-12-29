@@ -38,9 +38,9 @@ $billing->setFirstName('Иван');
 // Установим Фамилия Плательщика
 $billing->setLastName('Петров');
 // Установим Email Плательщика (необязательно)
-$billing->setEmail('test1@ypmn.ru');
+$billing->setEmail('example1@ypmn.ru');
 // Установим Телефон Плательщика
-$billing->setPhone('+7-800-555-35-35');
+$billing->setPhone('+74996492009');
 // Установим Город
 $billing->setCity('Москва');
 

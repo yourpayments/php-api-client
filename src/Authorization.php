@@ -55,8 +55,7 @@ class Authorization implements AuthorizationInterface
      */
     public function __construct(
         ?string $paymentMethodType = null,
-        bool $isPaymentPageUsed = true,
-        ?array $threeDSecure = null
+        bool $isPaymentPageUsed = true
     ) {
         $this->setPaymentMethod($paymentMethodType);
         $this->setUsePaymentPage($isPaymentPageUsed);
@@ -78,8 +77,6 @@ class Authorization implements AuthorizationInterface
             case PaymentMethods::ALFAPAY:
             case PaymentMethods::TPAY:
             case PaymentMethods::SBERPAY:
-            case PaymentMethods::PAYOUT:
-            case PaymentMethods::PAYOUT_FP:
             case PaymentMethods::BNPL:
             case null:
                 $this->paymentMethod = $paymentMethod;

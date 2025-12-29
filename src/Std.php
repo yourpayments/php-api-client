@@ -376,4 +376,14 @@ class Std
 
         return $ip;
     }
+
+    /**
+     * защита от XSS
+     * @param string $string
+     * @return string
+     */
+    public static function secure_string(string $string) : string
+    {
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
 }

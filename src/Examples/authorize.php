@@ -32,7 +32,7 @@ if (!empty($_POST)) {
     $product1 = new Product();
     $product1->setName('Первый тестовый товар'); // Установим Наименование товара или услуги
     $product1->setSku('toy-01'); // Установим Артикул
-    $product1->setVat(15); // Установим НДС
+    $product1->setVat(22); // Установим НДС
     $product1->setUnitPrice(1); // Установим Стоимость за единицу
     $product1->setQuantity(2); // Установим Количество
     $product1->setMeasurementUnit('шт'); // Установим единицы измерения (для чеков)
@@ -56,8 +56,8 @@ if (!empty($_POST)) {
     $billing->setZipCode('121000'); // Установим Почтовый Индекс Плательщика
     $billing->setFirstName('Иван'); // Установим Имя Плательщика
     $billing->setLastName('Петров'); // Установим Фамилия Плательщика
-    $billing->setPhone('9670660742'); // Установим Телефон Плательщика
-    $billing->setEmail('develop@ypmn.ru'); // Установим Email Плательщика
+    $billing->setPhone('+79670660742'); // Установим Телефон Плательщика
+    $billing->setEmail('example1@ypmn.ru'); // Установим Email Плательщика
 
     // Опишем Доставку и принимающее лицо (необязательно)
     $delivery = new Delivery;
@@ -74,9 +74,9 @@ if (!empty($_POST)) {
     $delivery->setZipCode('121000'); // Установим Почтовый Индекс Лица, принимающего заказ
     $delivery->setFirstName('Мария'); // Установим Имя Лица, принимающего заказ
     $delivery->setLastName('Петрова'); // Установим Фамилия Лица, принимающего заказ
-    $delivery->setPhone('89670660743'); // Установим Телефон Лица, принимающего заказ
-    $delivery->setEmail('develop@ypmn.ru'); // Установим Email Лица, принимающего заказ
-    $delivery->setCompanyName('ООО "Вектор"'); // Установим Название Компании, в которой можно оставить заказ
+    $delivery->setPhone('+79670660742'); // Установим Телефон Лица, принимающего заказ
+    $delivery->setEmail('example2@ypmn.ru'); // Установим Email Лица, принимающего заказ
+    $delivery->setCompanyName('ООО НКО "Твои Платежи"'); // Установим Название Компании, в которой можно оставить заказ
 
     // Создадим клиентское подключение
     $client = new Client;
@@ -93,14 +93,14 @@ if (!empty($_POST)) {
 
     // Создадим авторизацию по типу платежа
     $payment_method = @$_REQUEST['payment_method'] ?? PaymentMethods::CCVISAMC;
-    $authorization = new Authorization($_REQUEST['payment_method']);
+    $authorization = new Authorization($payment_method);
 
     /**
      * // Пример для h2h оплаты картой
      * // (для ТСП, сертифицированных по PCI-DSS)
      *
      * // Пример включает в себя тестовую карту из
-     * // https://ypmn.ru/docs/#tag/testing
+     * // https://ypmn.ru/doc/#tag/testing
      *     $authorization->setUsePaymentPage(false)
      *     $authorization->setCardDetails(
      *         (new CardDetails())
@@ -281,7 +281,7 @@ if (!empty($_POST)) {
     $apiRequest->setSandboxMode(@$_POST['sandbox'] === 'yes');
 
     // Отправим запрос
-    $responseData = $apiRequest->sendAuthRequest($payment, $merchant);
+    $responseData = $apiRequest->sendAuthRequest($payment);
 
     // Преобразуем ответ из JSON в массив
     try {
