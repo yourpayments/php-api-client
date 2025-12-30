@@ -19,8 +19,14 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     /** @var string код валюты */
     private string $currency = 'RUB';
 
-    /** @var string URL страницы после оплаты */
-    private string $returnUrl;
+    /** @var string URL страницы после успешной оплаты */
+    private ?string $successUrl = null;
+
+    /** @var string URL страницы после НЕуспешной оплаты */
+    private ?string $failUrl = null;
+
+    /** @var ?string Универсальный URL страницы после оплаты */
+    private ?string $returnUrl = null;
 
     /** @var AuthorizationInterface Авторизация */
     private AuthorizationInterface $authorization;
@@ -74,7 +80,35 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function setReturnUrl(string $returnUrl) : self
+    public function getSuccessUrl(): ?string
+    {
+        return $this->successUrl;
+    }
+
+    /** @inheritDoc */
+    public function setSuccessUrl(?string $successUrl): self
+    {
+        $this->successUrl = $successUrl;
+
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function getFailUrl(): ?string
+    {
+        return $this->failUrl;
+    }
+
+    /** @inheritDoc */
+    public function setFailUrl(?string $failUrl): self
+    {
+        $this->failUrl = $failUrl;
+
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function setReturnUrl(?string $returnUrl) : self
     {
         $this->returnUrl = $returnUrl;
 
@@ -82,7 +116,7 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
     }
 
     /** @inheritDoc */
-    public function getReturnUrl(): string
+    public function getReturnUrl(): ?string
     {
         return  $this->returnUrl;
     }
@@ -195,6 +229,8 @@ class Payment implements PaymentInterface, JsonSerializable, TransactionInterfac
         $requestData['merchantPaymentReference'] = $this->getMerchantPaymentReference();
         $requestData['currency']      = $this->getCurrency();
         $requestData['returnUrl']     = $this->getReturnUrl();
+        $requestData['successUrl']    = $this->getSuccessUrl();
+        $requestData['failUrl']       = $this->getFailUrl();
         $requestData['authorization'] = $this->getAuthorization()->arraySerialize();
 
         /* Поле storedCredentials обязательно только при привязке карты */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Пример интеграции API платёжной системы Ypmn
+ * Примеры интеграции API платёжной системы Ypmn
  * Документация:
  *      https://ypmn.ru/ru/documentation/
  * Начните знакомство с кодом с текущего файла
@@ -8,15 +8,20 @@
  */
 
 use Ypmn\PaymentException;
-use Ypmn\PaymentReference;
+use Ypmn\Std;
 
-
-if(isset($_GET['function'])){
+if(!empty($_GET['function'])){
     try {
         switch ($_GET['function']) {
             case 'start':
                 include './src/Examples/'.$_GET['function'] . '.php';
                 break;
+            case 'authorize':
+            case 'capture':
+            case 'token_payment':
+            case 'status':
+            case 'refund':
+            case 'payout':
             case 'simpleGetPaymentLink':
             case 'getPaymentLink':
             case 'getPaymentLinkMarketplace':
@@ -65,4 +70,15 @@ if(isset($_GET['function'])){
         //TODO: добавить в исключения ссылки на документацию
         echo $e->getHtmlMessage();
     }
+} else {
+    echo Std::alert([
+        'type' => 'success',
+        'text' => '
+            Добро пожаловать на тестовый сервер с примерами для интеграции 
+            с помощью SDK от <a href="http://ypmn.ru/?from=SDK_PHP">НКО &laquo;Твои Платежи&raquo;</a>.
+            <br>
+            <br>
+            Выберите пример из меню.
+        '
+    ]);
 }

@@ -11,6 +11,7 @@ use Ypmn\QstSchemaCeo;
 use Ypmn\QstSchemaIdentityDoc;
 use Ypmn\QstSchemaLegalAddress;
 use Ypmn\QstSchemaOwner;
+use Ypmn\Std;
 
 // Подключим файл, в котором заданы параметры мерчанта
 include_once 'start.php';
@@ -110,9 +111,26 @@ $responseData = $apiRequest->sendQstCreateRequest($qst);
 try {
     $responseData = json_decode((string) $responseData["response"], true);
     if (isset($responseData['id'])) {
-        echo "Анкета #{$responseData['id']} создана и отправлена на проверку";
+        echo Std::alert([
+            'type' => 'success',
+            'text' => 'Анкета #' . (int) $responseData['id'] . ' создана и отправлена на проверку',
+        ]);
     } else {
-        echo "Анкета не создана, см. причину в ответа от сервера YPMN";
+        echo Std::alert([
+            'type' => 'danger',
+            'text' => 'Анкета не создана! ' . htmlspecialchars(strip_tags(
+                    $responseData['code'] . ', '
+                    . $responseData['status'] . ': '
+                    . $responseData['message']
+                ))
+        ]);
+
+        if (strpos($responseData['message'], 'package is not allowed')) {
+            echo Std::alert([
+                'type' => 'warning',
+                'text' => 'Обратитесь к менеджеру для настройки маркетплейса',
+            ]);
+        }
     }
 } catch (Exception $exception) {
     echo "Ошибка запроса: {$exception->getMessage()}";

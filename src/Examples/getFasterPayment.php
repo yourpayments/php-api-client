@@ -1,7 +1,5 @@
 <?php
-/**
- * getFasterPayment.php
- */
+
 declare(strict_types=1);
 
 use Ypmn\Product;
@@ -20,7 +18,6 @@ include_once 'start.php';
 
 /*
  * Оплата через СБП
- * Нам надо оплатить три позиции: Блондинку, Брюнетку и Азиатку
  */
 
 /* Опишем первую позицию */

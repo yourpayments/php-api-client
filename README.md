@@ -1,6 +1,5 @@
 # «Твои Платежи»: Интеграция на PHP
-Готовая библиотека PHP API Client для YourPayments + 
-подробные примеры с комментариями
+Готовая библиотека PHP API Client для YourPayments + примеры с комментариями
 
 ![](https://repository-images.githubusercontent.com/638835276/2067d028-b541-4355-b069-3c12c8a28042)
 
@@ -32,13 +31,63 @@
 
 Библиотека ориентирована на простое и надёжное использование, подходит как для опытных, так и для начинающих разработчиков.
 
-Особенностями этой системы являются:
-- мульти-эквайринг (работа сразу со многими банками)
-- поддержка сплитования (много получателей платежа в одном чеке)
+Пример быстрого старта для приёма платежей:
+```php
+$merchant = new Merchant('MERCHANT_CODE', 'SECRET_KEY');
+$billing = (new Billing)
+  ->setCountryCode('RU')
+  ->setFirstName('Иван')
+  ->setLastName('Петров')
+  ->setEmail('test1@ypmn.ru')
+  ->setPhone('+74996492009')
+  ->setCity('Москва');
+  
+$client = (new Client)
+  ->setBilling($billing);
+
+$payment = (new Payment)
+  ->addProduct(new Product([
+    'name'  => 'Заказ №' . $merchantPaymentReference,
+    'sku'  => $merchantPaymentReference,
+    'unitPrice'  => 20.42,
+    'quantity'  => 1,
+]));
+$payment_method = $_GET['method'] ?? PaymentMethods::CCVISAMC; // Определим платёжный метод
+$authorization = new Authorization($payment_method, true);
+$payment->setAuthorization($authorization);
+$payment->setMerchantPaymentReference($merchantPaymentReference);
+$payment->setReturnUrl('https://' . @$_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
+$payment->setClient($client);
+$apiRequest = new ApiRequest($merchant);
+$responseData = $apiRequest->sendAuthRequest($payment, $merchant);
+$responseData = json_decode((string) $responseData["response"], true);
+
+if (isset($responseData["paymentResult"])) {
+    if (!empty($responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'])) {
+        $qr = $responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'];
+    }
+
+    // Выведем кнопку оплаты, рекомендуется
+    echo Std::drawYpmnButton([
+        'qr' => ($qr ?? null),
+        'url' => $responseData['paymentResult']['url'] ?? '',
+        'sum' => $payment->sumProductsAmount() ?? 0,
+        'payment_method' => $payment_method ?? null,
+        'newpage' => true,
+    ]);
+
+    // .. или сделаем редирект на форму оплаты (опционально)
+    // Std::redirect($responseData["paymentResult"]['url']);
+}
+```
+
+Особенностями системы являются:
+- мульти-эквайринг (работа сразу со многими банками, переключение в случае недоступности)
+- поддержка сплитования (разделение одного платежа на несколько получателей платежа, в рамках одного чеке)
 - безопасность и точность расчётов
 
 Библиотека содержит:
-- Сам клиент API
+- Клиент API
 - Простой встроенный сервер с примерами
 - Описание контейнера для запуска в Docker
 
@@ -69,7 +118,7 @@ php -S localhost:8080 index.php
 ```
 
 После запуска по адресу http://localhost:8080 будут доступны интерактивные примеры в следующем виде:
-![скриншот встроенного сервера с примерами](/screenshot2.jpg)
+![скриншот встроенного сервера с примерами](/assets/img/screenshot2.jpg)
 
 
 ### Запуск в контейнере docker
@@ -90,10 +139,8 @@ docker compose up --detach
 ##### 1. [Начало работы: настройка интеграции](src/Examples/start.php)
 
 ##### 2. Приём платежей
-1. [Cамый простой платёж](src/Examples/simpleGetPaymentLink.php)
-1. [Подробный платёж](src/Examples/getPaymentLink.php)
-1. [Платёж со сплитом (разделением платежа для нескольких получателей)](src/Examples/getPaymentLinkMarketplace.php)
-1. [Платёж через СБП (Систему Быстрых Платежей)](src/Examples/getFasterPayment.php)
+1. [Платёж, токенизация, чеки](src/Examples/authorize.php)
+1. [Минимальная установка](src/Examples/minimal.php)
 1. [Списание средств (только для двустадийной оплаты)](src/Examples/paymentCapture.php) 
 
 ##### 3. Подписки
@@ -120,7 +167,7 @@ docker compose up --detach
 2. [Возврат средств со сплитом (разделением платежа)](src/Examples/paymentRefundMarketplace.php)
 
 ##### 7. Выплаты
-1. [Выплаты на банковские карты](src/Examples/payoutCreate.php)
+1. [Выплаты на банковские карты](src/Examples/payout.php)
 2. [Запрос баланса для выплаты](src/Examples/payoutGetBalance.php)
 
 ##### 8. Подключение продавцов
@@ -159,8 +206,8 @@ composer update yourpayments/php-api-client
 
 ## Ссылки, поддержка и контакты
 - [НКО «Твои Платежи»](https://YPMN.ru/?utm_source=php-api-client)
-- [Докуметация API](https://ypmn.ru/ru/documentation/?utm_source=php-api-client)
-- [Тестовые банковские карты](https://ypmn.ru/ru/documentation/?utm_source=php-api-client#tag/testing)
+- [Докуметация API](https://ypmn.ru/doc/?utm_source=php-api-client)
+- [Тестовые банковские карты](https://ypmn.ru/doc/?utm_source=php-api-client#tag/testing)
 - [FAQ, ответы на частые вопросы](https://ypmn.ru/ru/support/?utm_source=php-api-client)
 - [Задать вопрос или сообщить о проблеме](https://github.com/yourpayments/php-api-client/issues/new)
 

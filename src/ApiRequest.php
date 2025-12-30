@@ -6,6 +6,7 @@ namespace Ypmn;
 
 use DateTime;
 use DateTimeInterface;
+use JsonException;
 use JsonSerializable;
 
 /**
@@ -38,7 +39,7 @@ class ApiRequest implements ApiRequestInterface
     /** @var MerchantInterface Мерчант, от имени которого отправляется запрос */
     private MerchantInterface $merchant;
 
-    /** @var bool Режим Песочницы (тестовая панель Ypmn) */
+    /** @var bool Режим Песочницы */
     private bool $sandboxModeIsOn = false;
 
     /** @var bool Режим отправки запросов на локальный хост */
@@ -191,11 +192,6 @@ class ApiRequest implements ApiRequestInterface
         $hashString = '';
 
         foreach ($parameters as $currentData) {
-//            if (is_array($currentData)) {
-//                //TODO
-//                $currentData = '';
-//            }
-
             if (strlen($currentData) > 0) {
                 $hashString .= strlen($currentData);
                 $hashString .= $currentData;
@@ -371,7 +367,6 @@ class ApiRequest implements ApiRequestInterface
 
         $curl = curl_init();
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
-        $requestHttpVerb = $method;
 
         $useragent = "SDK_" . @PHP_VERSION;
         $referer =  @$_SERVER['HTTP_HOST'] ?? @$_SERVER['SERVER_NAME'] ?? "" . @$_SERVER['REQUEST_URI'] ?? "";
@@ -385,7 +380,7 @@ class ApiRequest implements ApiRequestInterface
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 60,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $requestHttpVerb,
+            CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_POSTFIELDS => $encodedJsonData,
             CURLOPT_HTTPHEADER => [
                 'Accept: application/json',
@@ -396,7 +391,7 @@ class ApiRequest implements ApiRequestInterface
                     $this->merchant,
                     $date,
                     $this->getHost() . $api,
-                    $requestHttpVerb,
+                    $method,
                     $encodedJsonDataHash
                 )
             ]
@@ -422,10 +417,23 @@ class ApiRequest implements ApiRequestInterface
             $this->echoDebugMessage("$method-Запрос к серверу Ypmn:");
             $this->echoDebugMessage($encodedJsonData);
             $this->echoDebugMessage('Ответ от сервера Ypmn:');
-            $this->echoDebugMessage(json_encode(json_decode($response), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+            try {
+                $this->echoDebugMessage(
+                    json_encode(
+                            json_decode($response, false, 16, JSON_THROW_ON_ERROR),
+                            JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
+                    )
+                );
+            } catch (JsonException $e) {
+                $this->echoDebugMessage('Ошибка ответа: ');
+                $this->echoDebugMessage($e->getMessage());
+                $this->echoDebugMessage('Содержимо ответа:');
+                $this->echoDebugMessage(htmlspecialchars($response));
+            }
 
             if ($this->getDebugShowResponseHeaders()) {
-                $this->echoDebugMessage('Заголовки ответа от сервера Ypmn:');
+                $this->echoDebugMessage('Заголовки ответа:');
                 $this->echoDebugMessage(implode("\n", $headers));
             }
 
@@ -663,9 +671,9 @@ class ApiRequest implements ApiRequestInterface
     {
         if ($sandboxModeIsOn) {
             $this->setLocalMode(false);
+            $this->host = self::SANDBOX_HOST;
         }
         $this->sandboxModeIsOn = $sandboxModeIsOn;
-        $this->host = self::SANDBOX_HOST;
 
         return $this;
     }
@@ -696,6 +704,7 @@ class ApiRequest implements ApiRequestInterface
     public function setDebugMode(bool $debugModeIsOn = true): self
     {
         $this->debugModeIsOn = $debugModeIsOn;
+
         return $this;
     }
 
@@ -703,6 +712,7 @@ class ApiRequest implements ApiRequestInterface
     public function setJsonDebugResponse(bool $jsonDebugResponse): self
     {
         $this->jsonDebugResponse = $jsonDebugResponse;
+
         return $this;
     }
 
@@ -726,7 +736,8 @@ class ApiRequest implements ApiRequestInterface
                     style="
                         background: aliceblue;
                         color: black;
-                        padding: 2px;
+                        padding: 4px;
+                        border-radius: 4px;
                         border: 1px solid green;
                         white-space: pre-wrap;
                     "

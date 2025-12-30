@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title><?=strip_tags($_GET['function'] ?? 'Старт')?> ⚙️ Интеграция Твои Платежи</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css' rel='stylesheet'
+          integrity='sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB' crossorigin='anonymous'>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js'
+            integrity='sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI'
+            crossorigin='anonymous'></script>
 
     <link rel="prerender" href="https://ypnm.ru/ru/">
-
-    <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png'>
-    <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'>
-    <link rel='icon' type='image/png' sizes='194x194' href='/favicon-194x194.png'>
-    <link rel='icon' type='image/png' sizes='192x192' href='/android-chrome-192x192.png'>
-    <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png'>
 
     <style>
         body, html {
@@ -22,12 +20,15 @@
             min-height: 100%;
         }
 
-        .footer {
-            clear: both;
-        }
-
         code {
             color: darkgreen;
+        }
+
+        a:hover,
+        a:focus,
+        a:active {
+            color: darkorange;
+            transition: 0.3s ease-in-out;
         }
     </style>
 
@@ -60,7 +61,6 @@
     </script>
 </head>
 <body>
-
     <div class="container-fluid mt-2 mb-5 main_wrappa">
         <div class="row">
             <div class="col-12 mb-2">
@@ -83,32 +83,36 @@
                         <path d="M729.207 86.8488C727.12 86.8488 726.485 87.4869 726.485 89.5835V131.243C726.485 133.34 727.12 134.069 729.207 134.069H734.199C735.379 134.069 736.286 133.613 737.013 132.611L752.895 109.912C755.436 106.175 757.161 103.075 758.159 100.705H758.431C757.07 105.354 756.434 109.821 756.434 114.105V131.243C756.434 133.34 757.161 134.069 759.248 134.069H764.24C766.327 134.069 766.962 133.34 766.962 131.243V89.5835C766.962 87.4869 766.327 86.8488 764.24 86.8488H759.248C758.068 86.8488 757.16 87.3046 756.525 88.2162L740.461 111.097C738.283 114.288 736.559 117.387 735.379 120.304H735.107C736.377 115.746 737.013 111.279 737.013 106.995V89.5835C737.013 87.4869 736.286 86.8488 734.199 86.8488H729.207Z" fill="#20252E"/>
                     </svg>
                 </a>
-
             </div>
             <div class="col-md-4 col-lg-3">
-                <ol class="list-group list-group-numbered mb-5">
-                    <?php
-                        foreach ($examples as $key => $example) {
-                            echo '
-                                <li class="list-group-item"><a href="./?function='.$key.'">'. $example['name'] .'</a></li>
-                            ';
-                        }
-                    ?>
-                </ol>
-
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a target="_blank" href="https://YPMN.ru/ru/">Наш сайт</a></li>
+                    <li class="list-group-item">
+                        <div class="mb-2">Примеры интеграции</div>
+                        <div class="ps-lg-3 ps-2 mb-4">
+                            <?php
+                                foreach ($examples as $key => $example) {
+                                    if (substr($key, 0, 5) === 'title') {
+                                        echo '
+                                            <div class="text-muted mt-2">'. $example .':</div>
+                                        ';
+                                    } else {
+                                        echo '
+                                            <div><a href="./?function='.$key.'">'. $example['name'] .'</a></div>
+                                        ';
+                                    }
+                                }
+                            ?>
+                        </div>
+                    </li>
+                    <li class="list-group-item"><a target="_blank" href="https://YPMN.ru/?utm_source=SDK_PHP">Наш сайт</a></li>
                     <li class="list-group-item"><a target="_blank" href="https://github.com/yourpayments/">Github</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://dev.payu.ru/ru/documents/rest-api/testing/">Тестовые карты</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/documentation/">Документация</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://dev.ypmn.ru/ru/faq/">Частые вопросы</a></li>
-                    <li class="list-group-item"><a target="_blank" href="mailto:itsupport@ypmn.ru?subject=YPMN_Integration">itsupport@ypmn.ru</a></li>
-                    <li class="list-group-item"><a target="_blank" href="https://t.me/YPMN_bot">@YPMN_bot</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/doc/#tag/testing">Тестовые карты</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/doc/">Документация</a></li>
+                    <li class="list-group-item"><a target="_blank" href="https://ypmn.ru/ru/support/">Частые вопросы</a></li>
+                    <li class="list-group-item"><a target="_blank" href="mailto:itsupport@ypmn.ru?subject=PHP_SDK_Integration">itsupport@ypmn.ru</a></li>
                 </ul>
-
             </div>
             <div class="col-md-8 col-lg-9">
-
             <?php
                 if (isset($_GET['function']) && isset($examples[ $_GET['function'] ]) && isset($examples[ $_GET['function'] ]['about'])) {
                     echo \Ypmn\Std::alert([
