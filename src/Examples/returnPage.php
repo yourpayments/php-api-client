@@ -1,7 +1,12 @@
 <?php
 /**
- * Страница после оплаты.
- * Параметры передаются в $_GET или $_POST, в зависимости от настройки мерчанта в YPMN:
+ * @deprecated Используйте новые параметры
+ * `successUrl` после успешной оплаты
+ * и `failUrl` после неудачной оплаты
+ * https://ypmn.ru/doc/#tag/payment-api-return-url
+ *
+ * Ниже старая (единая) страница после оплаты.
+ * В ней параметры передаются в $_GET или $_POST, в зависимости от настройки мерчанта в YPMN
  */
 $statusResponseFromServer = (json_decode($_POST['body'] ?? '{}', true))['status'] ?? null;
 

@@ -368,7 +368,7 @@ class ApiRequest implements ApiRequestInterface
         $curl = curl_init();
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
 
-        $useragent = "SDK_" . @PHP_VERSION;
+        $useragent = "SDK_PHP_" . @PHP_VERSION;
         $referer =  @$_SERVER['HTTP_HOST'] ?? @$_SERVER['SERVER_NAME'] ?? "" . @$_SERVER['REQUEST_URI'] ?? "";
 
         $setOptArray = [
