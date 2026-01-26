@@ -41,13 +41,7 @@ class Receiver implements \JsonSerializable
         $this->purpose = $purpose;
         $this->personalAccount = $personalAccount;
 
-        $formattedDate = \DateTime::createFromFormat(
-            'm/Y',
-            $period,
-            new DateTimeZone(date_default_timezone_get())
-        );
-
-        if ($formattedDate === false || $period !== $formattedDate->format('m/Y')) {
+        if (preg_match('~^(0[1-9]|1[0-2])\/\d{4}$~', $period)) {
             throw new PaymentException('Аргумент period имеет неверный формат');
         }
 
