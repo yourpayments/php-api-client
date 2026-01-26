@@ -113,6 +113,13 @@
                             Сплитование (разделение платежа между получателями)
                         </label>
                     </div>
+
+                    <div class='form-check mb-3'>
+                        <input name='receivers' value='yes' class='form-check-input' type='checkbox' id='receivers'>
+                        <label class='form-check-label' for='receivers'>
+                            Оплата по свободным реквизитам
+                        </label>
+                    </div>
                 </div>
             </div>
 
