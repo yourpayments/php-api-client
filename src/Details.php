@@ -102,6 +102,29 @@ class Details
         return $this;
     }
 
+    /**
+     * Получить массив объектов получателей по свободным реквизитам
+     *
+     * @return Receiver[]|null
+     */
+    public function getReceivers(): ?array
+    {
+        return $this->valuesContainer['receivers'] ?? null;
+    }
+
+    /**
+     * Установить получателей для оплаты по свободным реквизитам
+     *
+     * @param Receiver[] $receivers
+     * @return self
+     */
+    public function setReceivers(?array $receivers): self
+    {
+        $this->valuesContainer['receivers'] = $receivers;
+
+        return $this;
+    }
+
 
 
     /**
