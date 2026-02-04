@@ -41,6 +41,9 @@ class CardDetails implements CardDetailsInterface
     /** @var string Банк, выпустивший карту */
     private string $cardIssuerBank;
 
+    /** @var string Банк, выпустивший карту (полное наименование) */
+    private string $cardIssuerBankFullName;
+
     /** Protobuf generation Trait */
     use ProtobufSerializable;
 
@@ -69,6 +72,7 @@ class CardDetails implements CardDetailsInterface
     public function setExpiryMonth(int $expiryMonth): self
     {
         $this->expiryMonth = $expiryMonth;
+
         return $this;
     }
 
@@ -84,8 +88,8 @@ class CardDetails implements CardDetailsInterface
         if ( $year< 1900) {
             throw new PaymentException('Проверьте год выпуска карты');
         }
-
         $this->year = $year;
+
         return $this;
     }
 
@@ -99,6 +103,7 @@ class CardDetails implements CardDetailsInterface
     public function setExpiryYear(int $expiryYear): self
     {
         $this->expiryYear = $expiryYear;
+
         return $this;
     }
 
@@ -112,6 +117,7 @@ class CardDetails implements CardDetailsInterface
     public function setCvv(string $cvv): self
     {
         $this->cvv = $cvv;
+
         return $this;
     }
 
@@ -125,6 +131,7 @@ class CardDetails implements CardDetailsInterface
     public function setOwner(string $owner): self
     {
         $this->owner = $owner;
+
         return $this;
     }
 
@@ -138,6 +145,7 @@ class CardDetails implements CardDetailsInterface
     public function setTimeSpentTypingNumber(int $timeSpentTypingNumber): self
     {
         $this->timeSpentTypingNumber = $timeSpentTypingNumber;
+
         return $this;
     }
 
@@ -151,6 +159,7 @@ class CardDetails implements CardDetailsInterface
     public function setTimeSpentTypingOwner(int $timeSpentTypingOwner): self
     {
         $this->timeSpentTypingOwner = $timeSpentTypingOwner;
+
         return $this;
     }
 
@@ -164,6 +173,7 @@ class CardDetails implements CardDetailsInterface
     public function setBin(int $bin): self
     {
         $this->bin = $bin;
+
         return $this;
     }
 
@@ -177,6 +187,7 @@ class CardDetails implements CardDetailsInterface
     public function setPan(string $pan): self
     {
         $this->pan = $pan;
+
         return $this;
     }
 
@@ -190,6 +201,7 @@ class CardDetails implements CardDetailsInterface
     public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -203,6 +215,21 @@ class CardDetails implements CardDetailsInterface
     public function setCardIssuerBank(string $cardIssuerBank): self
     {
         $this->cardIssuerBank = $cardIssuerBank;
+
+        return $this;
+    }
+
+    /** @inheritDoc */
+    public function getCardIssuerBankFullName(): ?string
+    {
+        return $this->cardIssuerBankFullName ?? null;
+    }
+
+    /** @inheritDoc */
+    public function setCardIssuerBankFullName(string $cardIssuerBankFullName): CardDetails
+    {
+        $this->cardIssuerBankFullName = $cardIssuerBankFullName;
+
         return $this;
     }
 
