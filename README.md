@@ -46,21 +46,22 @@ $billing = (new Billing)
 $client = (new Client)->setBilling($billing);
 $payment = (new Payment)
   ->addProduct(new Product([
-    'name'  => 'Заказ №' . $merchantPaymentReference,
-    'sku'  => 'artikul_test',
-    'unitPrice'  => 20.42,
-    'quantity'  => 1,
+    'name'  => 'Заказ №' . $merchantPaymentReference, // Наименование товарной позиции
+    'sku'  => 'test_artikul', // Артикул
+    'unitPrice'  => 20.42, // Стоимость единицы
+    'quantity'  => 1, // Количество
 ]));
 $payment_method = $_GET['method'] ?? PaymentMethods::CCVISAMC; // Определим платёжный метод
 $authorization = new Authorization($payment_method, true);
 $payment->setAuthorization($authorization);
 $payment->setMerchantPaymentReference($merchantPaymentReference);
-$payment->setReturnUrl('https://' . $_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
+$payment->setSuccessUrl('https://' . $_SERVER['HTTP_HOST'] . '/?status=success'); // Редирект после успешной оплаты
+$payment->setFailUrl('https://' . $_SERVER['HTTP_HOST'] . '/?status=success'); // Редирект в случае неоплаты
 $payment->setClient($client);
+
 $apiRequest = new ApiRequest($merchant);
 $responseData = $apiRequest->sendAuthRequest($payment, $merchant);
-$responseData = json_decode((string) $responseData["response"], true);
-
+$responseData = json_decode((string) $responseData["response"], true); // Отправка запроса и обработка ответа
 if (isset($responseData["paymentResult"])) {
     if (!empty($responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'])) {
         $qr = $responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'];
