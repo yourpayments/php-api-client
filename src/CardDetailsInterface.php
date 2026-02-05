@@ -139,6 +139,19 @@ interface CardDetailsInterface extends DetailsInterface
     public function getCardIssuerBank() : ?string;
 
     /**
+     * Установить Полное наименование Банка, выпустившего карту
+     * @param string $cardIssuerBankFullName
+     * @return CardDetails
+     */
+    public function setCardIssuerBankFullName(string $cardIssuerBankFullName): CardDetails;
+
+    /**
+     * Получить Полное наименование Банка, выпустившего карту
+     * @return string|null Полное наименование Банка, выпустившего карту
+     */
+    public function getCardIssuerBankFullName(): ?string;
+
+    /**
      * Получить Год Карты
      * @return int|null Год Карты
      */

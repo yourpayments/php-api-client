@@ -90,6 +90,10 @@ class Webhook implements WebhookInterface
                 $cardDetails->setCardIssuerBank($request['paymentResult']['cardDetails']['cardIssuerBank']);
             }
 
+            if (!empty($request['paymentResult']['cardDetails']['cardIssuerBankFullName'])) {
+                $cardDetails->setCardIssuerBankFullName($request['paymentResult']['cardDetails']['cardIssuerBankFullName']);
+            }
+
             $this->paymentResult = new PaymentResult;
             $this->paymentResult->setCardDetails($cardDetails);
 

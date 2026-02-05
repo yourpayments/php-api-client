@@ -33,41 +33,41 @@
 
 Пример быстрого старта для приёма платежей:
 ```php
-$merchant = new Merchant('MERCHANT_CODE', 'SECRET_KEY');
+$merchant = new Merchant('MERCHANT_CODE', 'SECRET_KEY'); // Коды подключения API
+$merchantPaymentReference = 123; // Номер заказа в вашей системе
 $billing = (new Billing)
-  ->setCountryCode('RU')
-  ->setFirstName('Иван')
-  ->setLastName('Петров')
-  ->setEmail('test1@ypmn.ru')
-  ->setPhone('+74996492009')
-  ->setCity('Москва');
+  ->setCountryCode('RU') // Страна Плательщика
+  ->setFirstName('Иван') // Имя Плательщика
+  ->setLastName('Петров') // Фамилия Плательщика
+  ->setEmail('test1@ypmn.ru') // Почта Плательщика
+  ->setPhone('+74996492009') // Телефон Плательщика
+  ->setCity('Москва');  // Город Плательщика
   
-$client = (new Client)
-  ->setBilling($billing);
-
+$client = (new Client)->setBilling($billing);
 $payment = (new Payment)
   ->addProduct(new Product([
-    'name'  => 'Заказ №' . $merchantPaymentReference,
-    'sku'  => $merchantPaymentReference,
-    'unitPrice'  => 20.42,
-    'quantity'  => 1,
+    'name'  => 'Заказ №' . $merchantPaymentReference, // Наименование товарной позиции
+    'sku'  => 'test_artikul', // Артикул
+    'unitPrice'  => 20.42, // Стоимость единицы
+    'quantity'  => 1, // Количество
 ]));
 $payment_method = $_GET['method'] ?? PaymentMethods::CCVISAMC; // Определим платёжный метод
 $authorization = new Authorization($payment_method, true);
 $payment->setAuthorization($authorization);
 $payment->setMerchantPaymentReference($merchantPaymentReference);
-$payment->setReturnUrl('https://' . @$_SERVER['HTTP_HOST'] . '/php-api-client/?function=returnPage');
+$payment->setSuccessUrl('https://' . $_SERVER['HTTP_HOST'] . '/?status=success'); // Редирект после успешной оплаты
+$payment->setFailUrl('https://' . $_SERVER['HTTP_HOST'] . '/?status=success'); // Редирект в случае неоплаты
 $payment->setClient($client);
+
 $apiRequest = new ApiRequest($merchant);
 $responseData = $apiRequest->sendAuthRequest($payment, $merchant);
-$responseData = json_decode((string) $responseData["response"], true);
-
+$responseData = json_decode((string) $responseData["response"], true); // Отправка запроса и обработка ответа
 if (isset($responseData["paymentResult"])) {
     if (!empty($responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'])) {
         $qr = $responseData['paymentResult']['bankResponseDetails']['customBankNode']['qr'];
     }
 
-    // Выведем кнопку оплаты, рекомендуется
+    // Выведем кнопку оплаты (рекомендуется)
     echo Std::drawYpmnButton([
         'qr' => ($qr ?? null),
         'url' => $responseData['paymentResult']['url'] ?? '',
@@ -87,7 +87,7 @@ if (isset($responseData["paymentResult"])) {
 - безопасность и точность расчётов
 
 Библиотека содержит:
-- Клиент API
+- Клиент для работы с API платежей, выплат, отчётов
 - Простой встроенный сервер с примерами
 - Описание контейнера для запуска в Docker
 
