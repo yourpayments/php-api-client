@@ -326,7 +326,7 @@ class Std
      * @param string|null $currency
      * @return string|null
      */
-    public static function data_img_tag(string $data_img, $sum, string $method = null, ?string $currency = null) : ?string
+    public static function data_img_tag(string $data_img, $sum, ?string $method = null, ?string $currency = null) : ?string
     {
         if (empty($data_img)) {
             return null;
@@ -357,6 +357,8 @@ class Std
 
     /** @return string IP */
     public static function get_client_ip() : string {
+        $ip = '127.0.0.1';
+
         if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
             $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
         } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
