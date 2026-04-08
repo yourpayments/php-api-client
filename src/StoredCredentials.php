@@ -8,11 +8,8 @@ use Ypmn\Traits\ProtobufSerializable;
 
 class StoredCredentials implements StoredCredentialsInterface
 {
-    /** @var string  */
+    /** @var string */
     private string $useType;
-
-    /** @var string id исходной операции */
-    private string $useId;
 
     /**
      * Тип использования привязки (OnDemand или recursive).
@@ -53,19 +50,6 @@ class StoredCredentials implements StoredCredentialsInterface
     }
 
     /** @inheritDoc */
-    public function getUseId(): string
-    {
-        return $this->useId;
-    }
-
-    /** @inheritDoc */
-    public function setUseId(string $useId): self
-    {
-        $this->useId = $useId;
-        return $this;
-    }
-
-    /** @inheritDoc */
     public function getConsentType(): string
     {
         return $this->consentType;
@@ -98,10 +82,6 @@ class StoredCredentials implements StoredCredentialsInterface
 
         if (empty($this->useType) === false) {
             $returnArray["useType"] = $this->useType;
-        }
-
-        if (empty($this->useId) === false) {
-            $returnArray["useId"] = $this->useId;
         }
 
         if (empty($this->consentType) === false) {
