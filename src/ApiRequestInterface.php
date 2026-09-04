@@ -146,6 +146,21 @@ interface ApiRequestInterface
     public function setIdempotencyKey(string $idempotencyKey) : self;
 
     /**
+     * Получить общий справочник заголовков запроса
+     * @return array Заголовки в формате ["Header-Name" => "value"]
+     */
+    public function getHeaders() : array;
+
+    /**
+     * Установить/переопределить заголовок запроса.
+     * @param string $name Имя заголовка (например "X-Custom-Header")
+     * @param string $value Значение заголовка
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setHeader(string $name, string $value) : self;
+
+    /**
      * Отправить запрос для получения детального отчета по заказу
      * @param array $params
      */
