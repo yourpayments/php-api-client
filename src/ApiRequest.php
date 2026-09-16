@@ -60,6 +60,9 @@ class ApiRequest implements ApiRequestInterface
     /** @var string Ключ идемпотентности */
     private string $idempotencyKey = "";
 
+    /** @var array Заголовков запроса */
+    private array $headers = [];
+
     /** @inheritdoc  */
     public function __construct(MerchantInterface $merchant)
     {
@@ -84,6 +87,24 @@ class ApiRequest implements ApiRequestInterface
         }
     }
 
+    /** @inheritdoc  */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /** @inheritdoc  */
+    public function setHeader(string $name, string $value): self
+    {
+        $name = trim($name);
+        $value = trim($value);
+
+        if ($name && $value) {
+           $this->headers[$name] = $value;
+        }
+
+        return $this;
+    }
 
     /** @inheritdoc  */
     public function getHost(): string
@@ -151,6 +172,12 @@ class ApiRequest implements ApiRequestInterface
         $requestHttpVerb = 'GET';
 
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
+
+        $this->setHeader('Accept', 'application/json');
+        $this->setHeader('Content-Type', 'application/json');
+        $this->setHeader('X-Header-Date', $date);
+        $this->setHeader('X-Header-Merchant', $this->merchant->getCode());
+
         $setopt_array = [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
@@ -159,12 +186,7 @@ class ApiRequest implements ApiRequestInterface
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $requestHttpVerb,
-            CURLOPT_HTTPHEADER => [
-                'Accept: application/json',
-                'Content-Type: application/json',
-                'X-Header-Date: ' . $date,
-                'X-Header-Merchant: ' . $this->merchant->getCode()
-            ]
+            CURLOPT_HTTPHEADER => $this->formatHeadersForCurl()
         ];
 
         curl_setopt_array($curl, $setopt_array);
@@ -225,6 +247,18 @@ class ApiRequest implements ApiRequestInterface
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
         $requestHttpVerb = 'GET';
 
+        $this->setHeader('Accept', 'application/json');
+        $this->setHeader('Content-Type', 'application/json');
+        $this->setHeader('X-Header-Date', $date);
+        $this->setHeader('X-Header-Merchant', $this->merchant->getCode());
+        $this->setHeader('X-Header-Signature', $this->getSignature(
+            $this->merchant,
+            $date,
+            $this->getHost() . $api,
+            $requestHttpVerb,
+            md5('')
+        ));
+
         $setopt_array = [
             CURLOPT_URL => $this->getHost() . $api,
             CURLOPT_RETURNTRANSFER => true,
@@ -233,19 +267,7 @@ class ApiRequest implements ApiRequestInterface
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $requestHttpVerb,
-            CURLOPT_HTTPHEADER => [
-                'Accept: application/json',
-                'Content-Type: application/json',
-                'X-Header-Date: ' . $date,
-                'X-Header-Merchant: ' . $this->merchant->getCode(),
-                'X-Header-Signature:' . $this->getSignature(
-                    $this->merchant,
-                    $date,
-                    $this->getHost() . $api,
-                    $requestHttpVerb,
-                    md5(''),
-                )
-            ]
+            CURLOPT_HTTPHEADER => $this->formatHeadersForCurl()
         ];
 
         $headers = [];
@@ -371,6 +393,22 @@ class ApiRequest implements ApiRequestInterface
         $useragent = "SDK_PHP_" . @PHP_VERSION;
         $referer =  @$_SERVER['HTTP_HOST'] ?? @$_SERVER['SERVER_NAME'] ?? "" . @$_SERVER['REQUEST_URI'] ?? "";
 
+        $this->setHeader('Accept', 'application/json');
+        $this->setHeader('Content-Type', 'application/json');
+        $this->setHeader('X-Header-Date', $date);
+        $this->setHeader('X-Header-Merchant', $this->merchant->getCode());
+        $this->setHeader('X-Header-Signature', $this->getSignature(
+            $this->merchant,
+            $date,
+            $this->getHost() . $api,
+            $method,
+            $encodedJsonDataHash
+        ));
+
+        if ($this->getIdempotencyKey()) {
+            $this->setHeader('X-Header-Idempotency-Key', $this->getIdempotencyKey());
+        }
+
         $setOptArray = [
             CURLOPT_URL => $this->getHost() . $api,
             CURLOPT_RETURNTRANSFER => true,
@@ -382,29 +420,13 @@ class ApiRequest implements ApiRequestInterface
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_POSTFIELDS => $encodedJsonData,
-            CURLOPT_HTTPHEADER => [
-                'Accept: application/json',
-                'Content-Type: application/json',
-                'X-Header-Date: ' . $date,
-                'X-Header-Merchant: ' . $this->merchant->getCode(),
-                'X-Header-Signature:' . $this->getSignature(
-                    $this->merchant,
-                    $date,
-                    $this->getHost() . $api,
-                    $method,
-                    $encodedJsonDataHash
-                )
-            ]
+            CURLOPT_HTTPHEADER => $this->formatHeadersForCurl()
         ];
 
         $headers = [];
 
         if ($this->getDebugShowResponseHeaders()) {
             $this->addCurlOptHeaderFunction($setOptArray, $headers);
-        }
-
-        if ($this->getIdempotencyKey()) {
-            $headers[] = 'X-Header-Idempotency-Key: ' . $this->getIdempotencyKey();
         }
 
         curl_setopt_array($curl, $setOptArray);
@@ -630,6 +652,21 @@ class ApiRequest implements ApiRequestInterface
     public function sendReportOrderDetailsRequest(array $params): array
     {
         return $this->sendGetRequest(self::REPORT_ORDER_DETAILS_API . '/?' . http_build_query($params));
+    }
+
+    /**
+     * Привести общий справочник заголовков (key => value) к формату CURLOPT_HTTPHEADER
+     * @return string[] массив строк вида ["Header-Name: value", ...]
+     */
+    private function formatHeadersForCurl(): array
+    {
+        $curlHeaders = [];
+
+        foreach ($this->headers as $name => $value) {
+            $curlHeaders[] = $name . ': ' . $value;
+        }
+
+        return $curlHeaders;
     }
 
     /**
