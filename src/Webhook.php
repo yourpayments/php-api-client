@@ -205,10 +205,6 @@ class Webhook implements WebhookInterface
                 $storedCredentials->setYpmnBindingId($storedCredentialsArray['ypmnBindingId']);
             }
 
-            if (!empty($storedCredentialsArray['useId'])) {
-                $storedCredentials->setUseId($storedCredentialsArray['useId']);
-            }
-
             $this->authorization = new WebhookAuthorization;
             $this->authorization->setStoredCredentials($storedCredentials);
         }
