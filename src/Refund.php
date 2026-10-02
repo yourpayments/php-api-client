@@ -23,6 +23,7 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface,
      * @var float Сумма списания
      */
     private float $amount;
+    private bool $checkBalance = false;
 
     /**
      * @var string Валюта
@@ -43,7 +44,7 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface,
     /**
      * @inheritDoc
      */
-    public function setDebugMode(bool $isOn) : self
+    public function setDebugMode(bool $isOn): self
     {
         $this->debugMode = $isOn;
 
@@ -53,7 +54,7 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface,
     /**
      * @inheritDoc
      */
-    public function setSandboxMode(bool $isOn) : self
+    public function setSandboxMode(bool $isOn): self
     {
         $this->sandboxMode = $isOn;
 
@@ -156,7 +157,7 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface,
     }
 
     /** @inheritDoc */
-    public function addProduct(ProductInterface $product) : self
+    public function addProduct(ProductInterface $product): self
     {
         $this->products[] = $product;
 
@@ -216,10 +217,11 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface,
     {
         //TODO: проверка необходимых параметров
         $requestData = [
-            'payuPaymentReference'	=> $this->getYpmnPaymentReference(),
-            'originalAmount'	=> $this->getOriginalAmount(),
-            'amount'	=> $this->getAmount(),
-            'currency' => $this->getCurrency()
+            'payuPaymentReference' => $this->getYpmnPaymentReference(),
+            'originalAmount' => $this->getOriginalAmount(),
+            'amount' => $this->getAmount(),
+            'currency' => $this->getCurrency(),
+            'checkBalance' => $this->isCheckBalance() ? 'YES' : 'NO',
         ];
 
         if ($this->skipCheckSkuAmount) {
@@ -232,7 +234,7 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface,
 
         if (count($this->marketplaceSubmerchants) > 0) {
             foreach ($this->marketplaceSubmerchants as $marketplaceSubmerchant) {
-                $requestData['marketplaceV1'][] = (object) [
+                $requestData['marketplaceV1'][] = (object)[
                     'amount' => $marketplaceSubmerchant->getAmount(),
                     'merchant' => $marketplaceSubmerchant->getMerchantCode(),
                 ];
@@ -243,6 +245,16 @@ class Refund implements RefundInterface, JsonSerializable, TransactionInterface,
             $requestData['details'] = $this->details->toArray();
         }
 
-        return json_encode($requestData, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_LINE_TERMINATORS);
+        return json_encode($requestData, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_LINE_TERMINATORS);
+    }
+
+    public function isCheckBalance(): bool
+    {
+        return $this->checkBalance;
+    }
+
+    public function setCheckBalance(bool $checkBalance): void
+    {
+        $this->checkBalance = $checkBalance;
     }
 }
