@@ -10,6 +10,7 @@ variables:
   COMMIT_MESSAGE: "Cleanup repository for public mirrors [skip ci]"
   GIT_USER_GITHUB: "yourpayments"
   GIT_USER_GITFLIC: "ypmn"
+  GIT_STRATEGY: fetch
 
 mirroring:
   stage: repo-sync
