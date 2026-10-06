@@ -12,7 +12,7 @@ variables:
   GIT_USER_GITFLIC: "ypmn"
 
 mirroring:
-  stage: repo_sync
+  stage: repo-sync
   tags:
     - docker
   image: alpine:latest
