@@ -4,13 +4,14 @@
 # - gitflic.com
 
 variables:
+  GIT_STRATEGY: clone
   GIT_DEPTH: "0"
   COMMIT_USER_NAME: "GitLab Mirroring Bot"
   COMMIT_USER_EMAIL: "mirror-bot@localhost.com"
   COMMIT_MESSAGE: "Cleanup repository for public mirrors [skip ci]"
   GIT_USER_GITHUB: "yourpayments"
   GIT_USER_GITFLIC: "ypmn"
-  GIT_STRATEGY: fetch
+
 
 mirroring:
   stage: repo-sync
