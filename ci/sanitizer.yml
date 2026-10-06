@@ -1,0 +1,47 @@
+# Cleanup project and sync with public repos
+# on:
+# - github.com
+# - gitflic.com
+
+variables:
+  GIT_DEPTH: "0"
+  COMMIT_USER_NAME: "GitLab Mirroring Bot"
+  COMMIT_USER_EMAIL: "mirror-bot@localhost.com"
+  COMMIT_MESSAGE: "Cleanup repository for public mirrors [skip ci]"
+  GIT_USER_GITHUB: "yourpayments"
+  GIT_USER_GITFLIC: "ypmn"
+
+mirroring:
+  stage: repo_sync
+  tags:
+    - docker
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache git openssh-client coreutils
+    - mkdir -p /root/.ssh
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > /root/.ssh/id_ed25519
+    - chmod 600 /root/.ssh/id_ed25519
+    - ssh-keyscan github.com >> /root/.ssh/known_hosts
+    - ssh-keyscan gitflic.ru >> /root/.ssh/known_hosts
+
+  script:
+    - git remote remove github || true
+    - git remote remove gitflic || true
+
+    - git remote add gitflic "git@gitflic.ru:$GIT_USER_GITFLIC/$CI_PROJECT_NAME.git"
+    - git remote add github  "git@github.com:$GIT_USER_GITHUB/$CI_PROJECT_NAME.git"
+
+    - git clean -fd
+    - git checkout -B public-dist
+
+    - git rm -rf --ignore-unmatch .gitlab-ci.yml ci
+
+    - git config --global user.name "$COMMIT_USER_NAME"
+    - git config --global user.email "$COMMIT_USER_EMAIL"
+    - git commit -m "$COMMIT_MESSAGE"
+
+    - git push -f gitflic public-dist:main
+    - git push -f github  public-dist:main
+
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
