@@ -22,6 +22,12 @@
   - [Страница после оплаты](#10-страница-после-оплаты)
   - [Безопасные поля](#11-безопасные-поля-secure-fields) (отдельный вид интеграции карточной формы)
   - [Обработка ошибок](#12-обработка-ошибок)
+- [Настройка HTTP-клиента](#настройка-http-клиента)
+  - [Опции cURL: таймауты, прокси, сертификаты](#опции-curl-таймауты-прокси-сертификаты)
+  - [Собственные заголовки запроса](#собственные-заголовки-запроса)
+  - [Журнал запросов (PSR-3)](#журнал-запросов-psr-3)
+  - [Код ответа и заголовки ответа](#код-ответа-и-заголовки-ответа)
+- [Запуск тестов](#запуск-тестов)
 - [Обновление библиотеки](#обновление)
 - [Поддержка и контакты](#ссылки-поддержка-и-контакты)
 
@@ -193,6 +199,81 @@ docker compose up --detach
 Пример перехвата исключения можно посмотреть в примере: [Cамый простой платёж](src/Examples/simpleGetPaymentLink.php)
 
 ---
+
+## Настройка HTTP-клиента
+
+### Опции cURL: таймауты, прокси, сертификаты
+Любую опцию cURL можно переопределить -- она применяется поверх значений SDK по умолчанию
+(соединение -- 10 секунд, ответ на GET -- 30 секунд, на POST и PUT -- 60 секунд):
+
+```php
+$apiRequest = new ApiRequest($merchant);
+
+$apiRequest
+    ->setCurlOption(CURLOPT_CONNECTTIMEOUT, 3)
+    ->setCurlOption(CURLOPT_TIMEOUT, 15);
+
+// или несколько опций сразу
+$apiRequest->setCurlOptions([
+    CURLOPT_PROXY => 'http://proxy.example.com:3128',
+    CURLOPT_CAINFO => '/etc/ssl/certs/ca-certificates.crt',
+]);
+```
+
+Опции, от которых зависят подпись запроса и разбор ответа (`CURLOPT_URL`, `CURLOPT_CUSTOMREQUEST`,
+`CURLOPT_POSTFIELDS`, `CURLOPT_HTTPHEADER`, `CURLOPT_RETURNTRANSFER`, `CURLOPT_HEADER`,
+`CURLOPT_HEADERFUNCTION`), переопределить нельзя -- будет выброшено `PaymentException`.
+
+### Собственные заголовки запроса
+```php
+$apiRequest->setHeader('X-Request-Id', $requestId);
+$apiRequest->setHeaders(['X-Trace-Id' => $traceId, 'X-Shop-Version' => '2.4.1']);
+$apiRequest->removeHeader('X-Trace-Id');
+```
+
+Заголовки отправляются со всеми последующими запросами этого объекта. Имя заголовка сравнивается без учёта
+регистра, а перевод строки в имени или значении приводит к `PaymentException`. Заголовки подписи
+(`X-Header-Date`, `X-Header-Merchant`, `X-Header-Signature`, `X-Header-Idempotency-Key`), а также `Accept` и
+`Content-Type` SDK выставляет сам для каждого запроса, поверх пользовательских.
+
+### Журнал запросов (PSR-3)
+Режим отладки `setDebugMode()` выводит HTML на страницу и предназначен только для примеров.
+Для рабочего окружения подключите любой логгер [PSR-3](https://www.php-fig.org/psr/psr-3/) (Monolog, логгер Laravel или Symfony):
+
+```php
+$apiRequest->setLogger($logger);
+```
+
+| Событие | Уровень | Что в контексте |
+|---|---|---|
+| Запрос отправляется | `debug` | `request_id`, `method`, `url`, `headers`, `body` |
+| Получен ответ 1xx-3xx | `info` | `request_id`, `http_code`, `duration_ms`, `connect_time_ms`, `primary_ip`, `headers`, `body` |
+| Получен ответ 4xx | `warning` | то же |
+| Получен ответ 5xx или запрос не дошёл | `error` | то же и `curl_errno`, `curl_error` |
+
+- `request_id` связывает записи о запросе и об ответе.
+- Номер карты, CVV, срок действия, токены, подпись запроса и cookie в журнал не попадают: значения заменяются на `***`.
+  Список скрываемых полей JSON -- `LogSanitizer::DEFAULT_SENSITIVE_FIELDS`, заменить его можно через `setLogSensitiveFields()`.
+- Тела длиннее 10 000 символов обрезаются (`setLogBodyMaxLength()`), а `setLogBodies(false)` исключает тела из журнала полностью.
+- Сбой самого логгера не прерывает запрос к платёжному шлюзу.
+
+Пакет `psr/log` нужен, только если вы вызываете `setLogger()`; без него SDK работает как раньше.
+
+### Код ответа и заголовки ответа
+Методы отправки запросов возвращают, помимо `response` и `error`, код ответа HTTP и заголовки ответа:
+
+```php
+$result = $apiRequest->sendStatusRequest($merchantPaymentReference);
+
+$result['httpCode']; // 200
+$result['headers'];  // ['HTTP/1.1 200 OK', 'Content-Type: application/json', ...]
+```
+
+## Запуск тестов
+```shell
+composer install
+composer test
+```
 
 ## Обновление
 
