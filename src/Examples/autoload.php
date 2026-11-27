@@ -103,6 +103,7 @@ $files = [
     'Role',
     'SessionRequest',
     'Std',
+    'LogSanitizer',
     'StoredCredentials',
     'SubmerchantReceipt',
     'Webhook',

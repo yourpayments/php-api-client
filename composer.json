@@ -9,6 +9,13 @@
     "ext-curl": "*",
     "ext-mbstring": "*"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "psr/log": "^1.1 || ^2.0 || ^3.0"
+  },
+  "suggest": {
+    "psr/log": "Для журналирования запросов через ApiRequest::setLogger() (любой PSR-3 логгер: Monolog, Laravel и др.)"
+  },
   "license": "mit",
   "authors": [
     {
@@ -22,5 +29,13 @@
     "psr-4": {
       "Ypmn\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Ypmn\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
   }
 }

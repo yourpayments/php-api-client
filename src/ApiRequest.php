@@ -8,6 +8,8 @@ use DateTime;
 use DateTimeInterface;
 use JsonException;
 use JsonSerializable;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 /**
  * Класс отправки запроса к API
@@ -36,6 +38,41 @@ class ApiRequest implements ApiRequestInterface
     public const SANDBOX_HOST = 'https://sandbox.ypmn.ru';
     public const LOCAL_HOST = 'http://127.0.0.1';
 
+    /** @var int Время ожидания соединения по умолчанию, секунды */
+    public const DEFAULT_CONNECT_TIMEOUT = 10;
+
+    /** @var int Время ожидания ответа на GET-запрос по умолчанию, секунды */
+    public const DEFAULT_GET_TIMEOUT = 30;
+
+    /** @var int Время ожидания ответа на POST- и PUT-запрос по умолчанию, секунды */
+    public const DEFAULT_POST_TIMEOUT = 60;
+
+    /** @var int Наибольшая длина тела запроса и ответа в журнале по умолчанию, символы */
+    public const DEFAULT_LOG_BODY_MAX_LENGTH = 10000;
+
+    /** @var array Опции cURL по умолчанию; переопределяются через setCurlOption() */
+    private const DEFAULT_CURL_OPTIONS = [
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_CONNECTTIMEOUT => self::DEFAULT_CONNECT_TIMEOUT,
+        CURLOPT_TIMEOUT => self::DEFAULT_GET_TIMEOUT,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    ];
+
+    /**
+     * @var int[] Опции cURL, которыми управляет SDK: от них зависят подпись запроса и разбор ответа,
+     *            поэтому переопределить их нельзя
+     */
+    private const PROTECTED_CURL_OPTIONS = [
+        CURLOPT_URL,
+        CURLOPT_CUSTOMREQUEST,
+        CURLOPT_POSTFIELDS,
+        CURLOPT_HTTPHEADER,
+        CURLOPT_RETURNTRANSFER,
+        CURLOPT_HEADER,
+        CURLOPT_HEADERFUNCTION,
+    ];
+
     /** @var MerchantInterface Мерчант, от имени которого отправляется запрос */
     private MerchantInterface $merchant;
 
@@ -60,8 +97,23 @@ class ApiRequest implements ApiRequestInterface
     /** @var string Ключ идемпотентности */
     private string $idempotencyKey = "";
 
-    /** @var array Заголовков запроса */
+    /** @var array Пользовательские заголовки запроса */
     private array $headers = [];
+
+    /** @var array Пользовательские опции cURL в формате [CURLOPT_* => значение] */
+    private array $curlOptions = [];
+
+    /** @var LoggerInterface|null Журнал запросов (PSR-3) */
+    private ?LoggerInterface $logger = null;
+
+    /** @var bool Записывать в журнал тела запросов и ответов */
+    private bool $logBodies = true;
+
+    /** @var string[] Поля JSON, значения которых скрываются в журнале */
+    private array $logSensitiveFields = LogSanitizer::DEFAULT_SENSITIVE_FIELDS;
+
+    /** @var int Наибольшая длина тела запроса и ответа в журнале, символы */
+    private int $logBodyMaxLength = self::DEFAULT_LOG_BODY_MAX_LENGTH;
 
     /** @inheritdoc  */
     public function __construct(MerchantInterface $merchant)
@@ -99,9 +151,106 @@ class ApiRequest implements ApiRequestInterface
         $name = trim($name);
         $value = trim($value);
 
-        if ($name && $value) {
-           $this->headers[$name] = $value;
+        if (preg_match('/^[!#$%&\'*+\-.^_`|~0-9A-Za-z]+$/', $name) !== 1) {
+            throw new PaymentException('Некорректное имя заголовка запроса');
         }
+
+        if (preg_match('/[\r\n\0]/', $value) === 1) {
+            throw new PaymentException('Значение заголовка ' . $name . ' не должно содержать переводов строки');
+        }
+
+        if ($value !== '') {
+            $this->headers = self::withHeader($this->headers, $name, $value);
+        }
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function setHeaders(array $headers): self
+    {
+        foreach ($headers as $name => $value) {
+            $this->setHeader((string) $name, (string) $value);
+        }
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function removeHeader(string $name): self
+    {
+        $this->headers = self::withoutHeader($this->headers, trim($name));
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function getCurlOptions(): array
+    {
+        return $this->curlOptions;
+    }
+
+    /** @inheritdoc  */
+    public function setCurlOption(int $option, $value): self
+    {
+        if (in_array($option, self::PROTECTED_CURL_OPTIONS, true)) {
+            throw new PaymentException(
+                'Опцией cURL ' . $option . ' управляет SDK, переопределить её нельзя. '
+                . 'Заголовки задаются через setHeader(), адрес -- через setHost()'
+            );
+        }
+
+        $this->curlOptions[$option] = $value;
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function setCurlOptions(array $options): self
+    {
+        foreach ($options as $option => $value) {
+            if (!is_int($option)) {
+                throw new PaymentException('Ключами массива опций cURL должны быть константы CURLOPT_*');
+            }
+
+            $this->setCurlOption($option, $value);
+        }
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function setLogger(?LoggerInterface $logger): self
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function setLogBodies(bool $logBodies = true): self
+    {
+        $this->logBodies = $logBodies;
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function setLogSensitiveFields(array $fields): self
+    {
+        $this->logSensitiveFields = array_map('strval', array_values($fields));
+
+        return $this;
+    }
+
+    /** @inheritdoc  */
+    public function setLogBodyMaxLength(int $maxLength): self
+    {
+        if ($maxLength < 0) {
+            throw new PaymentException('Наибольшая длина тела в журнале не может быть отрицательной');
+        }
+
+        $this->logBodyMaxLength = $maxLength;
 
         return $this;
     }
@@ -168,32 +317,18 @@ class ApiRequest implements ApiRequestInterface
         }
 
         // отправить запрос
-        $curl = curl_init();
-        $requestHttpVerb = 'GET';
-
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
 
-        $this->setHeader('Accept', 'application/json');
-        $this->setHeader('Content-Type', 'application/json');
-        $this->setHeader('X-Header-Date', $date);
-        $this->setHeader('X-Header-Merchant', $this->merchant->getCode());
+        $requestHeaders = $this->buildRequestHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'X-Header-Date' => $date,
+            'X-Header-Merchant' => $this->merchant->getCode(),
+        ]);
 
-        $setopt_array = [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $requestHttpVerb,
-            CURLOPT_HTTPHEADER => $this->formatHeadersForCurl()
-        ];
-
-        curl_setopt_array($curl, $setopt_array);
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
+        $result = $this->executeRequest('GET', $url, $requestHeaders, self::DEFAULT_CURL_OPTIONS);
+        $response = $result['response'];
+        $err = $result['error'];
 
         if ($this->getDebugMode()) {
             $this->echoDebugMessage('Ответ от ' . $this->getHost() . ':');
@@ -214,6 +349,9 @@ class ApiRequest implements ApiRequestInterface
         $hashString = '';
 
         foreach ($parameters as $currentData) {
+            // метка времени приходит числом, а strlen() в строгом режиме типов принимает только строку
+            $currentData = (string) $currentData;
+
             if (strlen($currentData) > 0) {
                 $hashString .= strlen($currentData);
                 $hashString .= $currentData;
@@ -243,44 +381,32 @@ class ApiRequest implements ApiRequestInterface
      */
     public function sendGetRequest(string $api): array
     {
-        $curl = curl_init();
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
         $requestHttpVerb = 'GET';
 
-        $this->setHeader('Accept', 'application/json');
-        $this->setHeader('Content-Type', 'application/json');
-        $this->setHeader('X-Header-Date', $date);
-        $this->setHeader('X-Header-Merchant', $this->merchant->getCode());
-        $this->setHeader('X-Header-Signature', $this->getSignature(
-            $this->merchant,
-            $date,
-            $this->getHost() . $api,
+        $requestHeaders = $this->buildRequestHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'X-Header-Date' => $date,
+            'X-Header-Merchant' => $this->merchant->getCode(),
+            'X-Header-Signature' => $this->getSignature(
+                $this->merchant,
+                $date,
+                $this->getHost() . $api,
+                $requestHttpVerb,
+                md5('')
+            ),
+        ]);
+
+        $result = $this->executeRequest(
             $requestHttpVerb,
-            md5('')
-        ));
-
-        $setopt_array = [
-            CURLOPT_URL => $this->getHost() . $api,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $requestHttpVerb,
-            CURLOPT_HTTPHEADER => $this->formatHeadersForCurl()
-        ];
-
-        $headers = [];
-
-        if ($this->getDebugShowResponseHeaders()) {
-            $this->addCurlOptHeaderFunction($setopt_array, $headers);
-        }
-
-        curl_setopt_array($curl, $setopt_array);
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
+            $this->getHost() . $api,
+            $requestHeaders,
+            self::DEFAULT_CURL_OPTIONS
+        );
+        $response = $result['response'];
+        $err = $result['error'];
+        $headers = $result['headers'];
 
         if (true === $this->getDebugMode()) {
             $this->echoDebugMessage('GET-Запрос к серверу Ypmn:');
@@ -326,7 +452,7 @@ class ApiRequest implements ApiRequestInterface
             }
         }
 
-        return ['response' => $response, 'error' => $err];
+        return $result;
     }
 
     /**
@@ -387,53 +513,45 @@ class ApiRequest implements ApiRequestInterface
 
         $encodedJsonDataHash = md5($encodedJsonData);
 
-        $curl = curl_init();
         $date = (new DateTime())->format(DateTimeInterface::ATOM);
 
         $useragent = "SDK_PHP_" . @PHP_VERSION;
         $referer =  @$_SERVER['HTTP_HOST'] ?? @$_SERVER['SERVER_NAME'] ?? "" . @$_SERVER['REQUEST_URI'] ?? "";
 
-        $this->setHeader('Accept', 'application/json');
-        $this->setHeader('Content-Type', 'application/json');
-        $this->setHeader('X-Header-Date', $date);
-        $this->setHeader('X-Header-Merchant', $this->merchant->getCode());
-        $this->setHeader('X-Header-Signature', $this->getSignature(
-            $this->merchant,
-            $date,
-            $this->getHost() . $api,
-            $method,
-            $encodedJsonDataHash
-        ));
-
-        if ($this->getIdempotencyKey()) {
-            $this->setHeader('X-Header-Idempotency-Key', $this->getIdempotencyKey());
-        }
-
-        $setOptArray = [
-            CURLOPT_URL => $this->getHost() . $api,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_USERAGENT => strip_tags($useragent),
-            CURLOPT_REFERER => strip_tags($referer),
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 60,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $method,
-            CURLOPT_POSTFIELDS => $encodedJsonData,
-            CURLOPT_HTTPHEADER => $this->formatHeadersForCurl()
+        $systemHeaders = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'X-Header-Date' => $date,
+            'X-Header-Merchant' => $this->merchant->getCode(),
+            'X-Header-Signature' => $this->getSignature(
+                $this->merchant,
+                $date,
+                $this->getHost() . $api,
+                $method,
+                $encodedJsonDataHash
+            ),
         ];
 
-        $headers = [];
-
-        if ($this->getDebugShowResponseHeaders()) {
-            $this->addCurlOptHeaderFunction($setOptArray, $headers);
+        if ($this->getIdempotencyKey()) {
+            $systemHeaders['X-Header-Idempotency-Key'] = $this->getIdempotencyKey();
         }
 
-        curl_setopt_array($curl, $setOptArray);
+        $defaultCurlOptions = [
+            CURLOPT_USERAGENT => strip_tags($useragent),
+            CURLOPT_REFERER => strip_tags($referer),
+            CURLOPT_TIMEOUT => self::DEFAULT_POST_TIMEOUT,
+        ] + self::DEFAULT_CURL_OPTIONS;
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
+        $result = $this->executeRequest(
+            $method,
+            $this->getHost() . $api,
+            $this->buildRequestHeaders($systemHeaders),
+            $defaultCurlOptions,
+            $encodedJsonData
+        );
+        $response = $result['response'];
+        $err = $result['error'];
+        $headers = $result['headers'];
 
         if (true === $this->getDebugMode()) {
             $this->echoDebugMessage("$method-Запрос к серверу Ypmn:");
@@ -500,7 +618,7 @@ class ApiRequest implements ApiRequestInterface
             );
         }
 
-        return ['response' => $response, 'error' => $err];
+        return $result;
     }
 
     /** @inheritdoc
@@ -655,14 +773,236 @@ class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * Привести общий справочник заголовков (key => value) к формату CURLOPT_HTTPHEADER
+     * Выполнить HTTP-запрос: единая точка, где применяются опции cURL и ведётся журнал
+     * @param string $method HTTP-метод
+     * @param string $url полный адрес запроса
+     * @param array $headers заголовки запроса в формате ["Header-Name" => "value"]
+     * @param array $defaultCurlOptions опции cURL по умолчанию для этого вида запроса
+     * @param string|null $body тело запроса
+     * @return array{response: string|false, error: string, httpCode: int, headers: string[]}
+     * @throws PaymentException
+     */
+    private function executeRequest(
+        string $method,
+        string $url,
+        array $headers,
+        array $defaultCurlOptions,
+        ?string $body = null
+    ): array {
+        $responseHeaders = [];
+        $requiredCurlOptions = [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_HTTPHEADER => self::formatHeadersForCurl($headers),
+            CURLOPT_HEADERFUNCTION => static function ($curl, string $header) use (&$responseHeaders): int {
+                if (strlen(trim($header)) > 0) {
+                    $responseHeaders[] = trim($header);
+                }
+
+                return strlen($header);
+            },
+        ];
+
+        if ($body !== null) {
+            $requiredCurlOptions[CURLOPT_POSTFIELDS] = $body;
+        }
+
+        // оператор «+» сохраняет числовые ключи и оставляет значение из левого массива:
+        // обязательные опции важнее пользовательских, пользовательские важнее опций по умолчанию
+        $curlOptions = $requiredCurlOptions + $this->curlOptions + $defaultCurlOptions;
+
+        // идентификатор нужен только журналу: связывает записи о запросе и об ответе
+        $requestId = ($this->logger === null) ? '' : bin2hex(random_bytes(8));
+        $this->logRequest($requestId, $method, $url, $headers, $body);
+
+        $curl = curl_init();
+
+        try {
+            $isConfigured = curl_setopt_array($curl, $curlOptions);
+        } catch (Throwable $e) {
+            throw new PaymentException('Некорректные опции cURL: ' . $e->getMessage(), 0, $e);
+        }
+
+        if ($isConfigured === false) {
+            throw new PaymentException('Не удалось применить опции cURL: ' . curl_error($curl));
+        }
+
+        $startedAt = microtime(true);
+        $response = curl_exec($curl);
+        $durationMs = round((microtime(true) - $startedAt) * 1000, 1);
+        $error = curl_error($curl);
+        $errno = curl_errno($curl);
+        $info = curl_getinfo($curl);
+
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($curl);
+        }
+
+        $httpCode = (int) ($info['http_code'] ?? 0);
+
+        $this->logResponse($requestId, $method, $url, $response, $responseHeaders, [
+            'http_code' => $httpCode,
+            'duration_ms' => $durationMs,
+            'connect_time_ms' => round((float) ($info['connect_time'] ?? 0) * 1000, 1),
+            'primary_ip' => (string) ($info['primary_ip'] ?? ''),
+            'curl_errno' => $errno,
+            'curl_error' => $error,
+        ]);
+
+        return ['response' => $response, 'error' => $error, 'httpCode' => $httpCode, 'headers' => $responseHeaders];
+    }
+
+    /**
+     * Записать в журнал исходящий запрос
+     * @param string $requestId идентификатор, общий для записей о запросе и об ответе
+     * @param string $method HTTP-метод
+     * @param string $url полный адрес запроса
+     * @param array $headers заголовки запроса
+     * @param string|null $body тело запроса
+     * @return void
+     */
+    private function logRequest(string $requestId, string $method, string $url, array $headers, ?string $body): void
+    {
+        if ($this->logger === null) {
+            return;
+        }
+
+        $context = [
+            'request_id' => $requestId,
+            'method' => $method,
+            'url' => LogSanitizer::maskUrl($url),
+            'headers' => LogSanitizer::maskHeaders($headers),
+        ];
+
+        if ($this->logBodies && $body !== null) {
+            $context['body'] = LogSanitizer::maskBody($body, $this->logSensitiveFields, $this->logBodyMaxLength);
+        }
+
+        $this->writeLog('debug', 'YPMN API request', $context);
+    }
+
+    /**
+     * Записать в журнал ответ сервера или ошибку соединения.
+     * Уровень записи: error -- ошибка соединения или ответ 5xx, warning -- ответ 4xx, info -- остальное
+     * @param string $requestId идентификатор, общий для записей о запросе и об ответе
+     * @param string $method HTTP-метод
+     * @param string $url полный адрес запроса
+     * @param string|false $response тело ответа
+     * @param string[] $responseHeaders заголовки ответа
+     * @param array $metrics код ответа, длительность и сведения об ошибке cURL
+     * @return void
+     */
+    private function logResponse(
+        string $requestId,
+        string $method,
+        string $url,
+        $response,
+        array $responseHeaders,
+        array $metrics
+    ): void {
+        if ($this->logger === null) {
+            return;
+        }
+
+        $context = [
+            'request_id' => $requestId,
+            'method' => $method,
+            'url' => LogSanitizer::maskUrl($url),
+        ] + $metrics + [
+            'headers' => LogSanitizer::maskHeaderLines($responseHeaders),
+        ];
+
+        if ($this->logBodies && is_string($response)) {
+            $context['body'] = LogSanitizer::maskBody($response, $this->logSensitiveFields, $this->logBodyMaxLength);
+        }
+
+        if ($metrics['curl_errno'] !== 0) {
+            $this->writeLog('error', 'YPMN API request failed', $context);
+        } elseif ($metrics['http_code'] >= 500) {
+            $this->writeLog('error', 'YPMN API response', $context);
+        } elseif ($metrics['http_code'] >= 400) {
+            $this->writeLog('warning', 'YPMN API response', $context);
+        } else {
+            $this->writeLog('info', 'YPMN API response', $context);
+        }
+    }
+
+    /**
+     * @param string $level уровень записи PSR-3
+     * @param string $message сообщение
+     * @param array $context контекст
+     * @return void
+     */
+    private function writeLog(string $level, string $message, array $context): void
+    {
+        try {
+            $this->logger->log($level, $message, $context);
+        } catch (Throwable $e) {
+            // Сбой журнала намеренно не пробрасывается: запрос к шлюзу уже отправлен или будет отправлен,
+            // и исключение здесь выглядело бы для вызывающего кода как неуспешный платёж.
+        }
+    }
+
+    /**
+     * Собрать заголовки запроса: пользовательские и поверх них системные.
+     * Системные заголовки не сохраняются в объекте, поэтому не попадают в следующие запросы.
+     * @param array $systemHeaders заголовки, которые выставляет SDK
+     * @return array заголовки в формате ["Header-Name" => "value"]
+     */
+    private function buildRequestHeaders(array $systemHeaders): array
+    {
+        $headers = $this->headers;
+
+        foreach ($systemHeaders as $name => $value) {
+            $headers = self::withHeader($headers, $name, $value);
+        }
+
+        return $headers;
+    }
+
+    /**
+     * Вернуть справочник заголовков с добавленным заголовком; имя сравнивается без учёта регистра
+     * @param array $headers заголовки в формате ["Header-Name" => "value"]
+     * @param string $name имя заголовка
+     * @param string $value значение заголовка
+     * @return array
+     */
+    private static function withHeader(array $headers, string $name, string $value): array
+    {
+        $headers = self::withoutHeader($headers, $name);
+        $headers[$name] = $value;
+
+        return $headers;
+    }
+
+    /**
+     * Вернуть справочник заголовков без указанного заголовка; имя сравнивается без учёта регистра
+     * @param array $headers заголовки в формате ["Header-Name" => "value"]
+     * @param string $name имя заголовка
+     * @return array
+     */
+    private static function withoutHeader(array $headers, string $name): array
+    {
+        foreach (array_keys($headers) as $existingName) {
+            if (strcasecmp((string) $existingName, $name) === 0) {
+                unset($headers[$existingName]);
+            }
+        }
+
+        return $headers;
+    }
+
+    /**
+     * Привести справочник заголовков (key => value) к формату CURLOPT_HTTPHEADER
+     * @param array $headers заголовки в формате ["Header-Name" => "value"]
      * @return string[] массив строк вида ["Header-Name: value", ...]
      */
-    private function formatHeadersForCurl(): array
+    private static function formatHeadersForCurl(array $headers): array
     {
         $curlHeaders = [];
 
-        foreach ($this->headers as $name => $value) {
+        foreach ($headers as $name => $value) {
             $curlHeaders[] = $name . ': ' . $value;
         }
 
@@ -833,23 +1173,5 @@ class ApiRequest implements ApiRequestInterface
     {
         $this->debugShowResponseHeaders = $debugShowResponseHeaders;
         return $this;
-    }
-
-    /**
-     * @param array $curlOptArr
-     * @param array $headers
-     * @return void
-     */
-    private function addCurlOptHeaderFunction(array &$curlOptArr, array &$headers): void
-    {
-        $curlOptArr += [
-            CURLOPT_HEADERFUNCTION => static function ($curl, $header) use (&$headers) {
-                if (strlen(trim($header)) > 0) {
-                    $headers[] = trim($header);
-                }
-
-                return strlen($header);
-            }
-        ];
     }
 }

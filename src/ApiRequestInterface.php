@@ -153,12 +153,86 @@ interface ApiRequestInterface
 
     /**
      * Установить/переопределить заголовок запроса.
+     * Заголовки подписи и авторизации (X-Header-*) SDK выставляет сам, поверх пользовательских.
      * @param string $name Имя заголовка (например "X-Custom-Header")
      * @param string $value Значение заголовка
      * @return $this
      * @throws PaymentException
      */
     public function setHeader(string $name, string $value) : self;
+
+    /**
+     * Установить/переопределить несколько заголовков запроса.
+     * @param array $headers Заголовки в формате ["Header-Name" => "value"]
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setHeaders(array $headers) : self;
+
+    /**
+     * Удалить ранее установленный заголовок запроса (имя сравнивается без учёта регистра).
+     * @param string $name Имя заголовка
+     * @return $this
+     */
+    public function removeHeader(string $name) : self;
+
+    /**
+     * Получить пользовательские опции cURL
+     * @return array Опции в формате [CURLOPT_* => значение]
+     */
+    public function getCurlOptions() : array;
+
+    /**
+     * Установить/переопределить опцию cURL для всех последующих запросов,
+     * например таймаут, прокси или параметры проверки сертификата.
+     * Опции, от которых зависят подпись запроса и разбор ответа (адрес, метод,
+     * тело, заголовки), переопределить нельзя.
+     * @param int $option Константа CURLOPT_*
+     * @param mixed $value Значение опции
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setCurlOption(int $option, $value) : self;
+
+    /**
+     * Установить/переопределить несколько опций cURL (дополняет ранее установленные).
+     * @param array $options Опции в формате [CURLOPT_* => значение]
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setCurlOptions(array $options) : self;
+
+    /**
+     * Подключить журнал запросов (любой логгер PSR-3); null отключает журналирование.
+     * Запрос пишется с уровнем debug, ответ -- info (4xx -- warning, 5xx и ошибки соединения -- error).
+     * Платёжные данные и подпись запроса в журнал не попадают.
+     * @param \Psr\Log\LoggerInterface|null $logger
+     * @return $this
+     */
+    public function setLogger(?\Psr\Log\LoggerInterface $logger) : self;
+
+    /**
+     * Записывать ли в журнал тела запросов и ответов (по умолчанию -- да, со скрытыми платёжными данными)
+     * @param bool $logBodies
+     * @return $this
+     */
+    public function setLogBodies(bool $logBodies = true) : self;
+
+    /**
+     * Заменить список полей JSON, значения которых скрываются в журнале.
+     * По умолчанию -- LogSanitizer::DEFAULT_SENSITIVE_FIELDS
+     * @param string[] $fields Имена полей (без учёта регистра)
+     * @return $this
+     */
+    public function setLogSensitiveFields(array $fields) : self;
+
+    /**
+     * Установить наибольшую длину тела запроса и ответа в журнале
+     * @param int $maxLength Длина в символах
+     * @return $this
+     * @throws PaymentException
+     */
+    public function setLogBodyMaxLength(int $maxLength) : self;
 
     /**
      * Отправить запрос для получения детального отчета по заказу
